@@ -98,6 +98,10 @@ for (const recipe of resolved) {
   const last = await publicAsset(recipe.steps.at(-1));
   const existing = (last?.recipes ?? []).find((r) => r.node_id === sender && r.title === recipe.title && r.status === 'published');
   if (existing) { log(`  ${existing.recipe_id}：已建过`); created.push({ ...recipe, id: existing.recipe_id }); continue; }
+  // A Recipe can only use promoted Genes; one whose Genes are still candidates waits for the next run.
+  const pending = [];
+  for (const id of recipe.steps) if ((await publicAsset(id))?.status !== 'promoted') pending.push(id.slice(0, 15));
+  if (pending.length) { log(`  跳过「${recipe.title.slice(0, 24)}…」：${pending.join(', ')} 还没晋升，晋升后重跑`); continue; }
   let id;
   try {
     for (let attempt = 1; ; attempt++) {

@@ -1,5 +1,5 @@
 {
-  "node_id": "node_1caa18cad28626cf",
+  "node_id": "node_90f156586d65269d",
   "skills_repo": "https://github.com/Mike-7777777/gene-skills",
   "skills_commit": "4e2bc345a1bc245116d2a54ab92edb4b81e4ea6b",
   "genes": [
@@ -11,9 +11,7 @@
       "new_asset_id": "sha256:a0d875179215d600150465db8940915f5ac8f627e5c16821d405aee19a3865ed",
       "old_capsule_asset_id": "sha256:22921c940545ab39f1df254fcaadd08eb261332e4b2ef67fb3ffa859524594fe",
       "new_capsule_asset_id": "sha256:ae4ba1f8854e9bc1621412d66a8e2c5e6fe71a073da3eaecae8bc24b9ee0a2ad",
-      "recipes": [
-        "cmwq00p8i0h0c7s3f9usqcd62"
-      ]
+      "recipes": []
     },
     {
       "id": "gene_boss_compound_attack_readable_evasion_v2",
@@ -23,9 +21,7 @@
       "new_asset_id": "sha256:6bf8143e80a4d7e4d8f2b4cbf0d5d4a4571a5868314f84872b57debc098cb37f",
       "old_capsule_asset_id": "sha256:b367e1a7dc49d5cc322ec20048384663181b22355120062093adf98dbdaf3c2d",
       "new_capsule_asset_id": "sha256:404b6800030bf0b4ae7393c3fe4f4c26b2affb2201411cc2aa05e4fe964c133b",
-      "recipes": [
-        "cmwq00vbo0h3n7s3fwosfhgmy"
-      ]
+      "recipes": []
     },
     {
       "id": "gene_magiscapes__narrative_branching__consequence_propagation_and_counterfactual_diff",
@@ -36,7 +32,7 @@
       "old_capsule_asset_id": "sha256:f56f33f6ec82676857b7af9e1680a8c18ab2c3893e15bd83058ca71893451c8f",
       "new_capsule_asset_id": "sha256:23f5f5d12a6bde2ff1789d2879648012f8905cb9a3f6002e9282f5b68b9f9026",
       "recipes": [
-        "cmwq10c490e9q9o3f3rmfgnw0"
+        "cmwqbdy572i5d7s3fkhvj2dlr"
       ]
     },
     {
@@ -47,9 +43,7 @@
       "new_asset_id": "sha256:b64f4092e20c0a1b05b2f6b1736ac9bd9689255c58cf1c6b6b01072c81608024",
       "old_capsule_asset_id": "sha256:cde7932b10844237e73bda94865dda89856693e071ebf539fdcd96fddbbb0790",
       "new_capsule_asset_id": "sha256:265ab7a4295bdfbe60cfb3beaa5a18b3060e3077f89a19ce2cbb0f165d943f4f",
-      "recipes": [
-        "cmwq10eke0epobi3fy9kgkdjd"
-      ]
+      "recipes": []
     },
     {
       "id": "gene_magiscapes_combat_spatial_numeric_coupling_harness",
@@ -60,7 +54,7 @@
       "old_capsule_asset_id": "sha256:ae93af331b313e6544dc2ab83a50b6ea57c842fd0c0cec78b2598f92bef27973",
       "new_capsule_asset_id": "sha256:9c249e4860f65210a72a31709a7aaf8d34f31a892fc7db0b9d572d2d6019e5fa",
       "recipes": [
-        "cmwq00z5209whbi3fi7gema66"
+        "cmwqbdzqw20ijai3hef6jwqrr"
       ]
     },
     {
@@ -71,9 +65,7 @@
       "new_asset_id": "sha256:6f4b57da383b04bea233a87563a3ba560bec3f2522f0797737a1d46f4724fef6",
       "old_capsule_asset_id": "sha256:301d06bd9d10a89370ab1b0d0d729e4372c113166daac16c768a7aaed37c3dea",
       "new_capsule_asset_id": "sha256:c43164cc272d1bc372935c4f21f2268628630042ef2dc48ebdb1f6f77f6df0c3",
-      "recipes": [
-        "cmwq00vbo0h3n7s3fwosfhgmy"
-      ]
+      "recipes": []
     }
   ]
 }

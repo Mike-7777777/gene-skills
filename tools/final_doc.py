@@ -5,6 +5,7 @@ Usage: python3 tools/final_doc.py <commit> > out.md
 """
 import json
 import sys
+import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -21,31 +22,39 @@ CASES = {
     'gene_magiscapes_combat_spatial_numeric_coupling_harness': 'Case 4.1 战斗副本',
     'gene_nl_to_ue_archetype_threejs_vfx_v1': 'Case 6 技能特效',
 }
-RECIPES = {
-    'cmwninv7v0ov96s3hekw257k8': '2D RPG/生存游戏新手委托可试玩原型（Case 1）',
-    'cmwnr0qey05wna63eksm1ni7f': '2D 俯视角 Boss 战招式与技能特效（Case 2 与 Case 6）',
-    'cmwnr0kg305via63enlh708xf': '2D 俯视角动作 RPG 可试玩战斗副本（Case 4.1）',
-}
 m = json.loads((ROOT / 'republish/manifest.json').read_text())
+
+
+def recipe_title(recipe_id):
+    with urllib.request.urlopen(f'{RECIPE}{recipe_id}', timeout=30) as res:
+        data = json.load(res)
+    return (data.get('recipe') or data).get('title', '')
+
+
+RECIPES = {r: recipe_title(r) for e in m['genes'] for r in e['recipes']}
+SKILLS = m['skills_commit']
 L = []
 add = L.append
-add('# 案例 Gene 终版：纯 skill 版')
+add('# 案例 Gene 终版：skill 加入交付前试玩验收')
 add('')
-add('《Gene在游戏（策划）领域中的需求和场景》里的 6 个案例 Gene 改为纯 skill 版：做法和细节全部在 skill 里，Gene 只负责被找到并把 skill 带给模型。插件或 MCP 召回 Gene 后，evolver 按前置条件里的引用从公开仓库 [Mike-7777777/gene-skills](https://github.com/Mike-7777777/gene-skills) 取出对应 skill，核对内容摘要后装到本地，模型读完 skill 再动手。skill 已在仓库里，上传只涉及 Gene、Capsule 和组合方案。')
+add('《Gene在游戏（策划）领域中的需求和场景》里的 6 个案例 Gene 各在前置条件里钉住公开仓库 [Mike-7777777/gene-skills](https://github.com/Mike-7777777/gene-skills) 的一份 skill。插件或 MCP 召回 Gene 后，evolver 按这行引用取出 skill、核对内容摘要后装到本地，模型读完 skill 再动手。这一版把 6 个 Gene 的引用换到新版本的 skill；skill 已在仓库里，上传只涉及 Gene、Capsule 和组合方案。')
 add('')
 add('Case 5（Roguelike）文档里没有对应的 skill，它的 Gene 不改。')
 add('')
 add('# 1. 改动')
 add('')
-add('以 hub 上节点 `node_1caa18cad28626cf` 现有的版本为底：')
+add(f'skill 换到仓库 commit [`{SKILLS[:7]}`](https://github.com/Mike-7777777/gene-skills/tree/{SKILLS})：')
 add('')
-add('- Gene 保留用来找到它的字段，原样不动：`type`、`id`、`category`、`domain`、`summary`、`signals_match`、`metadata`、`schema_version`。')
-add('- Gene 的前置条件（`preconditions`）只有一行 skill 引用，格式为 `skill:git+<仓库>@<commit>#sha256=<内容摘要>&path=<skill 目录>`。')
-add('- Gene 的策略（`strategy`）只有 2 条：第 1 条让模型先安装并通读 skill，第 2 条用一句话概括这份 skill 的做法。hub 要求策略至少 2 条、每条至少 15 字。')
-add('- Gene 去掉其余字段：长策略、约束、不变量、校验命令、验收清单等和 skill 重复的内容，以及 `confidence`、`success_streak`。evolver 把后两个当作 hub 的排名数据，校验 Gene 编号前会先删掉它们，Gene 带着它们时编号对不上，命令行和 MCP 都按编号取不到它。')
-add('- Capsule 沿用原来的，`gene` 改成新 Gene 的编号；正文 `content` 开头加一段 `required_skill`（skill 引用和 SKILL.md 原文），原有内容全部保留在后面；`summary` 末尾加一句说明。hub 会拒收正文开头和本节点已有 Capsule 相同的新 Capsule，所以新内容放在开头。')
+add('- 每份 skill 新增「交付前真实试玩验收」一节：交付前在真实浏览器里用键盘和鼠标把最终交付的页面完整玩一遍，主流程、失败后重开、每条分支都要走通并截图，控制台零报错，发现问题修完再走一遍；另附各领域要重点检查的两项，例如任务原型要试先建工作台的顺序，地图要逐格核对交付页面和生成器一致。')
+add('- 技能特效的 skill 补回了三段包络函数、刀光镜像规范、界面分层规则和验收标准，和文档原文一致。')
 add('')
-add('插件（evolver-agent-plugin）原来会跳过策略少于 4 步的 Gene。对钉了 skill 的 Gene 放开这一限制的改动在 [EvoMap/evolver-agent-plugin#106](https://github.com/EvoMap/evolver-agent-plugin/pull/106)，合并发版之前，ZCode 等走插件的客户端召回到这些 Gene 也不会注入；MCP 和命令行不受影响。')
+add('以 hub 上节点 `node_1caa18cad28626cf` 现在的版本为底：')
+add('')
+add('- Gene 只改前置条件里那行 skill 引用的 commit 和内容摘要，其余字段（摘要、触发信号、标签、策略等）原样不动。引用格式为 `skill:git+<仓库>@<commit>#sha256=<内容摘要>&path=<skill 目录>`。')
+add('- Capsule 沿用现在的，`gene` 改成新 Gene 的编号，正文 `content` 开头的 `required_skill`（skill 引用和 SKILL.md 原文）换成新版本，其余内容原样保留。')
+add('- 组合方案的步骤里旧 Gene 编号换成新的，标题和其余步骤不变。')
+add('')
+add('走插件的客户端（ZCode 等）需要 evolver-agent-plugin 1.0.15 或更新版本才会注入钉了 skill 的 Gene。')
 add('')
 add('# 2. 上传')
 add('')
@@ -68,7 +77,7 @@ add('')
 add('按下面顺序做，前一步全部成功再做下一步：')
 add('')
 add('1. 发布：每个 Case 把第 3 章列出的新 Gene 和新 Capsule 作为一组 `[Gene, Capsule]` 发布（`POST /a2a/publish`）。两个文件里没有 `asset_id`，发布前用 evolver 的 `computeAssetId` 算出；算出的编号应等于表中的「新 Gene」「新 Capsule」。')
-add('2. 替换组合方案：已发布的组合方案不能直接修改（hub 返回 `only_draft_can_be_updated`）。对 3 个组合方案各做一次：`POST /a2a/recipe/<id>/fork` 得到草稿，`PATCH` 草稿的 `genes`（旧 Gene 编号换成新的，其余步骤不变）并把 `title` 改回原标题，`POST /a2a/recipe/<草稿 id>/publish`，最后 `POST /a2a/recipe/<原 id>/archive`。刚发布的 Gene 偶尔要等几十秒才能放进组合方案，遇到 `recipe_asset_unavailable` 稍等再试。')
+add('2. 替换组合方案：已发布的组合方案不能直接修改（hub 返回 `only_draft_can_be_updated`）。对下表每个组合方案各做一次：`POST /a2a/recipe/<id>/fork` 得到草稿，`PATCH` 草稿的 `genes`（旧 Gene 编号换成新的，其余步骤不变）并把 `title` 改回原标题，`POST /a2a/recipe/<草稿 id>/publish`，最后 `POST /a2a/recipe/<原 id>/archive`。刚发布的 Gene 偶尔要等几十秒才能放进组合方案，遇到 `recipe_asset_unavailable` 稍等再试。')
 add('3. 撤回：用 `POST /a2a/asset/self-revoke` 撤回表中的旧 Gene 和旧 Capsule。')
 add('')
 add('需要替换的组合方案（链接是 hub 接口返回的 JSON，能看到标题和每一步引用的 Gene 编号）：')

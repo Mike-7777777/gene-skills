@@ -66,8 +66,10 @@ for (const entry of manifest.genes) {
     if (changed.length > 0) fail(`hub 上的旧版本和准备新版本时用的不一样（${changed.join('、')} 被改过），新版本不能直接替换它。`, '把这个情况告诉准备文件的人重新生成。');
   }
   const capsuleId = oldPublic?.bundle_capsule?.asset_id ?? null;
+  const alreadyPublished = Boolean(newPublic?.status && newPublic.status !== 'revoked');
   let capsule = null;
-  if (capsuleId) {
+  // Once the new version is out, its Capsule is too; the old one may already be revoked and is only revoked here.
+  if (capsuleId && !alreadyPublished) {
     const old = await fullRecord(evolver, capsuleId);
     if (!old) fail(`取不到旧版本的 Capsule ${capsuleId}。`);
     const skillMd = new TextDecoder().decode(files.value.find((file) => file.path === 'SKILL.md').content);
@@ -81,7 +83,7 @@ for (const entry of manifest.genes) {
   log(`  新版本 ${entry.new_asset_id}`);
   log(`  配套 Capsule：${capsuleId ?? '无'}${capsule ? ` → 新 ${capsule.asset_id}` : ''}`);
   log(`  引用它的组合方案（Recipe）：${recipes.join(', ') || '无'}`);
-  plans.push({ entry, gene: { ...gene, asset_id: entry.new_asset_id }, capsule, oldCapsuleId: capsuleId, recipes, skipPublish: Boolean(newPublic?.status && newPublic.status !== 'revoked'), oldStatus: oldPublic?.status });
+  plans.push({ entry, gene: { ...gene, asset_id: entry.new_asset_id }, capsule, oldCapsuleId: capsuleId, recipes, skipPublish: alreadyPublished, oldStatus: oldPublic?.status });
 }
 
 if (!apply) {
@@ -152,16 +154,17 @@ for (const recipeId of [...new Set(plans.flatMap((plan) => plan.recipes))]) {
 
 // ── 6. Revoke the old versions ───────────────────────────────────────────────────────────────────────────────────
 log('\n第 3 步：撤回旧版本');
-for (const plan of plans) {
-  for (const assetId of [plan.entry.old_asset_id, plan.oldCapsuleId].filter(Boolean)) {
-    const current = await publicAsset(assetId);
-    if (!current || current.status === 'revoked') { log(`  ${assetId}：已撤回`); continue; }
-    try {
-      const answer = await http.call('POST', '/a2a/asset/self-revoke', { asset_id: assetId });
-      log(`  ${assetId}：${answer?.status ?? 'revoked'}`);
-    } catch (error) {
-      fail(`撤回 ${assetId} 失败：${error.message}`, '重新运行会从这里接着做。');
-    }
+// The Hub lets a node revoke at most 5 promoted assets in 24 hours (seen 2026-11-21). Old Genes go first, since
+// recall can still pick an old Gene; old Capsules only matter once their Gene is gone. A rerun resumes here.
+const toRevoke = [...plans.map((plan) => plan.entry.old_asset_id), ...plans.map((plan) => plan.oldCapsuleId)].filter(Boolean);
+for (const assetId of toRevoke) {
+  const current = await publicAsset(assetId);
+  if (!current || current.status === 'revoked') { log(`  ${assetId}：已撤回`); continue; }
+  try {
+    const answer = await http.call('POST', '/a2a/asset/self-revoke', { asset_id: assetId });
+    log(`  ${assetId}：${answer?.status ?? 'revoked'}`);
+  } catch (error) {
+    fail(`撤回 ${assetId} 失败：${error.message} ${JSON.stringify(error.body ?? '').slice(0, 400)}`, '新版本和组合方案都已就位。hub 每个节点 24 小时内最多撤回 5 个已晋升资产，额度用完时等第二天再运行同一条 --apply 命令，会从这里接着撤。');
   }
 }
 

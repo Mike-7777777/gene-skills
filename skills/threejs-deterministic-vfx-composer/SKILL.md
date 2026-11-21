@@ -47,11 +47,51 @@ description: Decompose natural language skill/VFX descriptions into a multi-emit
   对第 $i$ 个碎块，由固定种子生成初始速度向量 $\vec{v}_{0,i}$ 与角速度 $\vec{\omega}_i$；当 `age > 0` 时：
   $$x_i(\text{age}) = v_{0x,i} \cdot \text{age}, \quad z_i(\text{age}) = v_{0z,i} \cdot \text{age}$$
   $$y_{\text{raw}}(\text{age}) = y_0 + v_{0y,i} \cdot \text{age} - \frac{1}{2} g \cdot \text{age}^2$$
-  若 $y_{\text{raw}}  Hold -> Exit` 三段包络求值：
+  若 $y_{\text{raw}} < 0$，直接通过解析反射公式 $y_i = |y_{\text{raw}}| \cdot \text{restitution}$ 计算落地反弹高度，确保任意正向播放、暂停或倒拖时间轴至任意时刻 $t$，画面 100% 精确复现且绝不炸屏。
+
+### 3. 三段式包络函数 (`evaluateEnvelope`) 与静止帧归零
+所有爆发光柱、冲击波扩张、Bloom 辉光增量与镜头震屏幅度，统一通过 `Enter -> Hold -> Exit` 三段包络求值：
 ```javascript
 export function evaluateEnvelope(age, enterTime, holdTime, exitTime) {
-  if (age  0 && age  0 && age  evaluateVFXAtTime(0.3) -> evaluateVFXAtTime(1.2) -> evaluateVFXAtTime(0.0) 往返调用，所有矩阵与 Uniform 状态必须 100% 一致且归零无残留。
+  if (age <= 0) return 0.0;
+  if (enterTime > 0 && age < enterTime) return age / enterTime;
+  const holdEnd = enterTime + holdTime;
+  if (age < holdEnd) return 1.0;
+  const total = holdEnd + exitTime;
+  if (exitTime > 0 && age < total) return 1.0 - (age - holdEnd) / exitTime;
+  return 0.0;
+}
+4. 几何 UV 溶解、镜像 Pivot 与防除零奇点数学规范
+刀光正反手镜像：当需要正反手挥砍镜像时，必须围绕刀光圆弧的视觉中心轴 v_mirrored = 2.0 * mirrorPivotV - v 翻转 UV，严禁简单使用 1.0 - v 导致刀光首尾跳变错位。
+宽高比校正与防奇点：地面圆形 SDF 预警与全屏径向扭曲必须校正视口宽高比（aspect = width / height），并将归一化径向距离下界限制为 max(r, 0.001)，杜绝圆心除零奇点闪烁。
+5. DOM / Canvas 分层、DrawCall 控制与无障碍护栏
+交互不遮挡：UI 控制面板（自然语言输入框、图层开关、时间轴拖帧滑块、播放/暂停/慢放按钮）保留在原生 DOM 层，全屏特效 Canvas 叠加层强制设置 pointer-events: none。
+性能与眩晕保护：限制 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))；全页面共用单一 requestAnimationFrame 并在 document.hidden 时暂停；提供“减弱震屏（Reduce Motion）”开关并自动响应系统 prefers-reduced-motion: reduce。
+验收标准与严禁事项 (Validation & Safety Boundaries)
+多发射器正交检验：任意技能描述生成的激活图层数必须 ≥4≥4，严禁退化为单一粒子球。
+任意拖帧确定性检验：按 evaluateVFXAtTime(1.2) -> evaluateVFXAtTime(0.3) -> evaluateVFXAtTime(1.2) -> evaluateVFXAtTime(0.0) 往返调用，所有矩阵与 Uniform 状态必须 100% 一致且归零无残留。
 代码块
+
+## 交付前真实试玩验收 (End-to-End Playtest Gate)
+
+内部门禁全部通过，不代表玩家能玩通。交付前必须在真实浏览器里、用真实的键盘和鼠标输入，把最终交付的页面完整玩一遍；发现问题就修，修完重新走一遍：
+
+1. **验收对象是最终交付物**：直接打开最终的 `index.html`，不拿中间数据、生成脚本的输出或 Node 沙箱模拟代替。页面若由脚本生成或烘焙，生成后要对交付文件本身重新跑一遍校验。
+2. **用真实浏览器操作**：优先使用 ZCode 自带的 `browser-use:control-browser` 与 `browser-use:web-gui-tester`；不可用时再用无头 Chrome，启动参数必须带 `--use-mock-keychain`。只走页面上真实可见的输入，不用脚本直接改状态来通关。
+3. **必须走通并截图留证的路线**：
+   - 主流程从开始到结束；
+   - 失败或阵亡后重开，重开后能继续正常游玩；
+   - 每一条分支、每一个可进入的场景：进入后能自由移动、能与其中的人物和物品交互、能回到原处；
+   - 至少两种不按提示顺序的操作。
+4. **输入与切换**：同一次按键只被处理一次；进入新场景时角色的出生点不能落在任何触发区内；页面上写明的每个按键和控件都实际有效。
+5. **说明与实际一致**：页面上的方位、时长、数量和操作说明，必须与实际地图、实际耗时和实际数值一致。
+6. **控制台零报错**，结束或重开后不残留预警、伤害和特效。
+7. **交付说明**：列出实际走过的路线、每条路线的截图，以及发现并修复的问题。
+
+本领域额外检查：
+
+- 每个阶段截图检查主体图层清晰可辨，泛光和粒子不能淹没刀光等主体；在 1 倍和 2 倍像素比下各检查一遍画面。
+- 生成后自动播放；页面上写明的视角交互（旋转、缩放）实际有效。
 
 ---
 

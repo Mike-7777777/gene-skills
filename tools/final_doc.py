@@ -11,6 +11,8 @@ ROOT = Path(__file__).resolve().parent.parent
 COMMIT = sys.argv[1]
 GH = f'https://github.com/Mike-7777777/gene-skills/blob/{COMMIT}'
 RAW = f'https://raw.githubusercontent.com/Mike-7777777/gene-skills/{COMMIT}'
+ASSET = 'https://evomap.ai/asset/'
+RECIPE = 'https://evomap.ai/a2a/recipe/'
 CASES = {
     'gene_quest_three_round_hidden_gate_v1': 'Case 1 生存 RPG 新手任务',
     'gene_boss_compound_attack_readable_evasion_v2': 'Case 2 Boss 攻击模组',
@@ -69,16 +71,18 @@ add('1. 发布：每个 Case 把第 3 章列出的新 Gene 和新 Capsule 作为
 add('2. 替换组合方案：已发布的组合方案不能直接修改（hub 返回 `only_draft_can_be_updated`）。对 3 个组合方案各做一次：`POST /a2a/recipe/<id>/fork` 得到草稿，`PATCH` 草稿的 `genes`（旧 Gene 编号换成新的，其余步骤不变）并把 `title` 改回原标题，`POST /a2a/recipe/<草稿 id>/publish`，最后 `POST /a2a/recipe/<原 id>/archive`。刚发布的 Gene 偶尔要等几十秒才能放进组合方案，遇到 `recipe_asset_unavailable` 稍等再试。')
 add('3. 撤回：用 `POST /a2a/asset/self-revoke` 撤回表中的旧 Gene 和旧 Capsule。')
 add('')
-add('需要替换的组合方案：')
+add('需要替换的组合方案（链接是 hub 接口返回的 JSON，能看到标题和每一步引用的 Gene 编号）：')
 add('')
 add('| 组合方案 | 内容 |')
 add('|---|---|')
 for k, v in RECIPES.items():
-    add(f'| `{k}` | {v} |')
+    add(f'| [`{k}`]({RECIPE}{k}) | {v} |')
 add('')
 add('hub 限制同一节点 24 小时内用同一组触发词最多发布 5 次，被拒的尝试也计数。发布失败先查清原因再重试，不要连续重试。')
 add('')
 add('# 3. 各 Case 终版')
+add('')
+add(f'要撤回的旧 Gene 和旧 Capsule 链接到 EvoMap 上的资产页面，点开能看到它的内容。新 Gene 和新 Capsule 上传后才有页面，表里只写编号。')
 add('')
 for i, e in enumerate(m['genes'], 1):
     add(f'## 3.{i} {CASES[e["id"]]}')
@@ -89,9 +93,9 @@ for i, e in enumerate(m['genes'], 1):
     add(f'| 钉住的 skill | [{e["skill"]}]({GH}/skills/{e["skill"]}/SKILL.md) |')
     add(f'| 新 Gene | `{e["new_asset_id"]}` |')
     add(f'| 新 Capsule | `{e["new_capsule_asset_id"]}` |')
-    add(f'| 撤回旧 Gene | `{e["old_asset_id"]}` |')
-    add(f'| 撤回旧 Capsule | `{e["old_capsule_asset_id"]}` |')
-    add(f'| 组合方案 | {"、".join("`" + r + "`" for r in e["recipes"]) or "无"} |')
+    add(f'| 撤回旧 Gene | [`{e["old_asset_id"]}`]({ASSET}{e["old_asset_id"]}) |')
+    add(f'| 撤回旧 Capsule | [`{e["old_capsule_asset_id"]}`]({ASSET}{e["old_capsule_asset_id"]}) |')
+    add(f'| 组合方案 | {"、".join(f"[`{r}`]({RECIPE}{r})" for r in e["recipes"]) or "无"} |')
     add(f'| 文件 | [Gene JSON]({RAW}/republish/genes/{e["id"]}.json)、[Capsule JSON]({RAW}/republish/capsules/{e["id"]}.json) |')
     add('')
     add('新 Gene 全文：')
@@ -99,8 +103,25 @@ for i, e in enumerate(m['genes'], 1):
     gene = json.loads((ROOT / f'republish/genes/{e["id"]}.json').read_text())
     add('```json\n' + json.dumps(gene, ensure_ascii=False, indent=2) + '\n```')
     add('')
+new_ids = {e['id']: e['new_asset_id'] for e in m['genes']}
+add('# 4. 召回测试 prompt')
+add('')
+add(f'下面每条 prompt 应召回对应的 Gene，用来检查和调整召回。文件和清单在仓库的 [prompts/]({GH}/prompts)。除注明的两条外，都按《Gene在游戏（策划）领域中的需求和场景》原文逐字收录。')
+add('')
+for i, item in enumerate(json.loads((ROOT / 'prompts/index.json').read_text()), 1):
+    add(f'## 4.{i} {item["case"]}')
+    add('')
+    target = new_ids.get(item['gene']) or item.get('asset')
+    note = '新版本，上传后生效' if item['gene'] in new_ids else '这个 Gene 不改，是线上现有版本'
+    add(f'应召回：`{item["gene"]}`（`{target}`，{note}）。')
+    if item['source'] == 'written':
+        add('')
+        add('原文档里这个 Case 没有 prompt，下面这段是补写的。')
+    add('')
+    add('```text\n' + (ROOT / 'prompts' / item['file']).read_text().strip() + '\n```')
+    add('')
 first = m['genes'][0]
-add('# 4. 核对')
+add('# 5. 核对')
 add('')
 add('任选一个新 Gene，在一个空目录里运行下面的命令（以 Case 1 为例）。命令会先取 Gene，再装上它钉住的 skill：')
 add('')

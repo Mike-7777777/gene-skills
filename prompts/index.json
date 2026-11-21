@@ -1,0 +1,10 @@
+[
+  {"file": "case1.txt", "case": "Case 1 生存 RPG 新手任务", "gene": "gene_quest_three_round_hidden_gate_v1", "source": "doc"},
+  {"file": "case2.txt", "case": "Case 2 Boss 攻击模组", "gene": "gene_boss_compound_attack_readable_evasion_v2", "source": "doc"},
+  {"file": "case2.1.txt", "case": "Case 2.1 Boss 攻击模组（只改了提示词）", "gene": "gene_boss_compound_attack_readable_evasion_v2", "source": "doc"},
+  {"file": "case3.txt", "case": "Case 3 剧情分支", "gene": "gene_magiscapes__narrative_branching__consequence_propagation_and_counterfactual_diff", "source": "written"},
+  {"file": "case4.txt", "case": "Case 4 序章地图", "gene": "gene_structured_level_map_concentric_topology_harness", "source": "doc"},
+  {"file": "case4.1.txt", "case": "Case 4.1 战斗副本", "gene": "gene_magiscapes_combat_spatial_numeric_coupling_harness", "source": "doc"},
+  {"file": "case5.txt", "case": "Case 5 Roguelike", "gene": "gene_roguelike_build_topology_and_coupled_curves_v1", "asset": "sha256:99b59cb2a8ec5ae85a4db1580261cf467e1804213a6ae8f4ce6bf2b015d86c93", "source": "doc"},
+  {"file": "case6.txt", "case": "Case 6 技能特效", "gene": "gene_nl_to_ue_archetype_threejs_vfx_v1", "source": "written"}
+]

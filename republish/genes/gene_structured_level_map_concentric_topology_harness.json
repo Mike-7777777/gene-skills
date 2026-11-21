@@ -1,0 +1,72 @@
+{
+  "id": "gene_structured_level_map_concentric_topology_harness",
+  "type": "Gene",
+  "domain": "game_dev",
+  "summary": "设计或生成 2D 俯视角 RPG/冒险游戏的序章或区域地图（包括浏览器单文件原型）：按山体骨架与山口、主干道、城镇安全区与缓冲带、野外怪物分区、NPC 活动动线的顺序布局，让怪物不刷在出生点到城镇的路上、不刷在道路两旁、不追进城镇，同种怪物聚在同一区域，每块地都有用途；生成后用连通性、安全距离、同族聚类、NPC 寻路和放置合规五项检查打回修正。Top-down town and wilderness level layout with safe zones, monster spawn zones and NPC routines.",
+  "category": "optimize",
+  "metadata": {
+    "tags": [
+      "game-design",
+      "level-design",
+      "map-layout",
+      "top-down-2d",
+      "procedural-generation",
+      "safe-zone",
+      "monster-spawn",
+      "npc-routine",
+      "rpg"
+    ]
+  },
+  "strategy": [
+    "【阶段零：基线劣化症状诊断与防御靶向（Chaotic Baseline Diagnosis）】在规划前明确并阻断无约束随机生成的四大典型缺陷：(a) 地形死锁：外围自然屏障（山脉、深水、悬崖、密林）按噪声闭合而未强制切割通行豁口，导致中心聚落沦为不可通行的孤岛；(b) 怪镇混杂：未区分无刷怪安全地皮与绑定敌对刷怪组的危险地皮，或未配置安全区禁刷规则及外围缓冲环，导致敌对刷怪地皮侵入聚落内部；(c) 族群碎片化：不同敌对阵营的专属地皮与领地标志物随机混杂在同一区域，缺乏扇区隔离与单连通分量约束；(d) NPC 动线断裂：先摆建筑后随机撒障碍物，建筑缺门或门前未接驳道路网，导致「起居点 → 生产点 → 房门 → 中心广场 → 公共设施」A* 寻路失败。",
+    "【阶段一：宏观外围屏障与强制通行豁口（Macro Barrier & Forced Pass First）】先构建地图外围自然屏障环（屏障厚度 >= 2 格以防斜角穿模或视觉漏出），并在主方位（南北或东西）强制切割宽度 >= 3 格的通行豁口（山口通道、桥梁或峡谷入口）直通地图边界，从拓扑根源杜绝死锁孤岛。",
+    "【阶段二：保护性主干道骨架锁定（Protected Road Skeleton）】使用不触发敌对刷怪的安全道路地皮连接「地图边界豁口 ↔ 聚落各出入口 ↔ 中心广场」，并将主干道及出入口外侧 3x3 集散区坐标写入受保护走廊掩码（Protected Corridor Mask），严禁后续任何阶段在该掩码内放置阻挡型实体、不可通行水体或障碍物。",
+    "【阶段三：安全聚落核心与 >=3 格生态缓冲环（SafeZone Core & Ecological Buffer Ring）】将中心聚落划定为安全区边界（SafeZone，开启区域敌对禁刷规则，外围用围墙或栅栏合围并在主干道交汇处留门）；在围栏外侧强制铺设宽度 >= 3 格的中立生态缓冲地皮（仅允许无害生物或基础采集物），从几何上保证任何敌对刷怪地皮或危险源到安全区边界的最小切比雪夫/曼哈顿距离 D_safe_danger >= 3 格。",
+    "【阶段四：危险区象限扇区化与同族高内聚聚类（Sectorized Homogeneous Faction Clustering）】将缓冲环外侧至外围自然屏障内侧的野外空间按方位角或象限切分为独立的阵营扇区，每个扇区唯一绑定单一敌对族群及其专属刷怪地皮与领地核心标志物，强制执行两项空间聚类约束：(a) 每种敌对族群专属刷怪地皮的 8-邻域连通分量数 ConnectedComponents == 1（整片连贯，严禁离散飞地碎片）；(b) 不同敌对族群扇区之间的最小曼哈顿距离 D_inter_faction >= 12 格。",
+    "【阶段五：NPC 建筑成套生成与全链路动线织网（NPC Routine & Utility Wiring）】每座 NPC 功能建筑必须按「起居锚点（床铺/休息位）+ 生产锚点（工作台/储物箱）+ 朝向最近干道的出入口（门）」成套生成；从每扇门外第 1 格自动运行最短路搜索并铺设支路地皮汇入受保护主干道，同时沿主干道与支路每隔 4~6 格布置照明节点，确保所有建筑 4 格范围内 100% 享有照明覆盖。",
+    "【阶段六：Generator-Evaluator 五维独立算法闭环（Harness Loop）】严格执行生成与评估职责分离，启动只读 Evaluator 对产出地图运行 5 维量化验算：(D1) 宏观拓扑连通性（边界豁口 ↔ 聚落出入口 ↔ 中心广场 BFS 100% 连通，外围屏障厚度 >= 2 格，出入口外 3x3 无阻挡，权重 25%）；(D2) 安全与危险区隔离度（SafeZone 内敌对地皮与敌对建筑数 == 0，所有危险刷怪地皮距 SafeZone 边界最小距离 >= 3 格，权重 25%）；(D3) 族群聚类内聚度（各族群专属刷怪地皮 8-邻域连通分量数 == 1，异族扇区最小间距 >= 12 格，权重 20%）；(D4) NPC 全链路动线可达性（「起居点 → 生产点 → 房门 → 广场中心 → 公共设施」A* 路径 100% 导通，门外第 1 格道路接驳率 100%，建筑 4 格内照明覆盖率 100%，权重 15%）；(D5) 数据结构与放置规则合规性（单格与多格实体 Footprint 碰撞重叠数 == 0，放置物地皮白名单/黑名单冲突数 == 0，权重 15%）。若加权总分 < 8.0 或任一单项 < 6.5，Evaluator 输出精确到网格坐标 (x, y) 的违规清单驱动 Generator 迭代重算，直至全项达标。",
+    "Safety boundary: Generator 只负责按五层同心拓扑规则生成地图数据与可视化预览，严禁自我打分；Evaluator 只负责运行 BFS/A*/连通分量/碰撞合规算法并输出坐标级诊断报告，严禁直接修改地图文件。",
+    "Safety boundary: 安全区内（SafeZone）敌对刷怪地皮与敌对阵营标志物数量必须严格为 0；外围生态缓冲环最小宽度不足 3 格或同族刷怪地皮分裂为多个连通分量（> 1）时直接判不及格（单项 < 6.5）。",
+    "Safety boundary: 所有放置物必须严格通过地皮放置白名单与黑名单校验（例如自然植被严禁放置在人工铺装地板、水体或异化腐化地皮上），且单格与多格放置物必须按完整占地矩形（Footprint）校验零碰撞重叠、零侵占受保护主干道。"
+  ],
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const e=k.evaluator;const r=k.layout_rules;const v=k.round1_defects;const w=e.dimensions.reduce((t,d)=>t+d.weight,0);const rubric=w===100&&e.dimensions.length===5&&e.pass_single<e.pass_total;const rules=r.safe_buffer_min_tiles>=3&&r.faction_gap_min_tiles>=12&&r.mountain_wall_min_tiles>=2&&r.mountain_pass_min_width_tiles>=3&&r.same_faction_components===1;const caught=v.danger_tile_to_safezone_tiles<r.safe_buffer_min_tiles&&v.side_mountain_wall_tiles<r.mountain_wall_min_tiles&&v.smithy_door_front_tile!==r.road_tile_id;process.exit(rubric&&rules&&caught?0:1)\""
+  ],
+  "constraints": {
+    "max_files": 5,
+    "forbidden_paths": [
+      ".git",
+      ".env",
+      "credentials",
+      "secrets",
+      "node_modules"
+    ]
+  },
+  "preconditions": [
+    "任务要设计或生成包含城镇或聚落、野外危险区、道路与 NPC 的关卡地图，形式可以是引擎场景数据，也可以是浏览器原型",
+    "目标项目有地形、刷怪、放置物配置表（如 DT_BiomeTileSet、DT_PlaceableItem）时先确认映射；浏览器原型用色块瓦片代替这些表",
+    "skill:git+https://github.com/Mike-7777777/gene-skills@d77b3f12a99d042e3d05b8a57f9ff45a1ba68834#sha256=d850603ec510523a5ee80e324e4963ab4c1b377920851296b3947f311bb68956&path=skills/structured-level-map-concentric-harness"
+  ],
+  "signals_match": [
+    "2D俯视角地图设计",
+    "序章地图",
+    "冒险游戏地图",
+    "城镇和野外地图",
+    "怪物出没位置",
+    "NPC活动范围",
+    "城镇安全区",
+    "道路和建筑布局",
+    "关卡地图生成",
+    "地图区域划分",
+    "top-down rpg map layout",
+    "town safe zone and monster spawn zones"
+  ],
+  "schema_version": "1.13.0",
+  "acceptance_checks": [
+    "BFS Reachability & Pass Check：从所有地图边界通行豁口到聚落中心广场及各出入口 100% BFS 连通，外围自然屏障厚度 >= 2 格，出入口外 3x3 缓冲区无阻挡物。",
+    "SafeZone & Buffer Distance Check：SafeZone 内敌对元素 == 0，所有危险刷怪地皮距 SafeZone 边界最小距离 D_safe_danger >= 3 格。",
+    "Faction Cluster Cohesion Check：每种敌对族群专属刷怪地皮的 8-邻域连通分量数 == 1，不同敌对族群扇区最小曼哈顿距离 D_inter_faction >= 12 格。",
+    "NPC A* Routine & Lighting Check：所有 NPC「起居点 → 生产点 → 房门 → 广场中心 → 公共设施」A* 路径 100% 连通，房门外第 1 格道路接驳率 == 100%，建筑 4 格内照明覆盖率 == 100%。",
+    "Schema, Footprint & Tile Rule Check：地图序列化结构合法，完整 Footprint 重叠数 == 0，放置物与底层地皮的白名单/黑名单冲突数 == 0。"
+  ]
+}

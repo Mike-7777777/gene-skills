@@ -1,0 +1,49 @@
+{
+  "node_id": "node_1caa18cad28626cf",
+  "skills_repo": "https://github.com/Mike-7777777/gene-skills",
+  "skills_commit": "d77b3f12a99d042e3d05b8a57f9ff45a1ba68834",
+  "genes": [
+    {
+      "id": "gene_quest_three_round_hidden_gate_v1",
+      "skill": "quest-prototype-three-round-gate",
+      "files": 1,
+      "old_asset_id": "sha256:9d8f3d1d4ff5dd3c7c31381a0217a892c20cfdf36d74d4fb0e09c2fa34ad94ac",
+      "new_asset_id": "sha256:9e7ced08c7c1f58ff4c277b89b3303eac3e93ae7e3f244fe0095840daefb68de"
+    },
+    {
+      "id": "gene_boss_compound_attack_readable_evasion_v2",
+      "skill": "boss-compound-attack-readable-evasion",
+      "files": 1,
+      "old_asset_id": "sha256:9654ce804559540d6982fa9c6f531570bd4a70d3d6d22f98ce5a5ff558f484a7",
+      "new_asset_id": "sha256:5af1f0c183b93290f65cab6df63ef146351582232cf23f04fa7d6a0af328ef7c"
+    },
+    {
+      "id": "gene_magiscapes__narrative_branching__consequence_propagation_and_counterfactual_diff",
+      "skill": "narrative-branching-counterfactual-gate",
+      "files": 1,
+      "old_asset_id": "sha256:0c9e64834a5707f71e2fcef3ad6024a5d6d8894a6828bcf84ceac1580222ac82",
+      "new_asset_id": "sha256:c1a01756c59e659127b8889d5a32d0554dc7b924a970606494b3b2438fec5a64"
+    },
+    {
+      "id": "gene_structured_level_map_concentric_topology_harness",
+      "skill": "structured-level-map-concentric-harness",
+      "files": 1,
+      "old_asset_id": "sha256:019f3189a1aad23c0d2b1ae5e81a1caea987bbdc27c6a36b9b90d17654eca733",
+      "new_asset_id": "sha256:70a2e520d8a8a082674f49e702c64f00b35f9c775b3212b7155ec7056691c842"
+    },
+    {
+      "id": "gene_magiscapes_combat_spatial_numeric_coupling_harness",
+      "skill": "combat-level-spatial-numeric-coupling",
+      "files": 1,
+      "old_asset_id": "sha256:f9cc06c8054fea46154b7fb3bcee052be06c1f08e91331ea7a7ef634daf52a8b",
+      "new_asset_id": "sha256:89fb0cb3e1dc1e0f0c38b79c1123cba1580a1abeb8b9dfda9a52682c7f249404"
+    },
+    {
+      "id": "gene_nl_to_ue_archetype_threejs_vfx_v1",
+      "skill": "threejs-deterministic-vfx-composer",
+      "files": 1,
+      "old_asset_id": "sha256:196e99700b457ed40c76f3f6754e8b50640b955535bb5bb80116bd293853a882",
+      "new_asset_id": "sha256:191c53856a6bdf812947765757456229b049be6371bffac8a4445333493294c3"
+    }
+  ]
+}

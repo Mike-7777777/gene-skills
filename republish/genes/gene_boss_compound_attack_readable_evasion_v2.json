@@ -1,0 +1,79 @@
+{
+  "id": "gene_boss_compound_attack_readable_evasion_v2",
+  "type": "Gene",
+  "domain": "game_dev",
+  "summary": "设计或实现 2D 俯视角 Boss 战（包括可在浏览器直接打开的演示）的攻击模组：为落石、横扫等范围技能先定义预警时长、伤害生效窗口和收招后摇，技能释放前用地面范围提示预警玩家；单独释放或组合释放时错开伤害结算时间、用固定落点留出安全走廊，并按玩家移速校验每一轮都有来得及走到的躲避路线，避免看起来有安全区却跑不到；同时提供技能参数调试台。整场体验上：将Boss单招与复合攻击模组（如落石+横扫）实现为具备可达避让路线的数据驱动定时攻击，并全链路管控玩家的体验预期：包含躲避后的反打回报窗口、转阶段盲等消除，以及Boss战结束后的脱战与战利品等待时间上限。Readable boss attack telegraphs, staggered combos, reachable dodge routes, punish windows and a clean post-combat wrap-up.",
+  "category": "optimize",
+  "metadata": {
+    "tags": [
+      "game-design",
+      "boss-fight",
+      "attack-telegraph",
+      "dodge-window",
+      "punish-window",
+      "combat-readability",
+      "top-down-2d",
+      "skill-design",
+      "safe-zone"
+    ]
+  },
+  "strategy": [
+    "【问题模式对齐：消除假安全区、零后摇连炸与战后盲等】针对“设计Boss攻击模组”任务，严禁出现两类劣化体验：(a) 战中坏案例：Boss 同时使出落石与横扫，地上看似有安全区但玩家在预警结束前物理跑不到，或躲完一整套连招后 Boss 零后摇无缝连炸导致玩家毫无反打机会；(b) 战后坏案例：打死 Boss 后残余落石还在炸死玩家，或死亡演出/脱战/掉落物刷出拖沓导致玩家原地盲等数秒。必须实现目标好案例：战中保留落石+横扫复合压迫感，通过同屏预警、错峰结算（Δt >= 0.6s）与固定安全走廊保证每轮皆有可达避让路线，并在收招后稳定兑现 0.8s~1.5s 反打窗口；战后致死瞬间（0.0s）清空残余预警与伤害投射物，0.1s 内完成脱战与音乐收敛，0.5s~1.2s 内弹出可拾取战利品，将空虚盲等转化为走向战利品的有效行动。",
+    "【表驱动招式与子阶段时序建模（权威数据源）】在制作动画或特效前，先在权威技能表（如 DT_MonsterSkillData、DT_Missile）中为每个招式及复合技子阶段定义完整数据行：包含 ID、WINDUP（预警/前摇秒数 T_windup）、ACTIVE 起止秒数（T_active_start ~ T_active_end）、RECOVERY（后摇秒数 T_recovery）、RANGE（射程）、ARC（扇形角度）、连续重复禁令（Repeat Ban）及声光形状预警（Telegraph）；严禁将伤害判定框（Hurtbox）时机硬编码在动画片段中，且 Hurtbox 必须严格仅在各子攻击的 ACTIVE 区间内开启。",
+    "【明确玩家侧机动基准与三大体验预期指标】建立统一量化基准：玩家基础移速 V_walk、闪避距离与无敌帧（iframe）、人类反应时间缓冲 T_react = 0.3s（0.25~0.35s）、复合子攻击结算最小错峰间隔 Δt_stagger >= 0.6s、收招反打回报窗口 T_punish ∈ [0.8s, 1.5s]、转阶段无目标盲等上限 T_blind_wait_max <= 3.0s、击杀瞬间清场延迟 0.0s、脱战与 BGM 释放上限 <= 0.1s、战利品可交互等待窗口 [0.5s, 1.2s]、出口或宝箱解锁上限 <= 1.5s。",
+    "【复合/并发技能时空错峰与确定性安全走廊】对复合技能（如“落石+横扫”）执行硬约束：禁止多个高覆盖子攻击在同一帧同时进入 ACTIVE；若同时开启地面预警，各子攻击进入 ACTIVE 的结算时刻必须满足 T_active_start(phase_2) - T_active_start(phase_1) >= 0.6s；多发场地投射物必须使用确定性发射点阵列或固定角度偏移（EmissionOffsets / RotationAngles），严禁使用纯随机散布封死扇形边缘逃生通道。",
+    "【避让路线物理可达性公式校验】对每一拍攻击执行可达性不等式验算：在任意预警开始时刻，从玩家最劣势受迫位置到最近安全区的距离 D_safe，必须满足 D_safe <= V_walk * (T_windup - T_react)（其中 T_react = 0.3s）；若不满足，必须在数据表中延长 T_windup、拉大子攻击触发延迟（TriggerDelay / FlyDuration）或缩小扇形角度 ARC，绝不允许交付视觉上敞开但按基础移速物理不可达的假安全区。",
+    "【预警承诺帧朝向冻结与确定性选招过滤】在 WINDUP 预警承诺帧立即冻结攻击朝向（禁止蓄力全程 100% 旋转追踪玩家），并按固定顺序执行选招器过滤：剔除已连续释放两次的招式（Repeat Ban）-> 剔除射程或角度不包含玩家的招式 -> 从剩余候选中选择或执行短走位调整；每次出招记录招式 ID、开始时间、ACTIVE 窗口与安全时间余量日志。",
+    "【战中反打正反馈与转阶段等待心理学管控】遵循操作回报心理学与 Maister 等待原则（不确定、无解释、无事可做的等待最漫长）：(a) 玩家付出高注意力躲开复合技后，必须通过技能后摇与行为树攻击间隔稳定兑现 T_recovery + T_bt_attack_interval ∈ [0.8s, 1.5s] 的确定性反打输出窗口，禁止零后摇无缝连招剥夺操作感；(b) Boss 飞天/钻地/转阶段无敌期间，必须提供地面落点轨迹预告或可清理/交互的副目标，纯无目标盲等时长严禁超过 3.0s。",
+    "【峰值-终值定律（Peak-End Rule）战后等待时间收束】让击败 Boss 的高峰时刻（Peak）立刻衔接干净利落的终局收尾（End）：(a) t = 0.0s（致死命中帧 T_fatal_hit）：立即销毁或失效 Boss 所有在途投射物、落石与地面延迟预警，确保 RemainingHazardDamage(t > T_fatal_hit) == 0，严禁死后余波炸死玩家；(b) t <= 0.1s：清除仇恨、隐藏 Boss 血条并广播脱战与音乐收敛（TriggerEliteBattle(false) / BossDisengaged / BossDefeated）；(c) t ∈ [0.5s, 1.2s]：完成战利品安全点掉落与可拾取激活（T_loot_ready - T_fatal_hit <= 1.2s），并在 <= 1.5s 内解锁出口或宝箱，用“走向战利品拾取”的明确动线占满结算动画时间，消除战后空窗期的焦虑与枯燥。",
+    "【纯预警可达性实测与打击感分层后置】先使用仅凭预警信号触发移动/闪避的测试 Bot 或人工测试每一单招、复合连段及击杀收尾，验证仅靠预警即可无伤走通避让路线且死后零残留伤害；只有在可读性与可达性全部验证通过后，才允许叠加命中顿帧（Hit-Stop）、受击抖动、碰撞火花、带眩晕减弱（Reduce-Motion）开关的镜头震屏与同步命中音效。",
+    "Safety boundary: 普通小怪寻路与非 Boss 常规战斗不适用本高规格复合排期能力（Keep ordinary enemy steering and non-boss combat outside this capability）。",
+    "Safety boundary: 在预警可读性与逃生路线可达性验证通过前，严禁提前堆叠受击特效、顿帧与镜头震屏表现。",
+    "Safety boundary: 伤害判定体积（Hurtbox）必须且只能在每个子攻击的 ACTIVE 区间内开启，WINDUP 预警期与 RECOVERY 后摇期严禁造成伤害。",
+    "Safety boundary: 严禁生成视觉上存在安全区、但按玩家基础移速在 WINDUP 结束前物理不可达（D_safe > V_walk * (T_windup - 0.3s)）的假安全区组合技，严禁多个高覆盖子攻击同帧结算（错峰必须 >= 0.6s）。",
+    "Safety boundary: 严禁在 Boss 致死后保留任何生效中的残余伤害判定，严禁让玩家在转阶段盲等超过 3.0s 或在击败 Boss 后盲等超过 1.2s 才获得脱战确认与可拾取战利品。"
+  ],
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const r=k.reference_example;const b=r.player_baseline;const s=r.sub_attacks;const reach=s.every(x=>x.worst_case_escape_distance_cm<=b.V_walk_cm_per_s*(x.windup_s-b.T_react_s));const stagger=s.slice(1).every((x,i)=>x.active_window_s[0]-s[i].active_window_s[0]>=0.6);const fixed=s.every(x=>x.randomize_spawn_in_target_area!==true);const p=r.punish_window;const w=p.recovery_s+p.bt_attack_interval_s;const punish=w>=0.8&&w<=1.5;const c=r.post_combat;const post=c.hazards_alive_after_fatal_hit===0&&c.disengage_s-c.fatal_hit_s<=0.1&&c.loot_ready_s-c.fatal_hit_s<=1.2;const blind=r.phase_transition.max_blind_wait_s<=3;process.exit(s.length>1&&reach&&stagger&&fixed&&punish&&post&&blind?0:1)\""
+  ],
+  "constraints": {
+    "max_files": 5,
+    "forbidden_paths": [
+      ".git",
+      ".env",
+      "credentials",
+      "secrets",
+      "node_modules"
+    ]
+  },
+  "preconditions": [
+    "任务要设计或实现 Boss 的技能与攻击模组，玩家主要靠走位或闪避躲避攻击",
+    "能拿到或可以设定玩家移速与闪避参数；没给时先取默认值并在调试面板里暴露",
+    "skill:git+https://github.com/Mike-7777777/gene-skills@d77b3f12a99d042e3d05b8a57f9ff45a1ba68834#sha256=862c89137b5a0db96579cddd6fabc8c12bdc4f933f2fcc155b51e5eeeaef56e2&path=skills/boss-compound-attack-readable-evasion"
+  ],
+  "signals_match": [
+    "Boss战演示",
+    "Boss技能设计",
+    "Boss攻击模组",
+    "Boss组合技",
+    "Boss转阶段技能",
+    "Boss出招预警",
+    "躲避Boss技能",
+    "Boss反打窗口",
+    "Boss战结束掉落",
+    "2D俯视角Boss战",
+    "设计Boss攻击模组",
+    "Boss技能组合",
+    "落石与横扫并发",
+    "Boss预警与安全区设计",
+    "Boss战玩家体验与战后结算等待",
+    "boss fight dodge and punish window"
+  ],
+  "schema_version": "1.13.0",
+  "acceptance_checks": [
+    "Evasion Reachability Check：对所有单招与复合子阶段验算 D_safe <= V_walk * (T_windup - T_react)（T_react = 0.3s），且 WINDUP 承诺帧后朝向锁定不再追踪。",
+    "Compound Stagger & Safe Corridor Check：并发/复合子攻击满足 T_active_start(phase_2) - T_active_start(phase_1) >= 0.6s，场地投射物采用确定性偏移阵列，无随机散布封死逃生通道。",
+    "Punish Window & Mid-Fight Wait Check：每轮复合攻击收招后满足 T_recovery + T_bt_attack_interval ∈ [0.8s, 1.5s]；不可选中转阶段无目标盲等时间 <= 3.0s。",
+    "Post-Combat Peak-End Check：致死帧后 잔余伤害 RemainingHazardDamage(t > T_fatal_hit) == 0，脱战广播延迟 <= 0.1s，战利品可拾取延迟 T_loot_ready - T_fatal_hit ∈ [0.5s, 1.2s]，出口/宝箱解锁 <= 1.5s。"
+  ]
+}

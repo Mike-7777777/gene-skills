@@ -1,0 +1,70 @@
+{
+  "id": "gene_magiscapes__narrative_branching__consequence_propagation_and_counterfactual_diff",
+  "type": "Gene",
+  "domain": "game_dev",
+  "summary": "做带剧情分支抉择的游戏或可试玩原型（例如电力只够给防洪泵或升降桥二选一）时，让每个选项改写互斥的世界状态，并在后续关卡同时改变可通行区域、在场 NPC/可交互物和可获取物品，最后用平行宇宙对比测试证明两个分支的下游结果严格不同、决策锁定后不能双吃奖励。Prevent cosmetic-only dialogue choices in branching games by isolating a headless world-state machine and enforcing a three-round counterfactual gate: (R1) validate that each branch option mutates mutually exclusive world flags and trade-offs, (R2) bind downstream scene topology, interactable entities, and resource pools to those flags, and (R3) run parallel-universe simulations in hidden tests to prove that choosing Option A vs Option B produces strictly different reachable areas, available NPCs/resources, and ending states.",
+  "category": "optimize",
+  "metadata": {
+    "tags": [
+      "game-design",
+      "narrative-design",
+      "branching-story",
+      "player-choice",
+      "world-state",
+      "playable-prototype"
+    ]
+  },
+  "strategy": [
+    "【阶段一：隔离无头分支状态机核心（BRANCH_CORE）】将决策节点（decision nodes）、世界状态标记（world flags）、下游场景实体解析器（scene entity resolvers）与玩法交互动作封装在零 DOM / Canvas 耦合的无头核心模块 `/* @region BRANCH_CORE */ ... /* @endregion BRANCH_CORE */` 中，并暴露 `BranchCore.selfTest()` 自检入口。强制代码锚点：`BRANCH_CORE`、`validateBranchGraph`、`resolveSceneState`、`BranchRuntime`。",
+    "【阶段二：建模互斥取舍契约（Mutually Exclusive Trade-off Contract）】将每个关键抉择建模为具备明确正负代价的互斥状态变更契约：每个选项必须显式声明正向与负向 `world_mutations`（例如：`power_pump` -> `{warehouse_saved: true, caravan_crossed: false}`；`power_bridge` -> `{warehouse_saved: false, caravan_crossed: true}`），严禁仅变更对话文本而不修改世界状态。强制代码锚点：`world_mutations`、`E_COSMETIC_CHOICE`、`E_DEAD_FLAG`。",
+    "【阶段三：执行第一轮门禁 R1（契约与后果图静态校验 Contract & Consequence Graph Validation）】在隐藏测试与 `validateBranchGraph` 中强制校验：(a) 每个决策节点至少包含 >= 2 个可选项；(b) 各选项的 `world_mutations` 非空且彼此严格互斥/不相等；(c) 每一个被写入的 world flag 必须至少被下游一个场景实体或目标条件读取（零死标记，违者抛出 `E_DEAD_FLAG`）；(d) 任何未产生下游引用或仅改变文案的伪选择直接抛出 `E_COSMETIC_CHOICE`。",
+    "【阶段四：执行第二轮门禁 R2（下游场景三维机制具象化 Scene Materialization & Binding）】通过 `resolveSceneState(worldFlags)` 根据世界标记解析下游场景，强制每个分支在后续关卡中同时具象化到至少 3 个机械维度：(a) 空间拓扑与可通行性状态（如：被淹没的仓库封锁不可入 vs 升降吊桥降下连通新区域）；(b) 活跃可交互物与 NPC 集合（如：军需官抢救物资箱 vs 商队行商摊位）；(c) 可获取的物品池与任务目标池。从而根除“选不同按钮说不同台词，但下一关地图、交互物与目标完全一样”的伪分支反模式（`choice_only_changes_dialogue_without_downstream_scene_impact`）。",
+    "【阶段五：执行第三轮门禁 R3（反事实平行宇宙差分与互斥防双吃测试 Counterfactual Parallel-Universe & Order Tolerance Test）】在 `BranchCore.selfTest()` 中从决策前快照分叉（fork）出两个独立无头运行时 Universe A 与 Universe B，分别执行 Option A 与 Option B 并推进至下游场景：(a) 严格不等式断言：断言 Universe A 与 Universe B 的 `worldFlags`、活跃可交互物 ID 列表、可通行区域、可获取物品及结局摘要（ending summary）严格不相等（strict inequality）；(b) 互斥防双吃与代价锁定（防止 `choice_lacks_real_tradeoff_or_allows_double_dipping` 反模式）：一旦提交某一互斥分支，立即在状态机层锁定该决策节点；在 R3 中测试“提交第一选项后再次触发第二选项”以及“强行交互/搜刮已被放弃或损毁的目标（如供电给桥后去摸被淹仓库）”，断言两者均原样返回结构化原子拒绝（atomic rejection）且背包收益为零。",
+    "【阶段六：表现层单向绑定与交付】将 Canvas / UI 渲染层（水位高低、吊桥开合位置、NPC 在场状态、环境氛围提示）直接单向绑定至 `resolveSceneState(runtime.world)` 的输出，确保画面表现与无头分支状态机 100% 同步。",
+    "Safety boundary: Never ship a choice that only swaps dialogue strings while leaving downstream scene entities, passability, and obtainable resources identical (must fail with E_COSMETIC_CHOICE or E_DEAD_FLAG).",
+    "Safety boundary: Once a mutually exclusive decision is committed, lock the decision node and block or atomically reject attempts to trigger the unchosen option or claim the sacrificed branch's exclusive rewards (zero double-dipping).",
+    "Safety boundary: Workspace & file boundary: Keep self-contained single-file deliverable constraint where applicable (max_files: 1) and never touch forbidden paths (.git, .env, credentials, secrets, node_modules)."
+  ],
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const s=k.code_snippet||'';const anchors=['BRANCH_CORE','validateBranchGraph','resolveSceneState','BranchRuntime','E_COSMETIC_CHOICE','E_DEAD_FLAG'].every(x=>s.includes(x));const a=s.indexOf('/* @region BRANCH_CORE */');const b=s.indexOf('/* @endregion BRANCH_CORE */');if(!anchors||a<0||b<a)process.exit(1);const vm=require('vm');const box={Math,JSON,Map,Set,Array,Object,String,Number,Boolean,Error};vm.createContext(box);vm.runInContext(s.slice(a,b),box);const r=box.BranchCore.selfTest();process.exit(r&&r.ok===true?0:1)\""
+  ],
+  "constraints": {
+    "max_files": 5,
+    "forbidden_paths": [
+      ".git",
+      ".env",
+      "credentials",
+      "secrets",
+      "node_modules"
+    ]
+  },
+  "preconditions": [
+    "The request involves a narrative choice, moral/resource dilemma, or branching switch that is expected to alter subsequent gameplay or scenes (predicate: matches_any(branching_narrative_game, meaningful_player_choice, choice_changes_level_state, mutually_exclusive_power_allocation, story_decision_consequence)).",
+    "Use when: Player decisions must produce observable, mutually exclusive consequences in later scenes (e.g., save warehouse vs let caravan cross).",
+    "Do not use when: The game is purely linear with no player decisions.",
+    "skill:git+https://github.com/Mike-7777777/gene-skills@d77b3f12a99d042e3d05b8a57f9ff45a1ba68834#sha256=fe9d77cbe9edf8e1d0184dabcddc70c03027d5c47e0b544102a8238bb6e50b57&path=skills/narrative-branching-counterfactual-gate"
+  ],
+  "signals_match": [
+    "branching narrative game",
+    "meaningful player choice",
+    "choice changes level state",
+    "mutually exclusive power allocation",
+    "story decision consequence",
+    "剧情分支",
+    "按下不同按钮关卡变化",
+    "选择后果落实到后续场景",
+    "防洪泵或升降桥",
+    "剧情分支选择",
+    "选择影响后续关卡",
+    "互斥抉择",
+    "分支剧情原型",
+    "选择后果落地",
+    "branching story prototype"
+  ],
+  "schema_version": "1.13.0",
+  "acceptance_checks": [
+    "R1 契约与后果图：每个决策节点至少 2 个选项，各选项的 world_mutations 非空且互不相同，每个被写入的 world flag 至少被一个下游场景实体读取（E_COSMETIC_CHOICE / E_DEAD_FLAG）",
+    "R2 场景具象化：resolveSceneState 让每个分支同时改变可通行区域、在场 NPC/可交互物、可获取物品三个维度",
+    "R3 平行宇宙差分：从同一快照分叉的两个运行时在 worldFlags、可交互物、可通行区域、物品与结局上严格不等；决策提交后再选另一项或领取另一分支的专属奖励都被拒绝"
+  ]
+}

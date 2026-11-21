@@ -1,0 +1,78 @@
+{
+  "id": "gene_quest_three_round_hidden_gate_v1",
+  "type": "Gene",
+  "domain": "game_dev",
+  "summary": "做一个可在浏览器完整试玩的 RPG/生存游戏新手委托原型（接委托→采集→搭工作台→制作→交付）时，生成包含采集-制作-交付闭环的任务原型或任务数据时，先将纯状态机与UI/渲染隔离，再在用户不可见的隐藏数据层强制跑通三轮测试门禁（R1后端契约校验与有界修复、R2前端外壳归一与拆段事务导入、R3全排列乱序与前后顺序容错），保证任意合法顺序收敛至同一终态且非法顺序原子拒绝零损耗。Quest prototypes whose gather-craft-deliver loop stays correct under any legal action order and rejects illegal ones atomically.",
+  "category": "innovate",
+  "metadata": {
+    "tags": [
+      "game-design",
+      "quest-design",
+      "quest-system",
+      "state-machine",
+      "rpg",
+      "top-down-2d",
+      "playable-prototype",
+      "data-validation"
+    ]
+  },
+  "strategy": [
+    "剥离隐藏面核心（Isolate Hidden Core）：将任务数据、库存三账与推进状态机封装在纯逻辑模块（零 DOM/Canvas/Engine 依赖），暴露 validateQuest、repairQuest、importQuestPayload、persistQuest 与 QuestRuntime，使测试直接打在用户看不到的隐藏数据与状态机层。Exact anchors: QUEST_CORE | validateQuest | importQuestPayload | QuestRuntime",
+    "建立三账分离与单一推进入口（Three-Ledger & Single-Advance Invariant）：将物品账拆为 Produced（累计产出，只增，供 Composite 判定）、Held（当前持有，可增减，供 Collect 与扣费判定）、Submitted（累计交付，只增，供 Submit 判定）；仅允许单一推进入口修改当前阶段索引，Pending 集合严格限定为当前阶段目标。Exact anchors: produced | submitted | currentSequenceIndex | pending",
+    "第一轮门禁 R1 —— 后端生成校验与有界修复（Backend Contract & Bounded Repair）：对生成的任务执行全量非短路校验（聚合根/阶段/目标ID唯一、引用存在、类型-字段自洽、且强制校验【Submit交付物在前置阶段必有Composite/Collect产出源】）；注入 >=12 类单点变异验证检出率 >=0.95，合法变体误报率 =0；对可修缺陷执行 <=2 轮程序化修复并记入 repairs[]{code,path,action}，不可修结构缺陷严禁静默放行。Exact anchors: E_DELIVERABLE_NO_SOURCE | validateAndRepair | repairs",
+    "第二轮门禁 R2 —— 前端导入归一与落表事务（Frontend Import & Transactional Persistence）：兼容 5 种响应外壳（result.quest_data / quest_data / bare / result / JSON string）；短 ID 幂等补齐 CharacterID_Stage_ 前缀；多阶段共用的 ObjectiveID 自动按阶段拆分为独立副本并移除原孤儿行；单行坏数据局部降级留 warning 不整单丢弃；强制按 Objective -> Sequence -> Quest 外键顺序落表，任一阶段失败整体回滚快照，且导入产物回环通过 R1。Exact anchors: unwrapQuestPayload | I_SPLIT_SHARED | persistQuest | rolledBack",
+    "第三轮门禁 R3 —— 前后顺序容错与乱序收敛（Order Tolerance & Permutation Convergence）：在接单（accept）与每次阶段推进（advance）时自动触发 reconcile('retroactive')，将玩家提前完成的建造/合成立即追补记账而不要求重做；枚举动作多重集（accept/gather/build/craft/deliver）全部唯一排列跑状态机，断言：(a) 所有完成排列的净耗材、产出、交付、单次奖励 100% 守恒且无负库存；(b) 非法顺序（未建台先削板、材料不足、未接单先交付）100% 先整单校验后扣减，失败时状态快照零副作用；(c) 同一动作幂等连击与每步 serialize->restore 读档恢复终态一致。Exact anchors: reconcile('retroactive') | permutationsOf | serialize | restore",
+    "Safety boundary: 核心三轮门禁必须直接断言纯数据与状态机快照，禁止依赖像素截图、DOM 文本或 sleep 计时器作为通过依据。",
+    "Safety boundary: 所有自动修补与局部降级必须记录结构化 repairs[] 或 warnings[]，禁止静默篡改配表数值或吞掉断链。",
+    "Safety boundary: 顺序容错必须双向成立：合法乱序（如先备料后接单）100% 追补收敛，非法乱序（如缺料制作、未建台合成）100% 原子拒绝不吞资源。"
+  ],
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const st=k.reference_quest.sequences;const ids=st.flatMap(x=>[x.id,...x.objectives.map(o=>o.id)]);const unique=new Set(ids).size===ids.length;const src=st.every((x,i)=>x.objectives.filter(o=>o.type==='Submit').every(o=>st.slice(0,i).some(y=>y.objectives.some(p=>(p.type==='Composite'||p.type==='Collect')&&p.item===o.item))));const got={};const used={};st.forEach(x=>x.objectives.forEach(o=>{if(o.type==='Collect')got[o.item]=(got[o.item]||0)+o.count;Object.entries(o.cost||{}).forEach(([m,n])=>{used[m]=(used[m]||0)+n})}));const conserve=Object.entries(used).every(([m,n])=>(got[m]||0)>=n);const r=k.atomic_rejection_example;const atomic=r.accepted===false&&JSON.stringify(r.state_before)===JSON.stringify(r.state_after);process.exit(unique&&src&&conserve&&atomic?0:1)\""
+  ],
+  "constraints": {
+    "max_files": 5,
+    "forbidden_paths": [
+      ".git",
+      ".env",
+      "credentials",
+      "secrets",
+      "node_modules"
+    ]
+  },
+  "preconditions": [
+    "任务包含多阶段推进（Sequence/Stage）及跨阶段依赖（如采集 -> 建造/合成 -> 交付）",
+    "玩家操作可能发生乱序（先备齐材料再接委托、提前制作交付物、重复交互、材料不足强行点击）",
+    "核心逻辑层可与渲染/UI层剥离并支持无头（Headless）同步调用",
+    "skill:git+https://github.com/Mike-7777777/gene-skills@d77b3f12a99d042e3d05b8a57f9ff45a1ba68834#sha256=314c0786d698c0388cc9de4193aa55ffa46a7d618a8e0e52ea60a973bfedd832&path=skills/quest-prototype-three-round-gate"
+  ],
+  "signals_match": [
+    "quest_generation",
+    "task_prototype",
+    "rpg_quest_loop",
+    "gather_craft_deliver",
+    "out_of_order_tolerance",
+    "retroactive_objective_completion",
+    "quest_import_validation",
+    "新手任务原型",
+    "采集到交付",
+    "任务生成校验",
+    "任务生成导入",
+    "顺序容错",
+    "委托任务原型",
+    "新手委托",
+    "采集制作交付任务",
+    "任务链设计",
+    "任务顺序容错",
+    "survival RPG starter quest",
+    "gather craft deliver quest"
+  ],
+  "schema_version": "1.13.0",
+  "acceptance_checks": [
+    "INV_R1_DELIVERABLE_SOURCE: 任何 Submit(ItemID=X) 目标所在阶段之前，必须存在产出或收集 ItemID=X 的前置目标",
+    "INV_R2_IDEMPOTENT_PREFIX_AND_SPLIT: 短ID补前缀对二次导入幂等；跨阶段共享的 ObjectiveID 必须拆分为 Stage 专属副本且清除原未引用源行",
+    "INV_R2_FK_TRANSACTIONAL_SAVE: 落表严格遵循 Objective -> Sequence -> Quest 外键拓扑，中途任一校验失败必须回滚至导入前快照",
+    "INV_R3_THREE_LEDGER_SEPARATION: Composite 读 Produced 账、Collect 读 Held 账、Submit 读 Submitted 账，三账互不冲抵",
+    "INV_R3_RETROACTIVE_RECONCILE: Pending 仅装载当前阶段目标；接单与推进阶段时立即扫描世界状态，已满足条件的目标自动标记 retroactive 完成并级联推进",
+    "INV_R3_ATOMIC_REJECTION: 前置条件或材料不足时必须在修改任何库存/计数前整单拒绝，失败前后状态快照完全一致"
+  ]
+}

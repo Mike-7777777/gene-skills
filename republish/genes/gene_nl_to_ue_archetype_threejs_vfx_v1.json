@@ -1,0 +1,68 @@
+{
+  "id": "gene_nl_to_ue_archetype_threejs_vfx_v1",
+  "type": "Gene",
+  "domain": "game_dev",
+  "summary": "用 Three.js 在网页里做游戏技能特效（刀光、陨石、冲击波、法阵预警等，单个网页即可预览和拖动时间轴）：将一句自然语言特效描述（如冰霜刀光风暴、熔岩陨石砸地）自动解析为对标Unreal Engine Niagara的7大正交发射器图层（地面法阵预警、弧面刀光、3D网格UV流动、飞弹光束、GPU Instanced爆发碎块、环绕氛围场、三段包络屏幕后处理），并通过纯时间函数 evaluate(t) 在 Three.js 中实现支持任意拖帧预览的高表现力网页渲染。Layered, time-driven Three.js skill VFX that can be paused, rewound and scrubbed frame by frame.",
+  "category": "innovate",
+  "metadata": {
+    "tags": [
+      "vfx",
+      "threejs",
+      "webgl",
+      "game-effects",
+      "particles",
+      "shader",
+      "timeline-preview"
+    ]
+  },
+  "strategy": [
+    "【问题模式对齐：拒绝单一粒子团与不可逆帧累加】针对“用网页渲染技能特效”任务，严禁出现劣化实现（仅生成单一 `THREE.Points` 随机圆点球体，缺乏预警、主体几何、迸射碎块与后处理层次；使用不可逆的每帧 `deltaTime` 累加导致切后台或拖动进度条时粒子炸屏；未校正宽高比与镜像 Pivot 导致刀光错位，或全屏 Additive 闪白遮挡 DOM 交互）；必须实现目标方案：先经自然语言分析器提取三色阶、三段时间轴与动作语义，自动组合至少 4 个正交发射器图层，且所有图层由纯时间函数 `evaluateVFXAtTime(t)` 驱动，原生支持随时暂停、倒放与逐帧拖动验收。",
+    "【阶段一：自然语言三步解析管线（NL Analysis Pipeline）】实现 `parseNLToVFXSpec(promptText)` 解析器：(a) 提取元素主题色板（Core 主色 / Secondary 次色 / Glow 高光三色阶：火/熔岩/陨石/炎 -> `#ff4500`+`#ffae00`+`#fff3b0`；冰/寒霜 -> `#38bdf8`+`#6366f1`+`#e0f2fe`；雷/电/赛博/激光 -> `#ec4899`+`#06b6d4`+`#f5d0fe`；毒/菇/蚀/暗影 -> `#22c55e`+`#a855f7`+`#bbf7d0`）；(b) 提取三段式时间轴：正则匹配秒数提取预警时长 `windup = clamp(sec, 0.3, 2.0)`（默认 `0.9s`）、爆发时刻 `activeTime = windup`、消散时长 `1.5s`（总时长 `totalDuration = windup + 1.5`）；(c) 提取动作形态标志（`hasSlash: /刀|剑|斩|横扫/`、`hasVortex: /龙卷|风暴|柱|激光|陨石|天降/`、`debrisCount: /大量|剧烈|重/ ? 48 : 32`）。",
+    "【阶段二：对标 UE Niagara 7 大正交发射器分类学组装图层栈】禁止只生成单一粒子层，每次生成必须从以下 7 大正交原型中匹配组合至少 4 个独立图层（必含：1 个地面预警层 + 1~2 个主体网格/刀光层 + 1 个 Instanced 迸射碎块层 + 1 个后处理包络层）：(a) `1_SlashRibbonArc`（近战挥砍弧面/镜像刀光/冲刺流光）：`THREE.RingGeometry` 或弯曲 `PlaneGeometry` + `ShaderMaterial`（UV 头尾 `smoothstep` 溶解 + Pivot 镜像翻转）；(b) `2_MeshUVPanning`（龙卷风柱/贯穿能量柱/护盾半球扩张/陨石火核）：开口 `THREE.CylinderGeometry` 或 `SphereGeometry` + `DoubleSide Additive ShaderMaterial`（螺旋 UV 滚动 + 顶点扭曲 Twist + 菲涅尔边缘光 Fresnel Rim）；(c) `3_GroundIndicatorDecal`（前摇地面缩圈预警/旋转符文法阵/砸地裂纹）：水平 `THREE.PlaneGeometry`（`rotation.x = -Math.PI/2`）+ SDF 圆环/符文 Shader（在 WINDUP 期间 `uProgress` 从 `0 -> 1` 填充）；(d) `4_ProjectileAndLaserBeam`（追踪飞弹/折线闪电链/锁定激光束）：核心网格 + 带高频顶点噪声抖动的 `TubeGeometry` 或 `LineSegments`；(e) `5_HitBurstAndInstancedDebris`（命中十字闪光/受击火花迸射/岩石冰晶物理飞溅）：单次 DrawCall 的 `THREE.InstancedMesh`（确定性重力抛物线 + 地面反弹）+ 速度拉伸 `Points` / SubUV 序列帧；(f) `6_AmbientAuraAndBubble`（持续 Buff 环绕/天气场/状态气泡）：带 GPU 空间取模包裹 `mod(pos + vel * uTime, boxSize)` 的 `THREE.Points`；(g) `7_PostProcessEnvelope`（爆发帧全屏辉光跃升/径向热浪冲击畸变/衰减震屏）：`EffectComposer` + `UnrealBloomPass` + 由包络函数驱动的相机震屏与径向畸变 `ShaderPass`。",
+    "【阶段三：实现纯时间确定性求值函数 evaluateVFXAtTime(t) 与三段包络 evaluateEnvelope】所有子发射器的位置、旋转、缩放、实例矩阵与材质 Uniform 必须写成全局播放时间 `t` 及相对爆发年龄 `age = t - activeTime` 的纯函数（例如碎块轨迹 `pos(age) = v0 * age + 0.5 * g * age^2` 并对 `y < 0` 做确定性弹性反射），严禁使用 `pos += vel * dt`；所有爆发光柱、Bloom 强度与镜头震动统一通过三段式包络函数求值：`function evaluateEnvelope(age, enterTime, holdTime, exitTime) { if (age <= 0) return 0.0; if (enterTime > 0 && age < enterTime) return age / enterTime; const holdEnd = enterTime + holdTime; if (age < holdEnd) return 1.0; const total = holdEnd + exitTime; if (exitTime > 0 && age < total) return 1.0 - (age - holdEnd) / exitTime; return 0.0; }`，确保 `t < 0` 或 `t >= totalDuration` 时权重精确归零。",
+    "【阶段四：几何 UV 溶解、镜像 Pivot 与防奇点数学规范】刀光与丝带 Shader 沿 UV 主轴推进头部与尾部 `smoothstep` 羽化溶解；当需要正反手挥砍镜像时，必须围绕圆弧视觉中心 `2.0 * MirrorPivotV - V` 翻转 UV，严禁简单使用 `1.0 - V` 导致刀光首尾跳变错位；地面圆形预警与全屏径向扭曲必须校正视口宽高比（`aspect = width / height`）并将归一化半径下界限制为 `max(r, 0.001)` 防止中心除零奇点。",
+    "【阶段五：DOM/Canvas 分层、DrawCall 控制与无障碍护栏】UI 控制面板与时间轴滑块保留在原生 DOM 层，全屏特效 Canvas 叠加层强制设置 `pointer-events: none`；限制渲染像素比 `renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))`；全页面共用单一 `requestAnimationFrame` 循环并在 `document.hidden` 时挂起；检测 `window.matchMedia('(prefers-reduced-motion: reduce)')` 或提供减弱震屏开关，开启时将相机震动与全屏径向畸变幅度置 0。",
+    "Safety boundary: 严禁将复杂技能特效提示词退化为单一粒子团（THREE.Points 球体），每次生成必须按 7 大发射器分类拆解为 >= 4 个职责正交的子发射器图层。",
+    "Safety boundary: 严禁依赖不可逆的每帧状态累加（pos += vel * dt）驱动可预览特效，所有几何变换、InstancedMesh 矩阵与 Shader Uniform 必须完全由确定性时间函数 evaluateVFXAtTime(t) 求值。",
+    "Safety boundary: 严禁让后处理 Bloom 辉光或径向畸变在特效未触发或结束后（age <= 0 或 age >= enter + hold + exit）残留非零权重污染基底画面曝光，且全屏特效 Canvas 严禁阻挡底层 DOM 指针交互（必须设置 pointer-events: none）。"
+  ],
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const p=k.reference_plan;const L=p.layers;const roles=new Set(L.map(x=>x.role));const stack=L.length>=4&&['ground_warning','main_body','debris','post_process'].every(r=>roles.has(r))&&L.filter(x=>x.role==='debris').every(x=>x.instanced===true);const timeDriven=L.every(x=>x.driver==='t');const e=p.envelope;const total=e.enter+e.hold+e.exit;const gain=a=>a<0||a>=total?0:a<e.enter?a/e.enter:a<e.enter+e.hold?1:1-(a-e.enter-e.hold)/e.exit;const neutral=gain(-0.01)===0&&gain(total)===0&&gain(total+1)===0&&gain(e.enter+e.hold/2)===1;const tl=p.timeline;const timeline=tl.windup_s>0&&tl.active_at_s===tl.windup_s&&tl.recovery_s>0;const perf=p.pixel_ratio_cap<=2&&p.reduced_motion_shake===0&&p.overlay_pointer_events==='none';process.exit(stack&&timeDriven&&neutral&&timeline&&perf?0:1)\""
+  ],
+  "constraints": {
+    "max_files": 5,
+    "forbidden_paths": [
+      ".git",
+      ".env",
+      "credentials",
+      "secrets",
+      "node_modules"
+    ]
+  },
+  "preconditions": [
+    "任务要在网页（Three.js/WebGL）里实现或预览游戏技能特效",
+    "需要能暂停、倒放或拖动时间轴检查特效时，所有图层都要由播放时间 t 驱动",
+    "skill:git+https://github.com/Mike-7777777/gene-skills@d77b3f12a99d042e3d05b8a57f9ff45a1ba68834#sha256=1396608c6f4e33f973219dad13b26db0bf79dd364dc355ebaccb627ec2fd522d&path=skills/threejs-deterministic-vfx-composer"
+  ],
+  "signals_match": [
+    "生成网页3D特效",
+    "Three.js游戏技能特效渲染",
+    "自然语言转VFX粒子与刀光",
+    "UE风格Web特效预览器",
+    "Three.js slash trail shockwave and particle VFX",
+    "技能特效",
+    "网页技能特效",
+    "Three.js特效",
+    "刀光特效",
+    "冲击波和碎石特效",
+    "特效时间轴拖动预览",
+    "web skill vfx preview"
+  ],
+  "schema_version": "1.13.0",
+  "acceptance_checks": [
+    "Multi-Emitter Orthogonality Check：解析任意技能特效描述后，激活的正交渲染图层数 >= 4（必含地面预警层 + 主体网格/刀光层 + InstancedMesh 物理碎块/火花层 + 后处理包络层）。",
+    "Timeline Scrubbing Determinism Check：按任意顺序调用 evaluateVFXAtTime(t1) -> evaluateVFXAtTime(t2) -> evaluateVFXAtTime(t1)（含反向倒拖回 t = 0），所有网格变换、InstancedMesh 矩阵与材质 Uniform 100% 确定性复现，无历史帧残留。",
+    "Neutrality at Rest Check：当 t <= 0 或 t >= totalDuration 时，evaluateEnvelope 返回精确 0.0，相机震屏偏移与后处理畸变完全归零，基底场景曝光与色彩零偏移。",
+    "Performance & Accessibility Gate Check：devicePixelRatio <= 2.0，迸射碎块采用单次 DrawCall 的 THREE.InstancedMesh，开启 prefers-reduced-motion 时相机震屏幅度精确降为 0。"
+  ]
+}

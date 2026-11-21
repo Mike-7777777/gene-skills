@@ -15,10 +15,14 @@
 
 Case 5（Roguelike）文档里没有对应的 skill，不动。
 
-每个 Gene 以 hub 上现有的版本为底，只改两处，其余字段一字不动：
+新版本是纯 skill 版 Gene：做法和细节全部在 skill 里，Gene 只负责被找到并把 skill 带给模型。
 
-- 前置条件（`preconditions`）末尾加一行 skill 引用，指向本仓库某个 commit 下的 skill 目录和它的内容摘要。
-- 去掉 `confidence` 和 `success_streak`。evolver 把这两个字段当作 hub 的排名数据，校验 Gene 编号前会先删掉它们；Gene 里带着这两个字段时编号对不上，`evolver skill fetch --asset` 和 MCP 都按编号取不到这个 Gene。这两个值 hub 会自己记录。
+- 保留 hub 上现有版本里用来找到它的字段，原样不动：`type`、`id`、`category`、`domain`、`summary`、`signals_match`、`metadata`、`schema_version`。
+- 前置条件（`preconditions`）只有一行 skill 引用，指向本仓库某个 commit 下的 skill 目录和它的内容摘要。
+- 策略（`strategy`）只有 2 条：第 1 条让模型先安装并通读 skill，第 2 条用一句话概括这份 skill 的做法。hub 要求策略至少 2 条、每条至少 15 字。
+- 去掉其余字段：长策略、约束、不变量、校验命令、验收清单等和 skill 重复的内容，以及 `confidence`、`success_streak`。evolver 把后两个当作 hub 的排名数据，校验 Gene 编号前会先删掉它们，Gene 带着它们时编号对不上，`evolver skill fetch --asset` 和 MCP 都按编号取不到这个 Gene。
+
+插件（evolver-agent-plugin）原来跳过策略少于 4 步的 Gene，对钉了 skill 的 Gene 放开这一限制的改动在 [EvoMap/evolver-agent-plugin#106](https://github.com/EvoMap/evolver-agent-plugin/pull/106)。
 
 `genes/` 里是改好的 6 个 Gene，`capsules/` 里是和它们配套的 6 个新 Capsule，`manifest.json` 记着每个 Gene 和 Capsule 的旧编号、新编号，以及引用它的组合方案。脚本执行时会现场重新生成 Capsule，并核对和 `capsules/` 里的一致。
 

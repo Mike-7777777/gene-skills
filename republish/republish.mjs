@@ -117,11 +117,11 @@ for (const entry of manifest.genes) {
   }
   const oldGene = recordIn(await http.call('POST', '/a2a/fetch', envelope('fetch', { asset_ids: [entry.old_asset_id] })), entry.old_asset_id);
   if (!newPublic && oldGene) {
-    // The new version is the old one with the skill pin added and Gene.confidence / Gene.success_streak left out:
-    // Evolver drops those two as Hub ranking metadata before it verifies a Gene, so with them it cannot fetch it.
-    const { confidence, success_streak, ...original } = published(oldGene);
-    const expected = { ...original, preconditions: [...original.preconditions, ...gene.preconditions.slice(original.preconditions.length)] };
-    if (wire.computeAssetId(expected) !== entry.new_asset_id) fail(`hub 上的旧版本和准备新版本时用的不一样（有人改过），新版本不能直接替换它。`, '把这个情况告诉准备文件的人重新生成。');
+    // The new version is a pure-skill Gene: it keeps what the Hub finds the old one by (id, summary, signals and
+    // tags) and replaces the rest with the skill pin and a two-step strategy that points at the skill.
+    const kept = Object.keys(gene).filter((key) => key !== 'preconditions' && key !== 'strategy');
+    const changed = kept.filter((key) => JSON.stringify(oldGene[key]) !== JSON.stringify(gene[key]));
+    if (changed.length > 0) fail(`hub 上的旧版本和准备新版本时用的不一样（${changed.join('、')} 被改过），新版本不能直接替换它。`, '把这个情况告诉准备文件的人重新生成。');
   }
   const capsuleId = oldPublic?.bundle_capsule?.asset_id ?? null;
   let capsule = null;

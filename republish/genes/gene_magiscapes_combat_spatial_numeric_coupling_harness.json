@@ -1,9 +1,28 @@
 {
-  "id": "gene_magiscapes_combat_spatial_numeric_coupling_harness",
   "type": "Gene",
+  "id": "gene_magiscapes_combat_spatial_numeric_coupling_harness",
+  "category": "optimize",
   "domain": "game_dev",
   "summary": "做 2D 俯视角动作 RPG 的可试玩战斗副本或地下城关卡（引擎场景或单文件 index.html 原型均可）时，按怪物数值定空间：入口前厅距首个刷怪点 ≥ 索敌半径+2 格，相邻波次间距 > 后一波索敌半径+3 格，交战走廊净宽 ≥ max(2, 技能范围+1) 格，至少留一条风筝环路，宝箱放在核心怪身后并与总威胁点数匹配；没有怪物配置表时先在代码里定义同字段的常量表。Playable top-down ARPG combat dungeon, engine scene or single-file HTML/canvas prototype, whose entrance, wave spacing, corridor width, kiting loop and loot follow monster aggro radius, skill range and threat budget.",
-  "category": "optimize",
+  "signals_match": [
+    "可试玩战斗副本",
+    "地下城关卡设计",
+    "2D俯视角动作RPG副本",
+    "新手副本难度",
+    "怪物索敌范围与房间大小",
+    "精英房和Boss房",
+    "波次刷怪间距",
+    "single-file HTML dungeon prototype",
+    "top-down ARPG combat dungeon",
+    "encounter difficulty and arena size"
+  ],
+  "preconditions": [
+    "skill:git+https://github.com/Mike-7777777/gene-skills@d77b3f12a99d042e3d05b8a57f9ff45a1ba68834#sha256=7b200dc724a35a2c54ce200bf77f2f8efb516f808c097780c152ddb85c9a05b0&path=skills/combat-level-spatial-numeric-coupling"
+  ],
+  "strategy": [
+    "先按前置条件安装并通读 skill combat-level-spatial-numeric-coupling，具体规则、接口和检查以它为准。",
+    "把怪物属性和技能范围换算成入口缓冲、波次间距、闪避走廊、风筝回路和战利品期望等空间约束，生成副本并带上数值调试面板。"
+  ],
   "metadata": {
     "tags": [
       "game-design",
@@ -17,54 +36,5 @@
       "playable-prototype"
     ]
   },
-  "strategy": [
-    "【阶段一：查表与空间单位换算（Unit Conversion & Monster Parameter Extraction）】读取目标生态与区域 Importance（0..4），以网格基准 G = 128 UE 单位将 DT_MonsterData、MonsterAttrCurveTable 与 DT_MonsterSkillData 中的原始数值换算为离散网格参数：(a) 索敌半径格数 R_aggro = ceil(PatrolRadius / 128)；(b) 攻击射程格数 R_atk = ceil(AttackRange / 128)；(c) 移速格/秒 V_tile = MoveSpeed / 128；(d) 技能最大几何判定格数 W_skill = ceil(max(Skill.Radius, Skill.Width) / 128)；(e) 碰撞占地格宽 W_col = ceil(CollisionWidth / 128)。",
-    "【阶段二：怪物威胁点数（TP）核算與兵种配比】按等级 lv 从 MonsterAttrCurveTable 计算单体有效生命值与有效秒伤：(a) 有效生命 EHP(m, lv) = MaxHealth(m, lv) * (1 + 0.05 * max(PhysDef, MagDef)) * (1 + 0.2 * Stability)；(b) 有效秒伤 EDPS(m, lv) = (max(PhysDmg, MagDmg) * DamageRatio / (AttackInterval + CooldownDuration)) * (1 + 0.15 * max(0, R_atk - 1)) * (1 + 0.3 * SlowChance)；(c) 单体威胁点数 TP(m, lv) = sqrt((EHP(m, lv) / EHP_base) * (EDPS(m, lv) / EDPS_base))（以 Lv1 基础近战普通怪 Normal = 1.0 TP 归一化）。根据目标区域 Importance 的威胁预算上限 TP_budget 确定单波次兵种组合 Wave（近战前排 + <=40% 远程侧翼 + 深处单一 Elite/Boss）。",
-    "【阶段三：按空间容量方程与技能几何反向定场地尺度（Spatial Capacity & Corridor Geometry）】严禁拍脑袋定房间尺寸，必须由驻守波次 Wave 反向推导最小空间下界：(a) 主战区扣除墙体、柱子、水体与静态摆件 Footprint 后的最小净可行走面积 A_combat(Wave) >= 16 + sum_i( K_rank(m_i) * ceil(CollisionWidth_i / 128)^2 * (1 + MoveSpeed_i / 200) )，其中阶位空间系数 K_rank = {Normal: 6, Elite: 18, Boss: 45} 格；(b) 交战走廊最小净宽 W_min = max(2, W_skill + 1)，确保最大技能 AOE 判定区外至少留出 1 整格无障碍闪避通道；(c) 针对 Elite/Boss 或高移速追击怪，主战区必须围绕中心阻挡物或雙通道构建至少 1 条闭合风筝环路（一维同调群 Betti-1 >= 1），环路最小周长 L_loop >= ceil(4 * (MoveSpeed / 128) * (AttackInterval + CooldownDuration)) + 8 格。",
-    "【阶段四：按索敌半径铺设入口前厅与波次防雪崩包络线（Aggro Envelope & Wave Spacing）】(a) 入口安全缓冲（Entrance Staging Clearance）：在入口内侧构建无刷怪缓冲前厅，入口锚点到最近刷怪点 FirstSpawner 的 4-邻域 BFS 最短路距离必须满足 D_BFS(Entrance, FirstSpawner) >= R_aggro(FirstSpawner) + 2（预留 2 格视野反应区，杜绝进门黑屏即被集火）；(b) 波次防连锁间距（Inter-Wave Anti-Avalanche Spacing）：当房间内布置多个刷怪波次（如前哨 Wave_i 与核心精英 Wave_j）时，波次间测地线距离必须满足 D_BFS(Wave_i, Wave_j) > R_aggro(Wave_j) + 3（预留 3 格交战拉扯缓冲，或通过 L 型折角实体墙阻断视线与直线索敌），从数学上杜绝拉动前排时连锁激活深处精英。",
-    "【阶段五：按远程射程与环境机制排布推进掩体与风险博弈（Ranged Cover & Hazard Shortcut）】(a) 远程推进掩体节律：若波次中存在 R_atk > 3 格的远程/施法怪，必须在主推进轴线上每间隔 4~6 格交错布置 1x1 或 2x1 阻挡视线/弹道的掩体柱，且掩体柱两侧与墙体之间保留 >= W_min（至少 2 格）的侧翼包抄净宽；(b) 环境地皮机制耦合：带负面或位移 EffectID 的地皮（如滑行冰面、减速泥沼、熔岩边缘）仅允许铺设在正面最短路径（高风险捷径）或场地外围边缘，主风筝环路必须保留至少 1 条宽度 >= W_min 的正常地面通道。",
-    "【阶段六：按总威胁点数配平战利品 EV 并锁定防偷箱纵深（Threat-to-Reward Economy & Anti-Ninja Lock）】(a) 经济期望配平：汇总据点所有驻守怪物的总威胁点数 TP_total = sum(TP)，读取 DT_ItemDropInfo 并按 Docs/game_economy_numeric_model.md 的 SellingPrice 口径计算宝箱掉落期望价值 EV(Chest)，强制据点总奖励满足 sum(EV(Chest)) in [0.8 * K_gold * TP_total, 1.25 * K_gold * TP_total]；(b) 防偷箱拓扑锁定（Anti-Ninja-Loot Lock）：核心奖励宝箱必须放置在核心驻守区深处，其 BFS 测地线距离必须同时满足 D_BFS(Entrance, Chest) > D_BFS(CoreSpawner, Chest) 且 D_BFS(CoreSpawner, Chest) <= R_aggro(CoreSpawner)，确保玩家不触发或清理核心怪群就无法在索敌圈外无伤偷箱。",
-    "【阶段七：Generator-Evaluator 五维空间-数值耦合闭环验收】每次生成或修改后，启动只读 Evaluator 逐项验算五大维度并加权打分：(D1) 入口防集火缓冲 D_BFS(Entrance, FirstSpawner) >= R_aggro + 2（权重 20%）；(D2) 波次防连锁间距 D_BFS(Wave_i, Wave_j) > R_aggro + 3 且主战区净可行走格数 WalkableCells >= A_combat(Wave)（权重 25%）；(D3) 走廊最小净宽 >= W_min = max(2, W_skill + 1)、风筝环路 Betti-1 >= 1 且周长 >= L_loop、远程掩体间距 4~6 格（权重 25%）；(D4) 威胁预算 TP_total 与宝箱期望价值 EV 落入 [0.8, 1.25] 配平区间，且满足 D_BFS(Entrance, Chest) > D_BFS(CoreSpawner, Chest) 防偷箱不等式（权重 15%）；(D5) .scene.json / .smap 格式合法、Footprint 碰撞零重叠、CanPlaceTileIDs / NoCanPlaceTileIDs 地皮黑白名单零冲突（权重 15%）。若总分 < 8.0 或任一单项 < 6.5（如净面积不足导致 Spatial Overload），Evaluator 必须输出精确到坐标 (x, y) 与差值格数的扩容/移位修正指令驱动 Generator 重算。",
-    "Safety boundary: 严禁脱离 MonsterAttrCurveTable 与 DT_MonsterSkillData 拍脑袋定房间尺寸：主战区净可行走格数小于 A_combat(Wave) 或交战走廊净宽小于 max(2, ceil(MaxSkillAOE/128) + 1) 时，直接判定为空间过载（Spatial Overload，单项 < 6.5 分）。",
-    "Safety boundary: 严禁让关卡入口落入任何怪物的 R_aggro + 2 包络线内，或让前哨波次与深处 Elite/Boss 的索敌包络线发生连锁重叠（间距必须 > R_aggro + 3）。",
-    "Safety boundary: 严禁违背 Docs/game_economy_numeric_model.md 的掉落 EV 口径或允许绕怪偷箱：宝箱 EV 必须与据点总威胁点数 TP_total 闭环匹配，且必须受核心刷怪点 R_aggro 拓扑锁定。"
-  ],
-  "validation": [
-    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const e=k.evaluator;const q=k.k_rank_tiles;const w=e.dimensions.reduce((t,d)=>t+d.weight,0);const rubric=w===100&&e.dimensions.length===5&&e.pass_single<e.pass_total;const ranks=q.Normal<q.Elite&&q.Elite<q.Boss;const wmin=x=>Math.max(2,x+1);const formulas=wmin(0)===2&&wmin(3)===4&&Object.keys(k.formulas).length===5;process.exit(rubric&&ranks&&formulas?0:1)\""
-  ],
-  "constraints": {
-    "max_files": 5,
-    "forbidden_paths": [
-      ".git",
-      ".env",
-      "credentials",
-      "secrets",
-      "node_modules"
-    ]
-  },
-  "preconditions": [
-    "以格子为空间单位换算；有怪物属性与技能配置表（DT_MonsterData、MonsterAttrCurveTable、DT_MonsterSkillData）时从表读取，没有时先在代码里定义一份同字段的常量表",
-    "任务要设计、生成或配平战斗副本、地下城、精英房或 Boss 房，形式可以是引擎场景数据，也可以是单文件浏览器可试玩原型",
-    "skill:git+https://github.com/Mike-7777777/gene-skills@d77b3f12a99d042e3d05b8a57f9ff45a1ba68834#sha256=7b200dc724a35a2c54ce200bf77f2f8efb516f808c097780c152ddb85c9a05b0&path=skills/combat-level-spatial-numeric-coupling"
-  ],
-  "signals_match": [
-    "可试玩战斗副本",
-    "地下城关卡设计",
-    "2D俯视角动作RPG副本",
-    "新手副本难度",
-    "怪物索敌范围与房间大小",
-    "精英房和Boss房",
-    "波次刷怪间距",
-    "single-file HTML dungeon prototype",
-    "top-down ARPG combat dungeon",
-    "encounter difficulty and arena size"
-  ],
-  "schema_version": "1.13.0",
-  "acceptance_checks": [
-    "Entrance & Wave Aggro Check：D_BFS(Entrance, FirstSpawner) >= ceil(PatrolRadius/128) + 2；多波次间距 D_BFS(Wave_i, Wave_j) > ceil(PatrolRadius_j/128) + 3。",
-    "Spatial Capacity Check：主战区扣除障碍物后的净可行走格数 WalkableCells >= 16 + sum_i(K_rank * ceil(CollisionWidth_i/128)^2 * (1 + MoveSpeed_i/200))，无空间过载。",
-    "Skill Dodge & Kiting Check：交战走廊最小净宽 >= max(2, ceil(max(Skill.Radius, Skill.Width)/128) + 1)，风筝环路（Betti-1 >= 1）周长 >= ceil(4 * (MoveSpeed/128) * (AttackInterval + CooldownDuration)) + 8。",
-    "Threat-to-Reward & Anti-Steal Check：TP_total 符合当前区域 Importance 预算，sum(EV(Chest)) 位于 [0.8 * K_gold * TP_total, 1.25 * K_gold * TP_total]，且 D_BFS(Entrance, Chest) > D_BFS(CoreSpawner, Chest) 且 D_BFS(CoreSpawner, Chest) <= R_aggro(CoreSpawner)。",
-    "Engine Schema & Table Check：.scene.json / .smap 结构合法，Footprint 重叠数 = 0，CanPlaceTileIDs / NoCanPlaceTileIDs 冲突数 = 0。"
-  ]
+  "schema_version": "1.13.0"
 }

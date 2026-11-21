@@ -1,74 +1,78 @@
 {
   "node_id": "node_1caa18cad28626cf",
   "skills_repo": "https://github.com/Mike-7777777/gene-skills",
-  "skills_commit": "d77b3f12a99d042e3d05b8a57f9ff45a1ba68834",
+  "skills_commit": "4e2bc345a1bc245116d2a54ab92edb4b81e4ea6b",
   "genes": [
     {
       "id": "gene_quest_three_round_hidden_gate_v1",
       "skill": "quest-prototype-three-round-gate",
       "files": 1,
-      "old_asset_id": "sha256:9d8f3d1d4ff5dd3c7c31381a0217a892c20cfdf36d74d4fb0e09c2fa34ad94ac",
-      "new_asset_id": "sha256:793ea4f68f35c18b674f7f6e96cefb1b7e0752d972d22e15ac4581e18e34da2c",
-      "old_capsule_asset_id": "sha256:9b0e05622703cb6b2cbc4f8535cac66a70f5f05d90df7f0bd3194717a7fdaff9",
-      "new_capsule_asset_id": "sha256:1c36c65b0fb9e72bde39c2dfcd895c38aab175f06e3fc8990c94aa690bd06a28",
+      "old_asset_id": "sha256:d2574a395a9ce554ba5a883461a4445dfd19296decb99f5daab12d93a851e74b",
+      "new_asset_id": "sha256:2da826b68c12dad2081fb6208cf338dd14c5f24f1785409a8d68a8348b4389a2",
+      "old_capsule_asset_id": "sha256:22921c940545ab39f1df254fcaadd08eb261332e4b2ef67fb3ffa859524594fe",
+      "new_capsule_asset_id": "sha256:de96c9891cc0b63242304a6cf8efe1de6d2fafc5400561173053e0701456098e",
       "recipes": [
-        "cmwninv7v0ov96s3hekw257k8"
+        "cmwq00p8i0h0c7s3f9usqcd62"
       ]
     },
     {
       "id": "gene_boss_compound_attack_readable_evasion_v2",
       "skill": "boss-compound-attack-readable-evasion",
       "files": 1,
-      "old_asset_id": "sha256:9654ce804559540d6982fa9c6f531570bd4a70d3d6d22f98ce5a5ff558f484a7",
-      "new_asset_id": "sha256:714cfab8964a705a084ee5002cc4adc81d7b8f33a3c1a0a45cb732d80a8e29f7",
-      "old_capsule_asset_id": "sha256:abf1625c4ce99c173c110a804667fa6c7caf22cd2c6fc68a7828c976a2ed5490",
-      "new_capsule_asset_id": "sha256:6c7a88c7cfbd48b08039b956d7c0de8293cc6776416a72ed808e36c7cbc99088",
+      "old_asset_id": "sha256:fea89d0ce7ddda20142ebf835ed0ee9e19d8c8e7fc566ebcba97a1b4a1aebc4d",
+      "new_asset_id": "sha256:bc8123211f1699c9cc16dc9517fab33401e64f46c3a1313b3324172e73884fd6",
+      "old_capsule_asset_id": "sha256:b367e1a7dc49d5cc322ec20048384663181b22355120062093adf98dbdaf3c2d",
+      "new_capsule_asset_id": "sha256:b2847aa18f24ba2d8c28d6e75e4bd38d15db97bf6d87951c13f85b8069b30a6a",
       "recipes": [
-        "cmwnr0qey05wna63eksm1ni7f"
+        "cmwq00vbo0h3n7s3fwosfhgmy"
       ]
     },
     {
       "id": "gene_magiscapes__narrative_branching__consequence_propagation_and_counterfactual_diff",
       "skill": "narrative-branching-counterfactual-gate",
       "files": 1,
-      "old_asset_id": "sha256:0c9e64834a5707f71e2fcef3ad6024a5d6d8894a6828bcf84ceac1580222ac82",
-      "new_asset_id": "sha256:dea2a43226446fdd658a4c941634eb38245449e9be4f70751a508148fba01587",
-      "old_capsule_asset_id": "sha256:ce5dec195e739de22c457e24f5f0cb10a9805d8a09ef4d84939245a1068b9b75",
-      "new_capsule_asset_id": "sha256:872cdf30f8f51d57090b50d3b16f1188959cee19c23506672dfa04c349664f36",
-      "recipes": []
+      "old_asset_id": "sha256:bbe3f254449dc327821d8f9336b2c0bafbed993d2f3725275e024105e1401ec6",
+      "new_asset_id": "sha256:76c162bda394303a1c6d5303a1b85f7e879b82d1bf4ff930a32ff7af63a02f26",
+      "old_capsule_asset_id": "sha256:f56f33f6ec82676857b7af9e1680a8c18ab2c3893e15bd83058ca71893451c8f",
+      "new_capsule_asset_id": "sha256:1a626c3413517d64c3d3cc106f66c14b13953b36d497ace53517131cc0d396e0",
+      "recipes": [
+        "cmwq10c490e9q9o3f3rmfgnw0"
+      ]
     },
     {
       "id": "gene_structured_level_map_concentric_topology_harness",
       "skill": "structured-level-map-concentric-harness",
       "files": 1,
-      "old_asset_id": "sha256:019f3189a1aad23c0d2b1ae5e81a1caea987bbdc27c6a36b9b90d17654eca733",
-      "new_asset_id": "sha256:af96e3485d5c1667a030a82eb71f17681b179cb9fe8bc821314586eeccb7e9c1",
-      "old_capsule_asset_id": "sha256:d86adb9b334aae0268acdba6ef4164584bfda01450173471ed1c6db51ddb73d1",
-      "new_capsule_asset_id": "sha256:a07bbbd3b9e9ffa9063f916c52a6244ba2657c892d051982f84dac10dfddb440",
-      "recipes": []
+      "old_asset_id": "sha256:00d4913f33a32edeacd71d7e806e494bff54b03ab0b5d43ac769520c3929361a",
+      "new_asset_id": "sha256:99069efff8010e3af6dd3e61f48449a63b6c3dbffd473271ea724bee88a16bfa",
+      "old_capsule_asset_id": "sha256:cde7932b10844237e73bda94865dda89856693e071ebf539fdcd96fddbbb0790",
+      "new_capsule_asset_id": "sha256:ed56c31bae46edd24f0fbbb746759889fd06921d344ee2c75a9e18b6aed0f59e",
+      "recipes": [
+        "cmwq10eke0epobi3fy9kgkdjd"
+      ]
     },
     {
       "id": "gene_magiscapes_combat_spatial_numeric_coupling_harness",
       "skill": "combat-level-spatial-numeric-coupling",
       "files": 1,
-      "old_asset_id": "sha256:f9cc06c8054fea46154b7fb3bcee052be06c1f08e91331ea7a7ef634daf52a8b",
-      "new_asset_id": "sha256:9514531205fc339b63db3068dae84b8231fa1fd62415498a33dcf4d5edd0c7e4",
-      "old_capsule_asset_id": "sha256:c25cff79cac886c7aa20ac0a35194ce6b18759e3fb0011b3a0da21a66fe75585",
-      "new_capsule_asset_id": "sha256:36b301c978d17936cabd027c5ddb130b058380724eab7f803d9772c5a69e0d46",
+      "old_asset_id": "sha256:db24d71cca941ed1767cd31b1287c522394184897a7b8d082afa8ca3adfc2a67",
+      "new_asset_id": "sha256:65edbccea5920882eead4690bb2a792041ee4e1bd481d92c55ee2f3c59268d4b",
+      "old_capsule_asset_id": "sha256:ae93af331b313e6544dc2ab83a50b6ea57c842fd0c0cec78b2598f92bef27973",
+      "new_capsule_asset_id": "sha256:5c7ed4379e64963e618d01d5b783e1652f585c93866fa3f42980eba0a4bed965",
       "recipes": [
-        "cmwnr0kg305via63enlh708xf"
+        "cmwq00z5209whbi3fi7gema66"
       ]
     },
     {
       "id": "gene_nl_to_ue_archetype_threejs_vfx_v1",
       "skill": "threejs-deterministic-vfx-composer",
       "files": 1,
-      "old_asset_id": "sha256:196e99700b457ed40c76f3f6754e8b50640b955535bb5bb80116bd293853a882",
-      "new_asset_id": "sha256:b8d304cecd4bf4dd77dd60d2d0c3a01403ae88f0657fc5905c5c172b764a84d1",
-      "old_capsule_asset_id": "sha256:26c91df0ab81a2fa727709f10aca7d84a9795f11ff1608f77ae789e0c74af8ba",
-      "new_capsule_asset_id": "sha256:86664d4a8eafa26cab10384f83286507a2751256edd7c8c9d38d2b3a77e0b5b4",
+      "old_asset_id": "sha256:ed56edb6949944ed72fd683ffda82dc4dcea7aae73e863a533f9c1031d5c7810",
+      "new_asset_id": "sha256:d063710e1cb8bb52b2bbc726509ab6ddc1200e4ff0916e3756ec2273ecc1f94d",
+      "old_capsule_asset_id": "sha256:301d06bd9d10a89370ab1b0d0d729e4372c113166daac16c768a7aaed37c3dea",
+      "new_capsule_asset_id": "sha256:e7174e9dd215bd5b6f77c08a56d5e8b3ce7830438cab59f5d844443d7d023920",
       "recipes": [
-        "cmwnr0qey05wna63eksm1ni7f"
+        "cmwq00vbo0h3n7s3fwosfhgmy"
       ]
     }
   ]

@@ -1,9 +1,29 @@
 {
-  "type": "Gene",
   "id": "gene_nl_to_ue_archetype_threejs_vfx_v1",
-  "category": "innovate",
+  "type": "Gene",
   "domain": "game_dev",
   "summary": "用 Three.js 在网页里做游戏技能特效（刀光、陨石、冲击波、法阵预警等，单个网页即可预览和拖动时间轴）：将一句自然语言特效描述（如冰霜刀光风暴、熔岩陨石砸地）自动解析为对标Unreal Engine Niagara的7大正交发射器图层（地面法阵预警、弧面刀光、3D网格UV流动、飞弹光束、GPU Instanced爆发碎块、环绕氛围场、三段包络屏幕后处理），并通过纯时间函数 evaluate(t) 在 Three.js 中实现支持任意拖帧预览的高表现力网页渲染。Layered, time-driven Three.js skill VFX that can be paused, rewound and scrubbed frame by frame.",
+  "category": "innovate",
+  "metadata": {
+    "tags": [
+      "vfx",
+      "threejs",
+      "webgl",
+      "game-effects",
+      "particles",
+      "shader",
+      "timeline-preview"
+    ]
+  },
+  "strategy": [
+    "先按前置条件安装并通读 skill threejs-deterministic-vfx-composer，具体规则、接口和检查以它为准。",
+    "把技能描述拆成多个分工不同的特效图层，用 Three.js 渲染，所有效果由确定性时间函数求值，支持在时间轴上来回拖动。",
+    "从技能描述里提取三色主题色板和预警、爆发、消散的时间轴，组合至少 4 个独立发射器图层（必含地面预警层），碎块用 InstancedMesh 和确定性弹道公式。",
+    "所有图层的位置、实例矩阵和 Shader 参数都写成播放时间 t 的纯函数，后处理强度由三段包络求值，严禁用 pos += vel 这类逐帧累加，保证能暂停、倒放和任意拖动时间轴。"
+  ],
+  "preconditions": [
+    "skill:git+https://github.com/Mike-7777777/gene-skills@4e2bc345a1bc245116d2a54ab92edb4b81e4ea6b#sha256=11335889b71b309de68389b1a059e07fe07854b37d70489faf2b6a2a7a4fb6e4&path=skills/threejs-deterministic-vfx-composer"
+  ],
   "signals_match": [
     "生成网页3D特效",
     "Three.js游戏技能特效渲染",
@@ -18,23 +38,5 @@
     "特效时间轴拖动预览",
     "web skill vfx preview"
   ],
-  "preconditions": [
-    "skill:git+https://github.com/Mike-7777777/gene-skills@d77b3f12a99d042e3d05b8a57f9ff45a1ba68834#sha256=1396608c6f4e33f973219dad13b26db0bf79dd364dc355ebaccb627ec2fd522d&path=skills/threejs-deterministic-vfx-composer"
-  ],
-  "strategy": [
-    "先按前置条件安装并通读 skill threejs-deterministic-vfx-composer，具体规则、接口和检查以它为准。",
-    "把技能描述拆成多个分工不同的特效图层，用 Three.js 渲染，所有效果由确定性时间函数求值，支持在时间轴上来回拖动。"
-  ],
-  "metadata": {
-    "tags": [
-      "vfx",
-      "threejs",
-      "webgl",
-      "game-effects",
-      "particles",
-      "shader",
-      "timeline-preview"
-    ]
-  },
   "schema_version": "1.13.0"
 }

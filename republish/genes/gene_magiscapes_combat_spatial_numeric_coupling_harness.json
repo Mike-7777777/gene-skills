@@ -1,28 +1,9 @@
 {
-  "type": "Gene",
   "id": "gene_magiscapes_combat_spatial_numeric_coupling_harness",
-  "category": "optimize",
+  "type": "Gene",
   "domain": "game_dev",
   "summary": "做 2D 俯视角动作 RPG 的可试玩战斗副本或地下城关卡（引擎场景或单文件 index.html 原型均可）时，按怪物数值定空间：入口前厅距首个刷怪点 ≥ 索敌半径+2 格，相邻波次间距 > 后一波索敌半径+3 格，交战走廊净宽 ≥ max(2, 技能范围+1) 格，至少留一条风筝环路，宝箱放在核心怪身后并与总威胁点数匹配；没有怪物配置表时先在代码里定义同字段的常量表。Playable top-down ARPG combat dungeon, engine scene or single-file HTML/canvas prototype, whose entrance, wave spacing, corridor width, kiting loop and loot follow monster aggro radius, skill range and threat budget.",
-  "signals_match": [
-    "可试玩战斗副本",
-    "地下城关卡设计",
-    "2D俯视角动作RPG副本",
-    "新手副本难度",
-    "怪物索敌范围与房间大小",
-    "精英房和Boss房",
-    "波次刷怪间距",
-    "single-file HTML dungeon prototype",
-    "top-down ARPG combat dungeon",
-    "encounter difficulty and arena size"
-  ],
-  "preconditions": [
-    "skill:git+https://github.com/Mike-7777777/gene-skills@d77b3f12a99d042e3d05b8a57f9ff45a1ba68834#sha256=7b200dc724a35a2c54ce200bf77f2f8efb516f808c097780c152ddb85c9a05b0&path=skills/combat-level-spatial-numeric-coupling"
-  ],
-  "strategy": [
-    "先按前置条件安装并通读 skill combat-level-spatial-numeric-coupling，具体规则、接口和检查以它为准。",
-    "把怪物属性和技能范围换算成入口缓冲、波次间距、闪避走廊、风筝回路和战利品期望等空间约束，生成副本并带上数值调试面板。"
-  ],
+  "category": "optimize",
   "metadata": {
     "tags": [
       "game-design",
@@ -36,5 +17,26 @@
       "playable-prototype"
     ]
   },
+  "strategy": [
+    "先按前置条件安装并通读 skill combat-level-spatial-numeric-coupling，具体规则、接口和检查以它为准。",
+    "把怪物属性和技能范围换算成入口缓冲、波次间距、闪避走廊、风筝回路和战利品期望等空间约束，生成副本并带上数值调试面板。",
+    "以格为单位按公式验算：入口距首波 ≥ R_aggro + 2 格，相邻波次间距 > R_aggro + 3 格，交战走廊净宽 ≥ max(2, W_skill + 1)，精英房留一条闭合风筝环路，宝箱期望价值与威胁点数匹配。",
+    "严禁交付净可行走格数不足或走廊过窄的空间过载房间，严禁让入口落进首波怪物的索敌范围，或让前哨波次与关底守卫的索敌圈连锁重叠。"
+  ],
+  "preconditions": [
+    "skill:git+https://github.com/Mike-7777777/gene-skills@4e2bc345a1bc245116d2a54ab92edb4b81e4ea6b#sha256=569208d0b862c27dd084226690d042d05f824e72473f861d967f34d9704bd4f4&path=skills/combat-level-spatial-numeric-coupling"
+  ],
+  "signals_match": [
+    "可试玩战斗副本",
+    "地下城关卡设计",
+    "2D俯视角动作RPG副本",
+    "新手副本难度",
+    "怪物索敌范围与房间大小",
+    "精英房和Boss房",
+    "波次刷怪间距",
+    "single-file HTML dungeon prototype",
+    "top-down ARPG combat dungeon",
+    "encounter difficulty and arena size"
+  ],
   "schema_version": "1.13.0"
 }

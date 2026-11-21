@@ -1,9 +1,28 @@
 {
-  "type": "Gene",
   "id": "gene_magiscapes__narrative_branching__consequence_propagation_and_counterfactual_diff",
-  "category": "optimize",
+  "type": "Gene",
   "domain": "game_dev",
   "summary": "做带剧情分支抉择的游戏或可试玩原型（例如电力只够给防洪泵或升降桥二选一）时，让每个选项改写互斥的世界状态，并在后续关卡同时改变可通行区域、在场 NPC/可交互物和可获取物品，最后用平行宇宙对比测试证明两个分支的下游结果严格不同、决策锁定后不能双吃奖励。Prevent cosmetic-only dialogue choices in branching games by isolating a headless world-state machine and enforcing a three-round counterfactual gate: (R1) validate that each branch option mutates mutually exclusive world flags and trade-offs, (R2) bind downstream scene topology, interactable entities, and resource pools to those flags, and (R3) run parallel-universe simulations in hidden tests to prove that choosing Option A vs Option B produces strictly different reachable areas, available NPCs/resources, and ending states.",
+  "category": "optimize",
+  "metadata": {
+    "tags": [
+      "game-design",
+      "narrative-design",
+      "branching-story",
+      "player-choice",
+      "world-state",
+      "playable-prototype"
+    ]
+  },
+  "strategy": [
+    "先按前置条件安装并通读 skill narrative-branching-counterfactual-gate，具体规则、接口和检查以它为准。",
+    "把世界状态剥离成无头状态机，让每个抉择改写互斥的状态并落实到后续场景、通行和人物，再用两条路线的平行对比证明结果确实不同。",
+    "用 BranchCore.selfTest() 跑三轮门禁：R1 校验各选项的 world_mutations 互斥且都被下游读取，R2 让每个分支改变通行区域、在场人物和可获取物品，R3 从同一快照分叉，证明两条路线结果严格不同。",
+    "严禁交付只换台词、不改下游场景的伪分支（触发 E_COSMETIC_CHOICE 或 E_DEAD_FLAG）；决策提交后锁定节点，拒绝再选另一项或领取另一分支的专属奖励。"
+  ],
+  "preconditions": [
+    "skill:git+https://github.com/Mike-7777777/gene-skills@4e2bc345a1bc245116d2a54ab92edb4b81e4ea6b#sha256=fe26565a2c0aa0749d3b08a8d4aeae798cb6676c52051d87ade3f463c27cf88f&path=skills/narrative-branching-counterfactual-gate"
+  ],
   "signals_match": [
     "branching narrative game",
     "meaningful player choice",
@@ -21,22 +40,5 @@
     "选择后果落地",
     "branching story prototype"
   ],
-  "preconditions": [
-    "skill:git+https://github.com/Mike-7777777/gene-skills@d77b3f12a99d042e3d05b8a57f9ff45a1ba68834#sha256=fe9d77cbe9edf8e1d0184dabcddc70c03027d5c47e0b544102a8238bb6e50b57&path=skills/narrative-branching-counterfactual-gate"
-  ],
-  "strategy": [
-    "先按前置条件安装并通读 skill narrative-branching-counterfactual-gate，具体规则、接口和检查以它为准。",
-    "把世界状态剥离成无头状态机，让每个抉择改写互斥的状态并落实到后续场景、通行和人物，再用两条路线的平行对比证明结果确实不同。"
-  ],
-  "metadata": {
-    "tags": [
-      "game-design",
-      "narrative-design",
-      "branching-story",
-      "player-choice",
-      "world-state",
-      "playable-prototype"
-    ]
-  },
   "schema_version": "1.13.0"
 }

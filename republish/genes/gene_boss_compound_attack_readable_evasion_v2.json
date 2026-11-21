@@ -1,9 +1,31 @@
 {
-  "type": "Gene",
   "id": "gene_boss_compound_attack_readable_evasion_v2",
-  "category": "optimize",
+  "type": "Gene",
   "domain": "game_dev",
   "summary": "设计或实现 2D 俯视角 Boss 战（包括可在浏览器直接打开的演示）的攻击模组：为落石、横扫等范围技能先定义预警时长、伤害生效窗口和收招后摇，技能释放前用地面范围提示预警玩家；单独释放或组合释放时错开伤害结算时间、用固定落点留出安全走廊，并按玩家移速校验每一轮都有来得及走到的躲避路线，避免看起来有安全区却跑不到；同时提供技能参数调试台。整场体验上：将Boss单招与复合攻击模组（如落石+横扫）实现为具备可达避让路线的数据驱动定时攻击，并全链路管控玩家的体验预期：包含躲避后的反打回报窗口、转阶段盲等消除，以及Boss战结束后的脱战与战利品等待时间上限。Readable boss attack telegraphs, staggered combos, reachable dodge routes, punish windows and a clean post-combat wrap-up.",
+  "category": "optimize",
+  "metadata": {
+    "tags": [
+      "game-design",
+      "boss-fight",
+      "attack-telegraph",
+      "dodge-window",
+      "punish-window",
+      "combat-readability",
+      "top-down-2d",
+      "skill-design",
+      "safe-zone"
+    ]
+  },
+  "strategy": [
+    "先按前置条件安装并通读 skill boss-compound-attack-readable-evasion，具体规则、接口和检查以它为准。",
+    "先用权威时间表定下每招的预警、生效和收招窗口，验算复合攻击下躲避路线可达、反击窗口和战后等待时长达标，再做成可试玩的 Boss 演示。",
+    "每一拍都按 D_safe ≤ V_walk ×（T_windup − 0.3 秒）验算躲避路线可达，复合技的子攻击错开生效时刻，预警承诺帧冻结朝向，并内置技能调试台和只看预警走位的测试 Bot。",
+    "伤害判定只在 ACTIVE 窗口开启，严禁预警期或后摇期残留判定、严禁交付跑不到的假安全区；Boss 死亡后立即清除残余伤害，结算反馈不晚于 1.2 秒。"
+  ],
+  "preconditions": [
+    "skill:git+https://github.com/Mike-7777777/gene-skills@4e2bc345a1bc245116d2a54ab92edb4b81e4ea6b#sha256=b59a5e48b5cfc7ece0be2b0d6d1a4ea6c14246a56b9a673eb16129359bbae0b4&path=skills/boss-compound-attack-readable-evasion"
+  ],
   "signals_match": [
     "Boss战演示",
     "Boss技能设计",
@@ -22,25 +44,5 @@
     "Boss战玩家体验与战后结算等待",
     "boss fight dodge and punish window"
   ],
-  "preconditions": [
-    "skill:git+https://github.com/Mike-7777777/gene-skills@d77b3f12a99d042e3d05b8a57f9ff45a1ba68834#sha256=862c89137b5a0db96579cddd6fabc8c12bdc4f933f2fcc155b51e5eeeaef56e2&path=skills/boss-compound-attack-readable-evasion"
-  ],
-  "strategy": [
-    "先按前置条件安装并通读 skill boss-compound-attack-readable-evasion，具体规则、接口和检查以它为准。",
-    "先用权威时间表定下每招的预警、生效和收招窗口，验算复合攻击下躲避路线可达、反击窗口和战后等待时长达标，再做成可试玩的 Boss 演示。"
-  ],
-  "metadata": {
-    "tags": [
-      "game-design",
-      "boss-fight",
-      "attack-telegraph",
-      "dodge-window",
-      "punish-window",
-      "combat-readability",
-      "top-down-2d",
-      "skill-design",
-      "safe-zone"
-    ]
-  },
   "schema_version": "1.13.0"
 }

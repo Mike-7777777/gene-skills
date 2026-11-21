@@ -1,9 +1,30 @@
 {
-  "type": "Gene",
   "id": "gene_quest_three_round_hidden_gate_v1",
-  "category": "innovate",
+  "type": "Gene",
   "domain": "game_dev",
   "summary": "做一个可在浏览器完整试玩的 RPG/生存游戏新手委托原型（接委托→采集→搭工作台→制作→交付）时，生成包含采集-制作-交付闭环的任务原型或任务数据时，先将纯状态机与UI/渲染隔离，再在用户不可见的隐藏数据层强制跑通三轮测试门禁（R1后端契约校验与有界修复、R2前端外壳归一与拆段事务导入、R3全排列乱序与前后顺序容错），保证任意合法顺序收敛至同一终态且非法顺序原子拒绝零损耗。Quest prototypes whose gather-craft-deliver loop stays correct under any legal action order and rejects illegal ones atomically.",
+  "category": "innovate",
+  "metadata": {
+    "tags": [
+      "game-design",
+      "quest-design",
+      "quest-system",
+      "state-machine",
+      "rpg",
+      "top-down-2d",
+      "playable-prototype",
+      "data-validation"
+    ]
+  },
+  "strategy": [
+    "先按前置条件安装并通读 skill quest-prototype-three-round-gate，具体规则、接口和检查以它为准。",
+    "把任务数据、三本库存账和推进状态机剥离成无头核心，跑通三轮隐藏门禁（生成校验、导入落表、乱序收敛）后再交付可试玩原型。",
+    "交付前用纯数据断言跑完三道门禁：R1 全量收集契约错误并有界修补（不超过 2 轮），R2 兼容多种载荷外壳、按外键自底向上原子落表，R3 枚举动作全排列，验证物资守恒与幂等。",
+    "合法乱序（先备料后接单）必须自动追补到通关，非法乱序（缺料、缺前置）必须整单拒绝且状态零改动；自动修复都写进 repairs 或 warnings，不靠 DOM、截图或 setTimeout 判定。"
+  ],
+  "preconditions": [
+    "skill:git+https://github.com/Mike-7777777/gene-skills@4e2bc345a1bc245116d2a54ab92edb4b81e4ea6b#sha256=9fc82ac42f937c0cdf8fd5f90943abcd36c5438fcabd10d1009b3b9b1dd6694d&path=skills/quest-prototype-three-round-gate"
+  ],
   "signals_match": [
     "quest_generation",
     "task_prototype",
@@ -25,24 +46,5 @@
     "survival RPG starter quest",
     "gather craft deliver quest"
   ],
-  "preconditions": [
-    "skill:git+https://github.com/Mike-7777777/gene-skills@d77b3f12a99d042e3d05b8a57f9ff45a1ba68834#sha256=314c0786d698c0388cc9de4193aa55ffa46a7d618a8e0e52ea60a973bfedd832&path=skills/quest-prototype-three-round-gate"
-  ],
-  "strategy": [
-    "先按前置条件安装并通读 skill quest-prototype-three-round-gate，具体规则、接口和检查以它为准。",
-    "把任务数据、三本库存账和推进状态机剥离成无头核心，跑通三轮隐藏门禁（生成校验、导入落表、乱序收敛）后再交付可试玩原型。"
-  ],
-  "metadata": {
-    "tags": [
-      "game-design",
-      "quest-design",
-      "quest-system",
-      "state-machine",
-      "rpg",
-      "top-down-2d",
-      "playable-prototype",
-      "data-validation"
-    ]
-  },
   "schema_version": "1.13.0"
 }

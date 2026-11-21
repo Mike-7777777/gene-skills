@@ -1,9 +1,31 @@
 {
-  "type": "Gene",
   "id": "gene_structured_level_map_concentric_topology_harness",
-  "category": "optimize",
+  "type": "Gene",
   "domain": "game_dev",
   "summary": "设计或生成 2D 俯视角 RPG/冒险游戏的序章或区域地图（包括浏览器单文件原型）：按山体骨架与山口、主干道、城镇安全区与缓冲带、野外怪物分区、NPC 活动动线的顺序布局，让怪物不刷在出生点到城镇的路上、不刷在道路两旁、不追进城镇，同种怪物聚在同一区域，每块地都有用途；生成后用连通性、安全距离、同族聚类、NPC 寻路和放置合规五项检查打回修正。Top-down town and wilderness level layout with safe zones, monster spawn zones and NPC routines.",
+  "category": "optimize",
+  "metadata": {
+    "tags": [
+      "game-design",
+      "level-design",
+      "map-layout",
+      "top-down-2d",
+      "procedural-generation",
+      "safe-zone",
+      "monster-spawn",
+      "npc-routine",
+      "rpg"
+    ]
+  },
+  "strategy": [
+    "先按前置条件安装并通读 skill structured-level-map-concentric-harness，具体规则、接口和检查以它为准。",
+    "按同心分层生成山体、道路、城镇安全区、野外怪物分区和 NPC 动线，再用多维度算法评估器逐项验收，不达标就回到生成步骤调整。",
+    "生成后运行只读评估器验收五项：出生点到矿洞 BFS 连通，安全区与引导路零敌对，同族怪物单一领地且异族间距 ≥ 12 格，NPC 从室内到广场 A* 全通，占地零重叠；不达标按坐标修正再交付。",
+    "严禁在出生点到第一座城镇的引导路上放主动索敌的怪物，严禁野外怪物追进城镇安全区而不脱战归位，严禁生成器自我打分、跳过 BFS、距离和连通分量校验。"
+  ],
+  "preconditions": [
+    "skill:git+https://github.com/Mike-7777777/gene-skills@4e2bc345a1bc245116d2a54ab92edb4b81e4ea6b#sha256=684039578239d424d08e4777429e7b752bbf1fe14b51daa8d05ffef4ad1e5ea9&path=skills/structured-level-map-concentric-harness"
+  ],
   "signals_match": [
     "2D俯视角地图设计",
     "序章地图",
@@ -18,25 +40,5 @@
     "top-down rpg map layout",
     "town safe zone and monster spawn zones"
   ],
-  "preconditions": [
-    "skill:git+https://github.com/Mike-7777777/gene-skills@d77b3f12a99d042e3d05b8a57f9ff45a1ba68834#sha256=d850603ec510523a5ee80e324e4963ab4c1b377920851296b3947f311bb68956&path=skills/structured-level-map-concentric-harness"
-  ],
-  "strategy": [
-    "先按前置条件安装并通读 skill structured-level-map-concentric-harness，具体规则、接口和检查以它为准。",
-    "按同心分层生成山体、道路、城镇安全区、野外怪物分区和 NPC 动线，再用多维度算法评估器逐项验收，不达标就回到生成步骤调整。"
-  ],
-  "metadata": {
-    "tags": [
-      "game-design",
-      "level-design",
-      "map-layout",
-      "top-down-2d",
-      "procedural-generation",
-      "safe-zone",
-      "monster-spawn",
-      "npc-routine",
-      "rpg"
-    ]
-  },
   "schema_version": "1.13.0"
 }

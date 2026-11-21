@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Republish Genes with one skill pin added to their preconditions, move the Recipes that use them to the new
+// Republish Genes whose skill pin moved (genes/ and capsules/ come from build.mjs), move the Recipes that use them to the new
 // versions, then revoke the old versions. Runs with the Evolver installed on this machine and the Hub identity it is
 // signed in with (`evolver login` or EVOMAP_NODE_ID/EVOMAP_NODE_SECRET); this script never reads a credential itself.
 //
@@ -9,14 +9,12 @@
 //
 // The Hub takes at most 5 publishes with the same triggers from one node in 24 hours, refused attempts included, so
 // a failed --apply is fixed before it is run again, not retried in a loop. A rerun skips what already landed.
-import { execFileSync } from 'node:child_process';
-import { appendFileSync, existsSync, mkdirSync, readFileSync, realpathSync } from 'node:fs';
+import { appendFileSync, mkdirSync, readFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
-import { fileURLToPath, pathToFileURL } from 'node:url';
+import { fileURLToPath } from 'node:url';
+import { connect, fullRecord, newCapsule, publicAsset } from './lib.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
-const HUB = process.env.EVOMAP_HUB_URL || 'https://evomap.ai';
-const MIN_EVOLVER = [2, 0, 54];
 const RECIPE_WAIT_TRIES = 12;
 const args = process.argv.slice(2);
 const apply = args.includes('--apply');
@@ -27,70 +25,14 @@ const logFile = join(HERE, 'logs', `republish_${stamp}.log`);
 const log = (line = '') => { console.log(line); appendFileSync(logFile, `${line}\n`); };
 const fail = (why, next) => { log(`\n停止：${why}`); if (next) log(`下一步：${next}`); log(`日志：${logFile}`); process.exit(1); };
 
-// ── 1. The Evolver on this machine ───────────────────────────────────────────────────────────────────────────────
-function evolverPackageDir() {
-  if (process.env.EVOLVER_PACKAGE_DIR) return resolve(process.env.EVOLVER_PACKAGE_DIR);
-  let bin;
-  try {
-    bin = execFileSync(process.platform === 'win32' ? 'where' : 'which', ['evolver'], { encoding: 'utf8' }).split(/\r?\n/)[0].trim();
-  } catch {
-    return null;
-  }
-  for (let dir = dirname(realpathSync(bin)); dir !== dirname(dir); dir = dirname(dir)) {
-    const pkg = join(dir, 'package.json');
-    if (existsSync(pkg) && JSON.parse(readFileSync(pkg, 'utf8')).name === '@evomap/evolver') return dir;
-  }
-  return null;
-}
-const evolverDir = evolverPackageDir();
-if (!evolverDir) fail('找不到本机的 evolver。', '先 npm install -g @evomap/evolver@latest，或设置 EVOLVER_PACKAGE_DIR 指向 @evomap/evolver 的安装目录。');
-const version = JSON.parse(readFileSync(join(evolverDir, 'package.json'), 'utf8')).version;
-const older = (v) => { const p = v.split('.').map(Number); for (let i = 0; i < 3; i++) if (p[i] !== MIN_EVOLVER[i]) return p[i] < MIN_EVOLVER[i]; return false; };
-if (older(version)) fail(`evolver 版本 ${version} 低于 ${MIN_EVOLVER.join('.')}，读不了 Gene 里的 skill 引用。`, 'npm install -g @evomap/evolver@latest');
-const mod = (pkg, file) => import(pathToFileURL(join(evolverDir, 'node_modules', '@evomap', pkg, 'dist', file)).href);
-const core = await mod('evolver-core', 'index.js');
-const { wire } = core;
-// The skill helpers moved from evolver-cli (2.0.54) into evolver-core; use whichever this install has.
-const skill = core.skill ?? { ...(await mod('evolver-cli', 'requiredSkills.js')), ...(await mod('evolver-cli', 'gitSkillSource.js')) };
-const { connectPublicHub, stripHubDeliveryMetadataForIntegrity } = await mod('evolver-adapter-public', 'index.js');
-const { HubFetch } = await mod('evolver-adapter-public', 'hubFetch.js');
-const { createRecipeHubFromEnv, ensureRecipeHubIdentity } = await mod('evolver-cli', 'recipe.js');
-
-// ── 2. Who is signed in ──────────────────────────────────────────────────────────────────────────────────────────
+// ── 1. The Evolver on this machine and who it is signed in as ─────────────────────────────────────────────────────
 const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
 log(`${apply ? '执行' : '预览（不改任何东西）'}  ${new Date().toISOString()}`);
-log(`evolver ${version}（${evolverDir}）`);
-let connected;
-let hub;
-try {
-  hub = createRecipeHubFromEnv(process.env, (opts) => (connected = { ...connectPublicHub(opts), senderId: opts.senderId, hubUrl: opts.hubUrl }));
-  await ensureRecipeHubIdentity(hub);
-} catch (error) {
-  fail(`连不上 EvoMap：${error.message}`, '先运行 evolver login，确认 evolver 能正常连 hub。');
-}
-const sender = connected.senderId();
+const evolver = await connect(fail);
+const { wire, skill, stripHubDeliveryMetadataForIntegrity, sender, http, envelope } = evolver;
+log(`evolver ${evolver.version}（${evolver.evolverDir}）`);
 log(`当前登录节点：${sender}`);
 if (sender !== manifest.node_id) fail(`这批 Gene 属于节点 ${manifest.node_id}，本机登录的是 ${sender}。`, '在发布这批 Gene 的那台电脑上运行。');
-const http = new HubFetch({ baseUrl: connected.hubUrl, auth: connected.auth, senderId: connected.senderId, fetchFn: fetch });
-const envelope = (type, payload) => ({
-  protocol: 'gep-a2a', protocol_version: '1.0.0', message_type: type,
-  message_id: `msg_${Date.now()}_${Math.random().toString(16).slice(2, 10)}`, sender_id: sender, timestamp: new Date().toISOString(), payload,
-});
-const publicAsset = async (id) => {
-  const res = await fetch(`${HUB}/a2a/assets/${id}`);
-  return res.status === 404 ? null : res.json();
-};
-// Finds the full record of `id` anywhere in a fetch answer, whatever envelope the Hub wraps it in.
-const recordIn = (data, id) => {
-  if (Array.isArray(data)) for (const item of data) { const found = recordIn(item, id); if (found) return found; }
-  else if (data && typeof data === 'object') {
-    if (data.asset_id === id && data.type) return data;
-    for (const value of Object.values(data)) { const found = recordIn(value, id); if (found) return found; }
-  }
-  return null;
-};
-const HUB_FIELDS = ['asset_id', 'gdi_score', 'source_node_id', 'status'];
-const published = (record) => Object.fromEntries(Object.entries(record).filter(([key]) => !HUB_FIELDS.includes(key)));
 
 // ── 3. Check every Gene and build its bundle ─────────────────────────────────────────────────────────────────────
 const plans = [];
@@ -115,10 +57,10 @@ for (const entry of manifest.genes) {
   } else if (oldPublic.source_node_id !== sender) {
     fail(`旧版本 ${entry.old_asset_id} 不是本节点发布的。`);
   }
-  const oldGene = recordIn(await http.call('POST', '/a2a/fetch', envelope('fetch', { asset_ids: [entry.old_asset_id] })), entry.old_asset_id);
+  const oldGene = await fullRecord(evolver, entry.old_asset_id);
   if (!newPublic && oldGene) {
-    // The new version is a pure-skill Gene: it keeps what the Hub finds the old one by (id, summary, signals and
-    // tags) and replaces the rest with the skill pin and a two-step strategy that points at the skill.
+    // The new version keeps what the Hub finds the old one by (id, summary, signals, tags); only its skill pin and
+    // strategy may differ. A difference elsewhere means the Hub copy changed after the kit was built.
     const kept = Object.keys(gene).filter((key) => key !== 'preconditions' && key !== 'strategy');
     const changed = kept.filter((key) => JSON.stringify(oldGene[key]) !== JSON.stringify(gene[key]));
     if (changed.length > 0) fail(`hub 上的旧版本和准备新版本时用的不一样（${changed.join('、')} 被改过），新版本不能直接替换它。`, '把这个情况告诉准备文件的人重新生成。');
@@ -126,24 +68,10 @@ for (const entry of manifest.genes) {
   const capsuleId = oldPublic?.bundle_capsule?.asset_id ?? null;
   let capsule = null;
   if (capsuleId) {
-    const old = recordIn(await http.call('POST', '/a2a/fetch', envelope('fetch', { asset_ids: [capsuleId] })), capsuleId);
+    const old = await fullRecord(evolver, capsuleId);
     if (!old) fail(`取不到旧版本的 Capsule ${capsuleId}。`);
-    // The Hub refuses a Capsule whose content opens like one it already holds (measured 2026-11-21: the old content
-    // with the skill appended was refused as already_published at similarity 1; with the skill first it was
-    // accepted). So the new content opens with what changed, the pinned skill and its SKILL.md, and keeps every
-    // existing field after it, so the Gene's validation reads the same evidence.
-    const base = published(old);
-    const { name, repo, commit, path, sha256 } = pins.value[0];
     const skillMd = new TextDecoder().decode(files.value.find((file) => file.path === 'SKILL.md').content);
-    const pinned = { name, repo, commit, path, sha256, skill_md: skillMd };
-    let content;
-    try {
-      content = JSON.stringify({ required_skill: pinned, ...JSON.parse(base.content) });
-    } catch {
-      content = `required_skill: ${JSON.stringify(pinned)}\n\n${base.content}`;
-    }
-    capsule = { ...base, gene: entry.new_asset_id, content, summary: `${base.summary}（此版本的 Gene 在前置条件中钉住 skill ${name}，使用前先安装并阅读它。）` };
-    capsule.asset_id = wire.computeAssetId(capsule);
+    capsule = newCapsule(evolver, old, entry.new_asset_id, pins.value[0], skillMd);
     if (entry.new_capsule_asset_id && capsule.asset_id !== entry.new_capsule_asset_id) fail(`现场生成的 Capsule 和 capsules/${entry.id}.json 不一致（hub 上的旧 Capsule 可能被改过）。`, '把这个情况告诉准备文件的人重新生成。');
   } else if (!newPublic) {
     fail(`旧版本没有配套 Capsule，hub 发布 Gene 需要成对的 Capsule。`);

@@ -144,6 +144,7 @@ for (const entry of manifest.genes) {
     }
     capsule = { ...base, gene: entry.new_asset_id, content, summary: `${base.summary}（此版本的 Gene 在前置条件中钉住 skill ${name}，使用前先安装并阅读它。）` };
     capsule.asset_id = wire.computeAssetId(capsule);
+    if (entry.new_capsule_asset_id && capsule.asset_id !== entry.new_capsule_asset_id) fail(`现场生成的 Capsule 和 capsules/${entry.id}.json 不一致（hub 上的旧 Capsule 可能被改过）。`, '把这个情况告诉准备文件的人重新生成。');
   } else if (!newPublic) {
     fail(`旧版本没有配套 Capsule，hub 发布 Gene 需要成对的 Capsule。`);
   }

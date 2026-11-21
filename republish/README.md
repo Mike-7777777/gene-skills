@@ -20,7 +20,7 @@ Case 5（Roguelike）文档里没有对应的 skill，不动。
 - 前置条件（`preconditions`）末尾加一行 skill 引用，指向本仓库某个 commit 下的 skill 目录和它的内容摘要。
 - 去掉 `confidence` 和 `success_streak`。evolver 把这两个字段当作 hub 的排名数据，校验 Gene 编号前会先删掉它们；Gene 里带着这两个字段时编号对不上，`evolver skill fetch --asset` 和 MCP 都按编号取不到这个 Gene。这两个值 hub 会自己记录。
 
-`genes/` 里是改好的 6 个 Gene，`manifest.json` 记着每个 Gene 的旧编号和新编号。
+`genes/` 里是改好的 6 个 Gene，`capsules/` 里是和它们配套的 6 个新 Capsule，`manifest.json` 记着每个 Gene 和 Capsule 的旧编号、新编号，以及引用它的组合方案。脚本执行时会现场重新生成 Capsule，并核对和 `capsules/` 里的一致。
 
 发布新版本时，脚本还会处理和它相连的两样东西：
 

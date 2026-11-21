@@ -40,5 +40,8 @@
     "选择后果落地",
     "branching story prototype"
   ],
-  "schema_version": "1.13.0"
+  "schema_version": "1.13.0",
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const s=k.code_snippet||'';const anchors=['BRANCH_CORE','validateBranchGraph','resolveSceneState','BranchRuntime','E_COSMETIC_CHOICE','E_DEAD_FLAG'].every(x=>s.includes(x));const a=s.indexOf('/* @region BRANCH_CORE */');const b=s.indexOf('/* @endregion BRANCH_CORE */');if(!anchors||a<0||b<a)process.exit(1);const vm=require('vm');const box={Math,JSON,Map,Set,Array,Object,String,Number,Boolean,Error};vm.createContext(box);vm.runInContext(s.slice(a,b),box);const r=box.BranchCore.selfTest();process.exit(r&&r.ok===true?0:1)\""
+  ]
 }

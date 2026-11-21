@@ -38,5 +38,8 @@
     "top-down ARPG combat dungeon",
     "encounter difficulty and arena size"
   ],
-  "schema_version": "1.13.0"
+  "schema_version": "1.13.0",
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const e=k.evaluator;const q=k.k_rank_tiles;const w=e.dimensions.reduce((t,d)=>t+d.weight,0);const rubric=w===100&&e.dimensions.length===5&&e.pass_single<e.pass_total;const ranks=q.Normal<q.Elite&&q.Elite<q.Boss;const wmin=x=>Math.max(2,x+1);const formulas=wmin(0)===2&&wmin(3)===4&&Object.keys(k.formulas).length===5;process.exit(rubric&&ranks&&formulas?0:1)\""
+  ]
 }

@@ -46,5 +46,8 @@
     "survival RPG starter quest",
     "gather craft deliver quest"
   ],
-  "schema_version": "1.13.0"
+  "schema_version": "1.13.0",
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const st=k.reference_quest.sequences;const ids=st.flatMap(x=>[x.id,...x.objectives.map(o=>o.id)]);const unique=new Set(ids).size===ids.length;const src=st.every((x,i)=>x.objectives.filter(o=>o.type==='Submit').every(o=>st.slice(0,i).some(y=>y.objectives.some(p=>(p.type==='Composite'||p.type==='Collect')&&p.item===o.item))));const got={};const used={};st.forEach(x=>x.objectives.forEach(o=>{if(o.type==='Collect')got[o.item]=(got[o.item]||0)+o.count;Object.entries(o.cost||{}).forEach(([m,n])=>{used[m]=(used[m]||0)+n})}));const conserve=Object.entries(used).every(([m,n])=>(got[m]||0)>=n);const r=k.atomic_rejection_example;const atomic=r.accepted===false&&JSON.stringify(r.state_before)===JSON.stringify(r.state_after);process.exit(unique&&src&&conserve&&atomic?0:1)\""
+  ]
 }

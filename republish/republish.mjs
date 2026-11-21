@@ -59,9 +59,9 @@ for (const entry of manifest.genes) {
   }
   const oldGene = await fullRecord(evolver, entry.old_asset_id);
   if (!newPublic && oldGene) {
-    // The new version keeps what the Hub finds the old one by (id, summary, signals, tags); only its skill pin and
-    // strategy may differ. A difference elsewhere means the Hub copy changed after the kit was built.
-    const kept = Object.keys(gene).filter((key) => key !== 'preconditions' && key !== 'strategy');
+    // The new version keeps what the Hub finds the old one by (id, summary, signals, tags); only its skill pin,
+    // strategy and validation may differ. A difference elsewhere means the Hub copy changed after the kit was built.
+    const kept = Object.keys(gene).filter((key) => !['preconditions', 'strategy', 'validation'].includes(key));
     const changed = kept.filter((key) => JSON.stringify(oldGene[key]) !== JSON.stringify(gene[key]));
     if (changed.length > 0) fail(`hub 上的旧版本和准备新版本时用的不一样（${changed.join('、')} 被改过），新版本不能直接替换它。`, '把这个情况告诉准备文件的人重新生成。');
   }

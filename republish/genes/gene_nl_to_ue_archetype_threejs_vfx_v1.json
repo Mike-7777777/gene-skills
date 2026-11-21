@@ -38,5 +38,8 @@
     "特效时间轴拖动预览",
     "web skill vfx preview"
   ],
-  "schema_version": "1.13.0"
+  "schema_version": "1.13.0",
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const p=k.reference_plan;const L=p.layers;const roles=new Set(L.map(x=>x.role));const stack=L.length>=4&&['ground_warning','main_body','debris','post_process'].every(r=>roles.has(r))&&L.filter(x=>x.role==='debris').every(x=>x.instanced===true);const timeDriven=L.every(x=>x.driver==='t');const e=p.envelope;const total=e.enter+e.hold+e.exit;const gain=a=>a<0||a>=total?0:a<e.enter?a/e.enter:a<e.enter+e.hold?1:1-(a-e.enter-e.hold)/e.exit;const neutral=gain(-0.01)===0&&gain(total)===0&&gain(total+1)===0&&gain(e.enter+e.hold/2)===1;const tl=p.timeline;const timeline=tl.windup_s>0&&tl.active_at_s===tl.windup_s&&tl.recovery_s>0;const perf=p.pixel_ratio_cap<=2&&p.reduced_motion_shake===0&&p.overlay_pointer_events==='none';process.exit(stack&&timeDriven&&neutral&&timeline&&perf?0:1)\""
+  ]
 }

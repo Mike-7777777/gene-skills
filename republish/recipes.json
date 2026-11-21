@@ -1,0 +1,12 @@
+[
+  {"title": "2D RPG/生存游戏新手委托可试玩原型（单文件 index.html）：冲突时用户要求优先，任务数据与顺序容错以第 2 步为准",
+   "steps": ["sha256:1e5ec4423650a49181e69a722928810506fb46bc62b0823773a1f5e1462a382b", "gene_quest_three_round_hidden_gate_v1"]},
+  {"title": "2D 俯视角 Boss 战招式与技能特效（可在浏览器直接打开的演示）：冲突时用户要求优先，出招节奏与躲避以第 1 步为准",
+   "steps": ["gene_boss_compound_attack_readable_evasion_v2", "gene_nl_to_ue_archetype_threejs_vfx_v1"]},
+  {"title": "2D 俯视角剧情分支可试玩原型（单文件 index.html）：冲突时用户要求优先，分支与后果以第 2 步为准",
+   "steps": ["sha256:1e5ec4423650a49181e69a722928810506fb46bc62b0823773a1f5e1462a382b", "gene_magiscapes__narrative_branching__consequence_propagation_and_counterfactual_diff"]},
+  {"title": "2D 俯视角冒险游戏序章地图可试玩原型（单文件 index.html）：冲突时用户要求优先，地图布局与怪物分区以第 2 步为准",
+   "steps": ["sha256:1e5ec4423650a49181e69a722928810506fb46bc62b0823773a1f5e1462a382b", "gene_structured_level_map_concentric_topology_harness"]},
+  {"title": "2D 俯视角动作 RPG 可试玩战斗副本（单文件 index.html）：冲突时用户要求优先，空间布局与难度以第 2 步为准",
+   "steps": ["sha256:1e5ec4423650a49181e69a722928810506fb46bc62b0823773a1f5e1462a382b", "gene_magiscapes_combat_spatial_numeric_coupling_harness"]}
+]

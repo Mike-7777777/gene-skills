@@ -4,12 +4,13 @@
 // beside this script for republish.mjs to run on the owning node. Any signed-in node can build; nothing is published.
 //
 //   node republish/build.mjs <skills commit> <gene asset id>...
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { connect, fullRecord, newCapsule, publicAsset, published } from './lib.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
+const VALIDATION = JSON.parse(readFileSync(join(HERE, 'validation.json'), 'utf8'));
 const [commit, ...oldIds] = process.argv.slice(2);
 const fail = (why, next) => { console.error(`停止：${why}${next ? `\n下一步：${next}` : ''}`); process.exit(1); };
 if (!/^[0-9a-f]{40}$/.test(commit ?? '') || oldIds.length === 0) fail('用法：node republish/build.mjs <40 位 commit> <Gene 编号>...');
@@ -31,8 +32,12 @@ for (const oldId of oldIds) {
   const files = await skill.fetchSkillFiles({ ...pins.value[0], commit });
   if (!files.ok) fail(`取不到 skill ${pins.value[0].name}@${commit}：${files.message}`, '确认这个 commit 已推到 GitHub。');
   const pin = { ...pins.value[0], commit, sha256: skill.digestOfSkillFiles(files.value) };
+  // The Hub demotes a promoted Gene with no validation commands back to candidate (validationQuality "empty"), and
+  // search serves promoted assets only, so a Gene without validation stops being recalled. validation.json keeps
+  // each case Gene's original command; it reads the Capsule, whose original fields the new Capsule keeps.
   const gene = {
     ...oldGene,
+    ...(oldGene.validation?.length ? {} : VALIDATION[oldGene.id] ? { validation: VALIDATION[oldGene.id] } : {}),
     preconditions: oldGene.preconditions.map((line) => line.startsWith('skill:')
       ? line.replace(/@[0-9a-f]{40}#sha256=[0-9a-f]{64}/, `@${commit}#sha256=${pin.sha256}`) : line),
   };

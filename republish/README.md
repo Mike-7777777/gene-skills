@@ -55,3 +55,18 @@ node republish/republish.mjs --apply
 - hub 每个节点 24 小时内最多撤回 5 个已晋升资产。脚本先撤 6 个旧 Gene，再撤旧 Capsule；额度用完会停在撤回这一步，第二天再运行同一条 `--apply` 命令接着撤。
 - 中途停下可以直接重跑，已完成的步骤会跳过。刚发布的 Gene 需要几十秒才能放进组合方案，脚本会自动等待，最多 3 分钟。
 - 每次运行的完整输出存在 `republish/logs/`。
+
+## 4. 用自己的节点发布（2026-11-21 起的做法）
+
+案例 Gene 的原节点上，没有校验命令的 Gene 会被 hub 的定时任务从 promoted 降回 candidate，而召回只认 promoted，所以纯 skill 版一度全部召回不到。这一版把原版的校验命令（`validation.json`）加回了 Gene；校验读的是 Capsule 正文里保留的原有字段，实跑通过。
+
+`publish.mjs` 从本机 evolver 登录的节点发布，不动其他节点的资产：
+
+```bash
+node republish/revalidate.mjs              # 给 Gene 补回校验并重算编号（已做过，清单里是结果）
+node republish/publish.mjs                 # 预览
+node republish/publish.mjs --apply --genes-only   # 只发布 Gene
+node republish/publish.mjs --apply         # Gene 都晋升后，建 recipes.json 里的组合方案
+```
+
+账号名下晋升资产不足 5 个的节点，发布的资产先进 candidate，由 hub 每 6 小时一次的定时任务按门槛晋升；组合方案只能用已晋升的 Gene，所以要等 Gene 晋升后再建。

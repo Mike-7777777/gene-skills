@@ -40,5 +40,8 @@
     "top-down rpg map layout",
     "town safe zone and monster spawn zones"
   ],
-  "schema_version": "1.13.0"
+  "schema_version": "1.13.0",
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const e=k.evaluator;const r=k.layout_rules;const v=k.round1_defects;const w=e.dimensions.reduce((t,d)=>t+d.weight,0);const rubric=w===100&&e.dimensions.length===5&&e.pass_single<e.pass_total;const rules=r.safe_buffer_min_tiles>=3&&r.faction_gap_min_tiles>=12&&r.mountain_wall_min_tiles>=2&&r.mountain_pass_min_width_tiles>=3&&r.same_faction_components===1;const caught=v.danger_tile_to_safezone_tiles<r.safe_buffer_min_tiles&&v.side_mountain_wall_tiles<r.mountain_wall_min_tiles&&v.smithy_door_front_tile!==r.road_tile_id;process.exit(rubric&&rules&&caught?0:1)\""
+  ]
 }

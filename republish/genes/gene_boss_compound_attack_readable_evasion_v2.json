@@ -44,5 +44,8 @@
     "Boss战玩家体验与战后结算等待",
     "boss fight dodge and punish window"
   ],
-  "schema_version": "1.13.0"
+  "schema_version": "1.13.0",
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const r=k.reference_example;const b=r.player_baseline;const s=r.sub_attacks;const reach=s.every(x=>x.worst_case_escape_distance_cm<=b.V_walk_cm_per_s*(x.windup_s-b.T_react_s));const stagger=s.slice(1).every((x,i)=>x.active_window_s[0]-s[i].active_window_s[0]>=0.6);const fixed=s.every(x=>x.randomize_spawn_in_target_area!==true);const p=r.punish_window;const w=p.recovery_s+p.bt_attack_interval_s;const punish=w>=0.8&&w<=1.5;const c=r.post_combat;const post=c.hazards_alive_after_fatal_hit===0&&c.disengage_s-c.fatal_hit_s<=0.1&&c.loot_ready_s-c.fatal_hit_s<=1.2;const blind=r.phase_transition.max_blind_wait_s<=3;process.exit(s.length>1&&reach&&stagger&&fixed&&punish&&post&&blind?0:1)\""
+  ]
 }

@@ -8,20 +8,32 @@
       "skill": "quest-prototype-three-round-gate",
       "files": 1,
       "old_asset_id": "sha256:d2574a395a9ce554ba5a883461a4445dfd19296decb99f5daab12d93a851e74b",
-      "new_asset_id": "sha256:a0d875179215d600150465db8940915f5ac8f627e5c16821d405aee19a3865ed",
+      "new_asset_id": "sha256:0a20014bb121766681479eaf0a97e975b12689eb3d28022a2ec3339ebdecb6b2",
       "old_capsule_asset_id": "sha256:22921c940545ab39f1df254fcaadd08eb261332e4b2ef67fb3ffa859524594fe",
-      "new_capsule_asset_id": "sha256:ae4ba1f8854e9bc1621412d66a8e2c5e6fe71a073da3eaecae8bc24b9ee0a2ad",
-      "recipes": []
+      "new_capsule_asset_id": "sha256:84937052d9046e23c24c6da670814bc64911744afce177ee15d44916c2ec0a80",
+      "recipes": [
+        "cmwqct1wf2cnzbi3fr91e8ic0"
+      ],
+      "superseded_asset_ids": [
+        "sha256:a0d875179215d600150465db8940915f5ac8f627e5c16821d405aee19a3865ed",
+        "sha256:ae4ba1f8854e9bc1621412d66a8e2c5e6fe71a073da3eaecae8bc24b9ee0a2ad"
+      ]
     },
     {
       "id": "gene_boss_compound_attack_readable_evasion_v2",
       "skill": "boss-compound-attack-readable-evasion",
       "files": 1,
       "old_asset_id": "sha256:fea89d0ce7ddda20142ebf835ed0ee9e19d8c8e7fc566ebcba97a1b4a1aebc4d",
-      "new_asset_id": "sha256:6bf8143e80a4d7e4d8f2b4cbf0d5d4a4571a5868314f84872b57debc098cb37f",
+      "new_asset_id": "sha256:f56191e0a49a146c582c7fceaf3279a57961afe3e1774b09f3ce88af0a461cf8",
       "old_capsule_asset_id": "sha256:b367e1a7dc49d5cc322ec20048384663181b22355120062093adf98dbdaf3c2d",
-      "new_capsule_asset_id": "sha256:404b6800030bf0b4ae7393c3fe4f4c26b2affb2201411cc2aa05e4fe964c133b",
-      "recipes": []
+      "new_capsule_asset_id": "sha256:2fc04356eca6a805b7774e1a47f06e05f5f60eea748d2bf0129d5c2b4bb73cf0",
+      "recipes": [
+        "cmwqct33h2cofbi3fzhhmkznu"
+      ],
+      "superseded_asset_ids": [
+        "sha256:6bf8143e80a4d7e4d8f2b4cbf0d5d4a4571a5868314f84872b57debc098cb37f",
+        "sha256:404b6800030bf0b4ae7393c3fe4f4c26b2affb2201411cc2aa05e4fe964c133b"
+      ]
     },
     {
       "id": "gene_magiscapes__narrative_branching__consequence_propagation_and_counterfactual_diff",
@@ -40,10 +52,16 @@
       "skill": "structured-level-map-concentric-harness",
       "files": 1,
       "old_asset_id": "sha256:00d4913f33a32edeacd71d7e806e494bff54b03ab0b5d43ac769520c3929361a",
-      "new_asset_id": "sha256:b64f4092e20c0a1b05b2f6b1736ac9bd9689255c58cf1c6b6b01072c81608024",
+      "new_asset_id": "sha256:04b8e285f7b94a63e7a44b71db7410b480dab43e5c2f52882654fbd5eefc5280",
       "old_capsule_asset_id": "sha256:cde7932b10844237e73bda94865dda89856693e071ebf539fdcd96fddbbb0790",
-      "new_capsule_asset_id": "sha256:265ab7a4295bdfbe60cfb3beaa5a18b3060e3077f89a19ce2cbb0f165d943f4f",
-      "recipes": []
+      "new_capsule_asset_id": "sha256:d62374133c9871c9ab4d5db61e84790aa064f2c0aad216278239661fd469ce0f",
+      "recipes": [
+        "cmwqcwwzn2kuxca3ez24t8y4e"
+      ],
+      "superseded_asset_ids": [
+        "sha256:b64f4092e20c0a1b05b2f6b1736ac9bd9689255c58cf1c6b6b01072c81608024",
+        "sha256:265ab7a4295bdfbe60cfb3beaa5a18b3060e3077f89a19ce2cbb0f165d943f4f"
+      ]
     },
     {
       "id": "gene_magiscapes_combat_spatial_numeric_coupling_harness",
@@ -54,7 +72,7 @@
       "old_capsule_asset_id": "sha256:ae93af331b313e6544dc2ab83a50b6ea57c842fd0c0cec78b2598f92bef27973",
       "new_capsule_asset_id": "sha256:9c249e4860f65210a72a31709a7aaf8d34f31a892fc7db0b9d572d2d6019e5fa",
       "recipes": [
-        "cmwqbdzqw20ijai3hef6jwqrr"
+        "cmwqcwyhw2dccbi3fo8kw3o56"
       ]
     },
     {
@@ -62,10 +80,16 @@
       "skill": "threejs-deterministic-vfx-composer",
       "files": 1,
       "old_asset_id": "sha256:ed56edb6949944ed72fd683ffda82dc4dcea7aae73e863a533f9c1031d5c7810",
-      "new_asset_id": "sha256:6f4b57da383b04bea233a87563a3ba560bec3f2522f0797737a1d46f4724fef6",
+      "new_asset_id": "sha256:aa798ead884e47f53ff831d0360e24c067809d05818da37b57e84a616f290e9d",
       "old_capsule_asset_id": "sha256:301d06bd9d10a89370ab1b0d0d729e4372c113166daac16c768a7aaed37c3dea",
-      "new_capsule_asset_id": "sha256:c43164cc272d1bc372935c4f21f2268628630042ef2dc48ebdb1f6f77f6df0c3",
-      "recipes": []
+      "new_capsule_asset_id": "sha256:626ebbf522ebabc58413ad060faac682ae796c54b38525c9e3eeeac3859542d8",
+      "recipes": [
+        "cmwqct33h2cofbi3fzhhmkznu"
+      ],
+      "superseded_asset_ids": [
+        "sha256:6f4b57da383b04bea233a87563a3ba560bec3f2522f0797737a1d46f4724fef6",
+        "sha256:c43164cc272d1bc372935c4f21f2268628630042ef2dc48ebdb1f6f77f6df0c3"
+      ]
     }
   ]
 }

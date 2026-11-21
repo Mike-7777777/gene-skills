@@ -9,7 +9,7 @@
 import { appendFileSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { connect, publicAsset } from './lib.mjs';
+import { assetLookup, ciAttestation, connect } from './lib.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const apply = process.argv.includes('--apply');
@@ -24,7 +24,10 @@ const RECIPE_WAIT_TRIES = 12;
 log(`${apply ? '执行' : '预览（不改任何东西）'}  ${new Date().toISOString()}`);
 const evolver = await connect(fail);
 const { wire, skill, stripHubDeliveryMetadataForIntegrity, sender, http, envelope } = evolver;
+const publicAsset = assetLookup(evolver);
 log(`evolver ${evolver.version}，当前登录节点：${sender}`);
+const attest = ciAttestation();
+log(attest ? 'CI 认证 key：已找到，发布请求带签名（账号的 key 生效时直接晋升）' : 'CI 认证 key：没有（~/.evomap/ci-key.pem 与 ci-key.id），新人节点发布先为 candidate');
 const manifest = read('manifest.json');
 const recipes = read('recipes.json');
 const geneIds = new Map(manifest.genes.map((entry) => [entry.id, entry.new_asset_id]));
@@ -56,6 +59,7 @@ for (const entry of manifest.genes) {
 }
 const resolved = recipes.map((recipe) => ({
   title: recipe.title,
+  ...(recipe.description ? { description: recipe.description } : {}),
   steps: recipe.steps.map((step) => geneIds.get(step) ?? step),
 }));
 for (const recipe of resolved) {
@@ -70,7 +74,8 @@ for (const plan of plans) {
   if (plan.live?.status && plan.live.status !== 'revoked') { log(`  ${plan.entry.id}：已在 hub 上（${plan.live.status}），跳过`); continue; }
   let answer;
   try {
-    answer = await http.call('POST', '/a2a/publish', envelope('publish', { assets: [plan.gene, plan.capsule] }));
+    const message = envelope('publish', { assets: [plan.gene, plan.capsule] });
+    answer = await http.call('POST', '/a2a/publish', message, undefined, attest?.(message));
   } catch (error) {
     fail(`发布 ${plan.entry.id} 失败：${error.message} ${JSON.stringify(error.body ?? '').slice(0, 600)}`);
   }
@@ -93,10 +98,24 @@ if (process.argv.includes('--genes-only')) {
 log('\n第 2 步：建组合方案');
 const recipeIdOf = (body) => body?.recipe?.id ?? body?.payload?.recipe?.id ?? body?.id ?? body?.recipe_id ?? body?.payload?.recipe_id;
 const created = [];
+const archived = new Set();
 for (const recipe of resolved) {
   // A rerun finds its earlier Recipe on the last step's Gene, which the Hub lists with the Recipes that use it.
   const last = await publicAsset(recipe.steps.at(-1));
-  const existing = (last?.recipes ?? []).find((r) => r.node_id === sender && r.title === recipe.title && r.status === 'published');
+  // The asset record's Recipe list lags a fresh Recipe by minutes; a title search sees it sooner. Take both.
+  const searched = await http.call('GET', '/a2a/recipe/search', undefined, { q: recipe.title, limit: 20 }).catch(() => ({}));
+  const byId = new Map();
+  for (const r of last?.recipes ?? []) byId.set(r.recipe_id, { recipe_id: r.recipe_id, node_id: r.node_id, title: r.title, status: r.status });
+  for (const r of searched?.recipes ?? []) byId.set(r.id, { recipe_id: r.id, node_id: r.node_id ?? r.author_node_id, title: r.title, status: r.status ?? 'published' });
+  const mine = [...byId.values()].filter((r) => r.node_id === sender && r.title === recipe.title && r.status === 'published');
+  // The asset record lists Recipes without their description; read each one to tell a current Recipe from one that
+  // a changed description in recipes.json replaces.
+  let existing = null;
+  const stale = [];
+  for (const r of mine) {
+    const body = await http.call('GET', `/a2a/recipe/${encodeURIComponent(r.recipe_id)}`);
+    ((body?.recipe ?? body)?.description ?? '') === (recipe.description ?? '') ? (existing = r) : stale.push(r.recipe_id);
+  }
   if (existing) { log(`  ${existing.recipe_id}：已建过`); created.push({ ...recipe, id: existing.recipe_id }); continue; }
   // A Recipe can only use promoted Genes; one whose Genes are still candidates waits for the next run.
   const pending = [];
@@ -107,7 +126,7 @@ for (const recipe of resolved) {
     for (let attempt = 1; ; attempt++) {
       try {
         id = recipeIdOf(await http.call('POST', '/a2a/recipe', {
-          node_id: sender, title: recipe.title,
+          node_id: sender, title: recipe.title, ...(recipe.description ? { description: recipe.description } : {}),
           steps: recipe.steps.map((assetId, i) => ({ asset_id: assetId, asset_type: 'Gene', position: i + 1 })),
         }));
         break;
@@ -124,6 +143,11 @@ for (const recipe of resolved) {
     fail(`建组合方案「${recipe.title.slice(0, 30)}…」失败：${error.message} ${JSON.stringify(error.body ?? '').slice(0, 600)}`, 'Gene 已发布，修好后重跑会接着建。');
   }
   log(`  ${id}：已发布 ${recipe.title.slice(0, 30)}…`);
+  for (const oldId of stale) {
+    await http.call('POST', `/a2a/recipe/${encodeURIComponent(oldId)}/archive`, {});
+    archived.add(oldId);
+    log(`  ${oldId}：描述已更新，旧方案已归档`);
+  }
   created.push({ ...recipe, id });
 }
 
@@ -132,7 +156,8 @@ log('\n第 3 步：读回核对');
 for (const plan of plans) {
   const live = await publicAsset(plan.entry.new_asset_id);
   log(`  ${plan.entry.id}：${live?.status ?? '查不到'}，Capsule ${live?.bundle_capsule?.asset_id === plan.entry.new_capsule_asset_id ? '对得上' : '对不上'}`);
-  plan.entry.recipes = created.filter((r) => r.steps.includes(plan.entry.new_asset_id)).map((r) => r.id);
+  // Merge: a Recipe built on an earlier run stays recorded even if this run could not look it up.
+  plan.entry.recipes = [...new Set([...(plan.entry.recipes ?? []), ...created.filter((r) => r.steps.includes(plan.entry.new_asset_id)).map((r) => r.id)])].filter((id) => !archived.has(id));
 }
 for (const recipe of created) {
   const body = await http.call('GET', `/a2a/recipe/${encodeURIComponent(recipe.id)}`);

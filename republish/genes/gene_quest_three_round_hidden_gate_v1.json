@@ -14,7 +14,8 @@
       "top-down-2d",
       "playable-prototype",
       "data-validation"
-    ]
+    ],
+    "skills_commit": "4e2bc345a1bc245116d2a54ab92edb4b81e4ea6b"
   },
   "strategy": [
     "先按前置条件安装并通读 skill quest-prototype-three-round-gate，具体规则、接口和检查以它为准。",

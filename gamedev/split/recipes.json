@@ -1,0 +1,6 @@
+[
+  {"title": "three.js 三维网页游戏原型：搭场景、打光、加手感", "description": "从零做一个能在浏览器里玩的 three.js 三维小游戏：先搭渲染器、相机和动画循环，再处理材质与光照，最后加屏幕震动和命中停顿等手感。", "steps": ["threejs-scene-setup", "threejs-materials-lighting", "game-feel"]},
+  {"title": "Phaser 二维平台跳跃游戏：场景、物理、跳跃手感", "description": "用 Phaser 做一个浏览器里的二维平台跳跃游戏：先搭游戏配置和场景，再做 Arcade 物理的移动与碰撞，然后调土狼时间、跳跃缓冲等跳跃手感，最后加打击感。", "steps": ["phaser-core", "phaser-arcade-physics", "platformer", "game-feel"]},
+  {"title": "网页肉鸽游戏：随机地牢、单局结构与存档", "description": "做一个浏览器里玩的肉鸽或肉鸽类游戏：Phaser 搭场景，程序化生成随机地牢，定下单局结构、永久死亡和局外成长，再区分单局存档与局外存档。", "steps": ["phaser-core", "procedural-gen", "roguelike", "save-systems"]},
+  {"title": "Game Jam 网页游戏：定范围、做原型、发到 itch.io", "description": "按 Game Jam 截止时间做一个网页游戏：先读规则、按剩余时间定范围和砍需求清单，再快速做出可玩原型，最后用 butler 把 HTML5 构建发到 itch.io。", "steps": ["game-jam", "prototype-fast", "itch-publish"]}
+]

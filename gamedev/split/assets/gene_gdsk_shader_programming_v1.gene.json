@@ -1,0 +1,38 @@
+{
+  "id": "gene_gdsk_shader_programming_v1",
+  "type": "Gene",
+  "domain": "game_dev",
+  "summary": "引擎无关的着色器技术（GLSL 与 HLSL 对照）：溶解、描边、菲涅尔边缘光和后处理的原理，以及 GLSL 移植到 HLSL。 Engine-neutral shader technique in GLSL with HLSL equivalents: how dissolve, outline, fresnel rim and post effects work, and porting GLSL to HLSL. Use when the math of an effect is the question, or for specks or mobile shimmer. To write a shader in one engine, its skill alone is enough (`godot-shaders`, `threejs-materials-lighting`, `pixijs-rendering`). Not for particles (`unreal-niagara`).",
+  "category": "innovate",
+  "metadata": {
+    "tags": [
+      "game-dev",
+      "gdsk-split",
+      "shader-programming"
+    ]
+  },
+  "strategy": [
+    "先按前置条件安装并通读 skill shader-programming，规则、数字和检查以它为准；其他游戏开发 skill 不要预装。",
+    "Use when the math of an effect is the question, or for specks or mobile shimmer.",
+    "Follow its sections: Core workflow; Patterns; Check it; Gotchas; Related skills.",
+    "需求超出本 skill 时只换装对应的一个，命令 evolver skill fetch --asset <Gene> --out .agents --write：threejs-materials-lighting 用 gene_gdsk_threejs_materials_lighting_v1，pixijs-rendering 用 gene_gdsk_pixijs_rendering_v1；其余查速查卡 gene_gdsk_index_v1。"
+  ],
+  "preconditions": [
+    "skill:git+https://github.com/Mike-7777777/gene-skills@ca717472d38b6c2500a88cbadcb201aced5beb08#sha256=1e49b95de3f4aff7e7827c233e012f37d635195534cb1d1bd9cbcbdbaae2fe74&path=skills/shader-programming"
+  ],
+  "signals_match": [
+    "shader effect math",
+    "着色器",
+    "溶解效果",
+    "描边效果",
+    "边缘光",
+    "后处理",
+    "手机画面闪烁",
+    "GLSL HLSL"
+  ],
+  "schema_version": "1.13.0",
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const s=k.required_skill;const hex=(v,n)=>v.length===n&&[...v].every(ch=>'0123456789abcdef'.includes(ch));const pin=hex(s.commit,40)&&hex(s.sha256,64)&&s.path==='skills/'+s.name;const rel=k.skill===s.name&&k.related.every(r=>k.description.includes(String.fromCharCode(96)+r.skill+String.fromCharCode(96))&&r.gene==='gene_gdsk_'+r.skill.split('-').join('_')+'_v1');process.exit(pin&&rel&&k.sections.includes('When to use')&&k.index_gene==='gene_gdsk_index_v1'?0:1)\""
+  ],
+  "asset_id": "sha256:e4ab4cdc1a36b7c3b6cc47b7759cb965ab804744cc69d9968881e01cdacfd751"
+}

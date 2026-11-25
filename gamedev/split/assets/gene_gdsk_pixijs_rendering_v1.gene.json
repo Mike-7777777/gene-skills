@@ -1,0 +1,38 @@
+{
+  "id": "gene_gdsk_pixijs_rendering_v1",
+  "type": "Gene",
+  "domain": "game_dev",
+  "summary": "用 PixiJS v8 搭建和调试 2D 网页游戏渲染：异步初始化、资源加载、容器与精灵场景树、指针拖拽和 v7 到 v8 迁移。 Builds and debugs 2D browser game rendering with PixiJS v8: async init, Assets loading, the Container and Sprite scene graph, pointer dragging and v7-to-v8 migration. Use when a game or playable ad uses pixi.js, or on a blank canvas, clicks not firing, or drag stopping at the sprite edge. Not for dashboards or charts, Phaser (`phaser-core`) or 3D (`threejs-scene-setup`).",
+  "category": "innovate",
+  "metadata": {
+    "tags": [
+      "game-dev",
+      "gdsk-split",
+      "pixijs-rendering"
+    ]
+  },
+  "strategy": [
+    "先按前置条件安装并通读 skill pixijs-rendering，规则、数字和检查以它为准；其他游戏开发 skill 不要预装。",
+    "Use when a game or playable ad uses pixi.",
+    "Workflow: Read the installed version; Create, then `await app.init({...})`; Load before you build; Build the display list from `Container`s.",
+    "需求超出本 skill 时只换装对应的一个，命令 evolver skill fetch --asset <Gene> --out .agents --write：phaser-core 用 gene_gdsk_phaser_core_v1，threejs-scene-setup 用 gene_gdsk_threejs_scene_setup_v1；其余查速查卡 gene_gdsk_index_v1。"
+  ],
+  "preconditions": [
+    "skill:git+https://github.com/Mike-7777777/gene-skills@2bdd1d47c5ee728165f0f64cdb5358821006afd2#sha256=25f0f53a81052ed83ee1671e16288ba0141d3b4cc2b585a637ad7f61a97e3664&path=skills/pixijs-rendering"
+  ],
+  "signals_match": [
+    "pixijs 2d rendering",
+    "二维渲染",
+    "画布空白",
+    "点击没反应",
+    "拖拽精灵",
+    "试玩广告",
+    "PixiJS",
+    "pixi.js v8"
+  ],
+  "schema_version": "1.13.0",
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const s=k.required_skill;const hex=(v,n)=>v.length===n&&[...v].every(ch=>'0123456789abcdef'.includes(ch));const pin=hex(s.commit,40)&&hex(s.sha256,64)&&s.path==='skills/'+s.name;const rel=k.skill===s.name&&k.related.every(r=>k.description.includes(String.fromCharCode(96)+r.skill+String.fromCharCode(96))&&r.gene==='gene_gdsk_'+r.skill.split('-').join('_')+'_v1');process.exit(pin&&rel&&k.sections.includes('When to use')&&k.index_gene==='gene_gdsk_index_v1'?0:1)\""
+  ],
+  "asset_id": "sha256:c1caa4cbc1d485cff6f9b84a289a3ac8da0883b054d34bf8680a2dae3043ebd9"
+}

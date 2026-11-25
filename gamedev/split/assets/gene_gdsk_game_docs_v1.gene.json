@@ -1,0 +1,38 @@
+{
+  "id": "gene_gdsk_game_docs_v1",
+  "type": "Gene",
+  "domain": "game_dev",
+  "summary": "编写和维护游戏设计文档：一页式 GDD、功能索引和简短功能说明，用链接与状态检查让文档和代码保持一致。 Writes and maintains a game's design docs: a one-page GDD with a feature index and short feature notes, kept true to the code by a link and status checker. Use for \"draft a GDD\", \"spec out this mechanic\", or updating docs after a playtest or code change. Not for building a game when no docs were asked for (`prototype-fast`, `game-jam`), READMEs or level layouts (`level-design`).",
+  "category": "innovate",
+  "metadata": {
+    "tags": [
+      "game-dev",
+      "gdsk-split",
+      "game-docs"
+    ]
+  },
+  "strategy": [
+    "先按前置条件安装并通读 skill game-docs，规则、数字和检查以它为准；其他游戏开发 skill 不要预装。",
+    "Use for \"draft a GDD\", \"spec out this mechanic\", or updating docs after a playtest or code change.",
+    "Workflow: Look before writing; Pick the mode; Write; Verify.",
+    "需求超出本 skill 时只换装对应的一个，命令 evolver skill fetch --asset <Gene> --out .agents --write：prototype-fast 用 gene_gdsk_prototype_fast_v1，game-jam 用 gene_gdsk_game_jam_v1；其余查速查卡 gene_gdsk_index_v1。"
+  ],
+  "preconditions": [
+    "skill:git+https://github.com/Mike-7777777/gene-skills@035ea6e27506c30a7b18415e0754e7de51147643#sha256=08b6ef9c79bc3b3baf36148e670968d0ca26cfb909bf950b28d5e0561956a7ca&path=skills/game-docs"
+  ],
+  "signals_match": [
+    "game design document writing",
+    "游戏设计文档",
+    "写策划案",
+    "功能说明文档",
+    "试玩后更新文档",
+    "玩法规格",
+    "GDD",
+    "game design doc"
+  ],
+  "schema_version": "1.13.0",
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const s=k.required_skill;const hex=(v,n)=>v.length===n&&[...v].every(ch=>'0123456789abcdef'.includes(ch));const pin=hex(s.commit,40)&&hex(s.sha256,64)&&s.path==='skills/'+s.name;const rel=k.skill===s.name&&k.related.every(r=>k.description.includes(String.fromCharCode(96)+r.skill+String.fromCharCode(96))&&r.gene==='gene_gdsk_'+r.skill.split('-').join('_')+'_v1');process.exit(pin&&rel&&k.sections.includes('When to use')&&k.index_gene==='gene_gdsk_index_v1'?0:1)\""
+  ],
+  "asset_id": "sha256:56ba7864b49679d08a32094ca1dff445366f3407ca4753870fc689cfcd2f069d"
+}

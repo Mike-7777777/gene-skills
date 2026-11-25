@@ -1,0 +1,38 @@
+{
+  "id": "gene_gdsk_phaser_core_v1",
+  "type": "Gene",
+  "domain": "game_dev",
+  "summary": "搭建和调试 Phaser 4（及 Phaser 3.90）游戏：游戏配置、场景生命周期、加载器、场景切换和 3 到 4 的迁移。 Sets up and debugs Phaser 4 games (and pinned Phaser 3.90): Game config, Scene lifecycle, the loader, scene transitions and Phaser 3 to 4 migration. Use when code imports phaser, or on a black screen, assets undefined in create, or a HUD scene behind the game. Not for colliders (`phaser-arcade-physics`), HUD layout (`game-ui-ux`) or PixiJS (`pixijs-rendering`).",
+  "category": "innovate",
+  "metadata": {
+    "tags": [
+      "game-dev",
+      "gdsk-split",
+      "phaser-core"
+    ]
+  },
+  "strategy": [
+    "先按前置条件安装并通读 skill phaser-core，规则、数字和检查以它为准；其他游戏开发 skill 不要预装。",
+    "Use when code imports phaser, or on a black screen, assets undefined in create, or a HUD scene behind the game.",
+    "Workflow: Read the installed major; Keep rules out of scenes; Create one game from a config; One `Scene` subclass per screen.",
+    "需求超出本 skill 时只换装对应的一个，命令 evolver skill fetch --asset <Gene> --out .agents --write：phaser-arcade-physics 用 gene_gdsk_phaser_arcade_physics_v1，game-ui-ux 用 gene_gdsk_game_ui_ux_v1；其余查速查卡 gene_gdsk_index_v1。"
+  ],
+  "preconditions": [
+    "skill:git+https://github.com/Mike-7777777/gene-skills@6431f6a57edf4fd1f8bb76ba118fcbd9ba499032#sha256=5e9052643b1f50e342c15e43a762a68b661fa858a26d781e437d02c5dd30521d&path=skills/phaser-core"
+  ],
+  "signals_match": [
+    "phaser game setup scenes",
+    "二维网页游戏",
+    "Phaser黑屏",
+    "场景切换",
+    "素材加载失败",
+    "Phaser游戏",
+    "Phaser 4",
+    "Phaser scene"
+  ],
+  "schema_version": "1.13.0",
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const s=k.required_skill;const hex=(v,n)=>v.length===n&&[...v].every(ch=>'0123456789abcdef'.includes(ch));const pin=hex(s.commit,40)&&hex(s.sha256,64)&&s.path==='skills/'+s.name;const rel=k.skill===s.name&&k.related.every(r=>k.description.includes(String.fromCharCode(96)+r.skill+String.fromCharCode(96))&&r.gene==='gene_gdsk_'+r.skill.split('-').join('_')+'_v1');process.exit(pin&&rel&&k.sections.includes('When to use')&&k.index_gene==='gene_gdsk_index_v1'?0:1)\""
+  ],
+  "asset_id": "sha256:7fde425795bc0e8628b73645efb60cac20d6b61c465069a6e7cfda754539a68f"
+}

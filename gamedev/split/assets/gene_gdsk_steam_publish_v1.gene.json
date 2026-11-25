@@ -1,0 +1,38 @@
+{
+  "id": "gene_gdsk_steam_publish_v1",
+  "type": "Gene",
+  "domain": "game_dev",
+  "summary": "用 Steamworks 与 SteamPipe 发布或更新 Steam 游戏：仓库、构建脚本、steamcmd 上传、测试分支、上线、商店审核和即将推出页面。 Publishes or updates a game on Steam with Steamworks and SteamPipe: depots, app_build .vdf scripts, steamcmd uploads, beta branches, SetLive, store review and Coming Soon. Use for steamcmd, ContentBuilder, \"Failed to get application info\", Steam Deck Verified or \"ship it on Steam\". Not for itch.io (`itch-publish`) or Steamworks SDK calls in game code.",
+  "category": "innovate",
+  "metadata": {
+    "tags": [
+      "game-dev",
+      "gdsk-split",
+      "steam-publish"
+    ]
+  },
+  "strategy": [
+    "先按前置条件安装并通读 skill steam-publish，规则、数字和检查以它为准；其他游戏开发 skill 不要预装。",
+    "Use for steamcmd, ContentBuilder, \"Failed to get application info\", Steam Deck Verified or \"ship it on Steam\".",
+    "Workflow: Configure the app in App Admin; Store page track; Write the build scripts; Check the scripts.",
+    "需求超出本 skill 时只换装对应的一个，命令 evolver skill fetch --asset <Gene> --out .agents --write：itch-publish 用 gene_gdsk_itch_publish_v1；其余查速查卡 gene_gdsk_index_v1。"
+  ],
+  "preconditions": [
+    "skill:git+https://github.com/Mike-7777777/gene-skills@47ab07161096336ad5147aba3a3b93457efb41ab#sha256=6e584327501b597e7a49d8669d4237fc1db7e634c7e8cea6f0dffef14c6d75d8&path=skills/steam-publish"
+  ],
+  "signals_match": [
+    "steam steampipe release",
+    "发布到Steam",
+    "上架Steam",
+    "测试分支",
+    "商店审核",
+    "即将推出",
+    "steamcmd",
+    "Steam Deck Verified"
+  ],
+  "schema_version": "1.13.0",
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const s=k.required_skill;const hex=(v,n)=>v.length===n&&[...v].every(ch=>'0123456789abcdef'.includes(ch));const pin=hex(s.commit,40)&&hex(s.sha256,64)&&s.path==='skills/'+s.name;const rel=k.skill===s.name&&k.related.every(r=>k.description.includes(String.fromCharCode(96)+r.skill+String.fromCharCode(96))&&r.gene==='gene_gdsk_'+r.skill.split('-').join('_')+'_v1');process.exit(pin&&rel&&k.sections.includes('When to use')&&k.index_gene==='gene_gdsk_index_v1'?0:1)\""
+  ],
+  "asset_id": "sha256:835e7b21dcb48ed0cffe27b4b91d97a618e91cc46a79317eccf467742571862e"
+}

@@ -1,0 +1,38 @@
+{
+  "id": "gene_gdsk_physics_tuning_v1",
+  "type": "Gene",
+  "domain": "game_dev",
+  "summary": "引擎无关的物理调参：固定时间步与插值、防穿透的连续碰撞检测、阻尼、求解器迭代和碰撞层矩阵。 Engine-neutral physics tuning with Godot checks: fixed timestep and interpolation, CCD against tunnelling, damping, solver iterations and collision layer matrices. Use when bodies jitter, fast objects pass through walls or physics feels floaty or wrong. Not for engine physics APIs (`godot-physics`, `unity-physics`, `roblox-physics`, `phaser-arcade-physics`) or jump feel (`platformer`).",
+  "category": "innovate",
+  "metadata": {
+    "tags": [
+      "game-dev",
+      "gdsk-split",
+      "physics-tuning"
+    ]
+  },
+  "strategy": [
+    "先按前置条件安装并通读 skill physics-tuning，规则、数字和检查以它为准；其他游戏开发 skill 不要预装。",
+    "Use when bodies jitter, fast objects pass through walls or physics feels floaty or wrong.",
+    "Follow its sections: Core workflow; Patterns; Check it; Gotchas; Related skills.",
+    "需求超出本 skill 时只换装对应的一个，命令 evolver skill fetch --asset <Gene> --out .agents --write：phaser-arcade-physics 用 gene_gdsk_phaser_arcade_physics_v1，platformer 用 gene_gdsk_platformer_v1；其余查速查卡 gene_gdsk_index_v1。"
+  ],
+  "preconditions": [
+    "skill:git+https://github.com/Mike-7777777/gene-skills@37b0184bdcec0fe1eeb2c2d98e7c0b1ea85b3c3c#sha256=752c726f886db352d1de5c115338c339e6967a4316f41e2ff7ecb527417653e2&path=skills/physics-tuning"
+  ],
+  "signals_match": [
+    "game physics timestep tuning",
+    "物理调参",
+    "物体抖动",
+    "高速穿墙",
+    "物理发飘",
+    "碰撞层",
+    "固定时间步",
+    "tunnelling CCD"
+  ],
+  "schema_version": "1.13.0",
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const s=k.required_skill;const hex=(v,n)=>v.length===n&&[...v].every(ch=>'0123456789abcdef'.includes(ch));const pin=hex(s.commit,40)&&hex(s.sha256,64)&&s.path==='skills/'+s.name;const rel=k.skill===s.name&&k.related.every(r=>k.description.includes(String.fromCharCode(96)+r.skill+String.fromCharCode(96))&&r.gene==='gene_gdsk_'+r.skill.split('-').join('_')+'_v1');process.exit(pin&&rel&&k.sections.includes('When to use')&&k.index_gene==='gene_gdsk_index_v1'?0:1)\""
+  ],
+  "asset_id": "sha256:9f3e1b3ca6a48510a59d9355d1c369d42b606f9bcb439920d0607a31137af507"
+}

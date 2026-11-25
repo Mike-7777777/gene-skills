@@ -1,0 +1,38 @@
+{
+  "id": "gene_gdsk_game_ai_v1",
+  "type": "Gene",
+  "domain": "game_dev",
+  "summary": "敌人与 NPC AI 的引擎无关设计：在状态机、行为树、效用 AI、GOAP 间选型，并实现感知、转向和 A* 寻路。 Designs engine-neutral enemy and NPC AI: picks FSM, behavior tree, utility or GOAP, and builds perception, steering and A* pathfinding. Use for patrol and chase, \"find a path to the player\", agents stuck on corners or AI that sees through walls. Not for BT or utility code (`ai-behavior-trees-utility-ai`), Unreal AI (`unreal-behavior-trees`) or Unity NavMesh (`unity-navmesh`).",
+  "category": "innovate",
+  "metadata": {
+    "tags": [
+      "game-dev",
+      "gdsk-split",
+      "game-ai"
+    ]
+  },
+  "strategy": [
+    "先按前置条件安装并通读 skill game-ai，规则、数字和检查以它为准；其他游戏开发 skill 不要预装。",
+    "Use for patrol and chase, \"find a path to the player\", agents stuck on corners or AI that sees through walls.",
+    "Workflow: Read the project first; Write perception once; Pick the model; Path on the coarsest graph that works.",
+    "需求超出本 skill 时只换装对应的一个，命令 evolver skill fetch --asset <Gene> --out .agents --write：ai-behavior-trees-utility-ai 用 gene_gdsk_ai_behavior_trees_utility_ai_v1；其余查速查卡 gene_gdsk_index_v1。"
+  ],
+  "preconditions": [
+    "skill:git+https://github.com/Mike-7777777/gene-skills@3371fb4a9298c82d80ee050370970cc8a5a6af31#sha256=0801f950356489dcdf287248bc3ba6ca3caafdf1d3eec35ae724ddcc47817b43&path=skills/game-ai"
+  ],
+  "signals_match": [
+    "enemy ai pathfinding design",
+    "敌人AI",
+    "巡逻追击",
+    "敌人寻路",
+    "状态机AI",
+    "AI卡在墙角",
+    "AI透视",
+    "A* pathfinding"
+  ],
+  "schema_version": "1.13.0",
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const s=k.required_skill;const hex=(v,n)=>v.length===n&&[...v].every(ch=>'0123456789abcdef'.includes(ch));const pin=hex(s.commit,40)&&hex(s.sha256,64)&&s.path==='skills/'+s.name;const rel=k.skill===s.name&&k.related.every(r=>k.description.includes(String.fromCharCode(96)+r.skill+String.fromCharCode(96))&&r.gene==='gene_gdsk_'+r.skill.split('-').join('_')+'_v1');process.exit(pin&&rel&&k.sections.includes('When to use')&&k.index_gene==='gene_gdsk_index_v1'?0:1)\""
+  ],
+  "asset_id": "sha256:5fcc378f251158464d235f591e65a8f713f778ca43c05d8f4500d267247f4322"
+}

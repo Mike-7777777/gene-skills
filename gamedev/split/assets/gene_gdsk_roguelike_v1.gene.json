@@ -1,0 +1,38 @@
+{
+  "id": "gene_gdsk_roguelike_v1",
+  "type": "Gene",
+  "domain": "game_dev",
+  "summary": "以单局为单位的肉鸽设计：单局结构、永久死亡、局外成长、种子与每日挑战、回合顺序和对称视野。 Designs run-based roguelikes and roguelites in any engine: run structure, permadeath, meta-progression, seeded and daily runs, turn order and symmetric field of view. Use for NetHack- or Hades-style games, or runs that feel cheap. Pair with `procedural-gen` for dungeon generation and `save-systems` for run vs meta saves. Not for roguelike deckbuilders (`card-game`).",
+  "category": "innovate",
+  "metadata": {
+    "tags": [
+      "game-dev",
+      "gdsk-split",
+      "roguelike"
+    ]
+  },
+  "strategy": [
+    "先按前置条件安装并通读 skill roguelike，规则、数字和检查以它为准；其他游戏开发 skill 不要预装。",
+    "Use for NetHack- or Hades-style games, or runs that feel cheap.",
+    "Workflow: Settle the type with the user; Lay out the run; Split state; Seed everything.",
+    "需求超出本 skill 时只换装对应的一个，命令 evolver skill fetch --asset <Gene> --out .agents --write：procedural-gen 用 gene_gdsk_procedural_gen_v1，save-systems 用 gene_gdsk_save_systems_v1；其余查速查卡 gene_gdsk_index_v1。"
+  ],
+  "preconditions": [
+    "skill:git+https://github.com/Mike-7777777/gene-skills@7b3d5ff8dacd025e10b54337a79ae8aded476fe3#sha256=97ef73f234691d46967ddc0185556cb6077bbe0d4296eddea13c11c7d91cc2be&path=skills/roguelike"
+  ],
+  "signals_match": [
+    "roguelike run structure",
+    "肉鸽游戏",
+    "永久死亡",
+    "局外成长",
+    "每日挑战",
+    "回合制地牢",
+    "类哈迪斯",
+    "roguelite"
+  ],
+  "schema_version": "1.13.0",
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const s=k.required_skill;const hex=(v,n)=>v.length===n&&[...v].every(ch=>'0123456789abcdef'.includes(ch));const pin=hex(s.commit,40)&&hex(s.sha256,64)&&s.path==='skills/'+s.name;const rel=k.skill===s.name&&k.related.every(r=>k.description.includes(String.fromCharCode(96)+r.skill+String.fromCharCode(96))&&r.gene==='gene_gdsk_'+r.skill.split('-').join('_')+'_v1');process.exit(pin&&rel&&k.sections.includes('When to use')&&k.index_gene==='gene_gdsk_index_v1'?0:1)\""
+  ],
+  "asset_id": "sha256:9b21295de9e7eeaddd79d90b0eacac5cca6d5ca8563eb22662046051f9641583"
+}

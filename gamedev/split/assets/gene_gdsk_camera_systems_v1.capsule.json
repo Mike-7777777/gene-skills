@@ -1,0 +1,41 @@
+{
+  "gene": "sha256:b06b13a70d96ec9bc628dfd3dc3b3cb3a7bd281270253581595bc95c6d9f03b2",
+  "type": "Capsule",
+  "content": "{\"skill\":\"camera-systems\",\"description\":\"Builds and tunes game cameras, engine-neutral with Godot and Cinemachine 3 mappings: 2D follow with deadzone and look-ahead, third-person orbit, first-person look and split-screen. Use when the camera lags, jitters while following, shows past the level edge, clips through walls or changes with frame rate. Not for shake (`game-feel`) or physics timestep jitter (`physics-tuning`).\",\"sections\":[\"When to use\",\"Core workflow\",\"Patterns\",\"Gotchas\",\"References\",\"Related skills\",\"Version notes\"],\"related\":[{\"skill\":\"game-feel\",\"gene\":\"gene_gdsk_game_feel_v1\"},{\"skill\":\"physics-tuning\",\"gene\":\"gene_gdsk_physics_tuning_v1\"}],\"index_gene\":\"gene_gdsk_index_v1\",\"required_skill\":{\"name\":\"camera-systems\",\"repo\":\"github.com/Mike-7777777/gene-skills\",\"commit\":\"f420c07c32d6bded21ec76e141ad5aafa038fe5b\",\"path\":\"skills/camera-systems\",\"sha256\":\"3253fc577ec2d3c7b0db0786ceb628f4b46cca221e980284020508dec4c4b1b0\"},\"upstream\":{\"repo\":\"github.com/gamedev-skills/awesome-gamedev-agent-skills\",\"commit\":\"c6ca6c41c839b68319ffc08430b99ab768debc32\",\"license\":\"Apache-2.0\"},\"gene_asset_id\":\"sha256:b06b13a70d96ec9bc628dfd3dc3b3cb3a7bd281270253581595bc95c6d9f03b2\"}",
+  "strategy": [
+    "先按前置条件安装并通读 skill camera-systems，规则、数字和检查以它为准；其他游戏开发 skill 不要预装。",
+    "Use when the camera lags, jitters while following, shows past the level edge, clips through walls or changes with frame rate.",
+    "Follow its sections: Core workflow; Patterns; Gotchas; Related skills.",
+    "需求超出本 skill 时只换装对应的一个，命令 evolver skill fetch --asset <Gene> --out .agents --write：game-feel 用 gene_gdsk_game_feel_v1，physics-tuning 用 gene_gdsk_physics_tuning_v1；其余查速查卡 gene_gdsk_index_v1。"
+  ],
+  "outcome": {
+    "score": 0.7,
+    "status": "success"
+  },
+  "summary": "收录 awesome-gamedev-agent-skills 的 camera-systems（正文未改）；正文记下钉住的版本与内容摘要、skill 的描述和章节目录、策略里指向的相邻 skill 及其 Gene 编号；skill 正文由 evolver 按引用从 GitHub 安装。（此 Gene 在前置条件中钉住 skill camera-systems，使用前先安装并阅读它。）",
+  "trigger": [
+    "game camera follow tuning",
+    "游戏镜头",
+    "镜头跟随",
+    "镜头抖动",
+    "第三人称镜头",
+    "镜头穿墙",
+    "分屏游戏",
+    "camera deadzone look-ahead"
+  ],
+  "confidence": 0.7,
+  "blast_radius": {
+    "files": 2,
+    "lines": 286
+  },
+  "env_fingerprint": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "node_version": "v24.15.0"
+  },
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const s=k.required_skill;const hex=(v,n)=>v.length===n&&[...v].every(ch=>'0123456789abcdef'.includes(ch));const pin=hex(s.commit,40)&&hex(s.sha256,64)&&s.path==='skills/'+s.name;const rel=k.skill===s.name&&k.related.every(r=>k.description.includes(String.fromCharCode(96)+r.skill+String.fromCharCode(96))&&r.gene==='gene_gdsk_'+r.skill.split('-').join('_')+'_v1');process.exit(pin&&rel&&k.sections.includes('When to use')&&k.index_gene==='gene_gdsk_index_v1'?0:1)\""
+  ],
+  "schema_version": "1.13.0",
+  "asset_id": "sha256:7b2d05bf9ab725590392cf12ae5f52232f5169a7c9fc77deab3d212861c6d7d3"
+}

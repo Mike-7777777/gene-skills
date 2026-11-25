@@ -1,0 +1,41 @@
+{
+  "gene": "sha256:e4ab4cdc1a36b7c3b6cc47b7759cb965ab804744cc69d9968881e01cdacfd751",
+  "type": "Capsule",
+  "content": "{\"skill\":\"shader-programming\",\"description\":\"Engine-neutral shader technique in GLSL with HLSL equivalents: how dissolve, outline, fresnel rim and post effects work, and porting GLSL to HLSL. Use when the math of an effect is the question, or for specks or mobile shimmer. To write a shader in one engine, its skill alone is enough (`godot-shaders`, `threejs-materials-lighting`, `pixijs-rendering`). Not for particles (`unreal-niagara`).\",\"sections\":[\"When to use\",\"Core workflow\",\"Patterns\",\"Check it\",\"Gotchas\",\"References\",\"Related skills\",\"Version notes\"],\"related\":[{\"skill\":\"threejs-materials-lighting\",\"gene\":\"gene_gdsk_threejs_materials_lighting_v1\"},{\"skill\":\"pixijs-rendering\",\"gene\":\"gene_gdsk_pixijs_rendering_v1\"}],\"index_gene\":\"gene_gdsk_index_v1\",\"required_skill\":{\"name\":\"shader-programming\",\"repo\":\"github.com/Mike-7777777/gene-skills\",\"commit\":\"ca717472d38b6c2500a88cbadcb201aced5beb08\",\"path\":\"skills/shader-programming\",\"sha256\":\"1e49b95de3f4aff7e7827c233e012f37d635195534cb1d1bd9cbcbdbaae2fe74\"},\"upstream\":{\"repo\":\"github.com/gamedev-skills/awesome-gamedev-agent-skills\",\"commit\":\"c6ca6c41c839b68319ffc08430b99ab768debc32\",\"license\":\"Apache-2.0\"},\"gene_asset_id\":\"sha256:e4ab4cdc1a36b7c3b6cc47b7759cb965ab804744cc69d9968881e01cdacfd751\"}",
+  "strategy": [
+    "先按前置条件安装并通读 skill shader-programming，规则、数字和检查以它为准；其他游戏开发 skill 不要预装。",
+    "Use when the math of an effect is the question, or for specks or mobile shimmer.",
+    "Follow its sections: Core workflow; Patterns; Check it; Gotchas; Related skills.",
+    "需求超出本 skill 时只换装对应的一个，命令 evolver skill fetch --asset <Gene> --out .agents --write：threejs-materials-lighting 用 gene_gdsk_threejs_materials_lighting_v1，pixijs-rendering 用 gene_gdsk_pixijs_rendering_v1；其余查速查卡 gene_gdsk_index_v1。"
+  ],
+  "outcome": {
+    "score": 0.7,
+    "status": "success"
+  },
+  "summary": "收录 awesome-gamedev-agent-skills 的 shader-programming（正文未改）；正文记下钉住的版本与内容摘要、skill 的描述和章节目录、策略里指向的相邻 skill 及其 Gene 编号；skill 正文由 evolver 按引用从 GitHub 安装。（此 Gene 在前置条件中钉住 skill shader-programming，使用前先安装并阅读它。）",
+  "trigger": [
+    "shader effect math",
+    "着色器",
+    "溶解效果",
+    "描边效果",
+    "边缘光",
+    "后处理",
+    "手机画面闪烁",
+    "GLSL HLSL"
+  ],
+  "confidence": 0.7,
+  "blast_radius": {
+    "files": 2,
+    "lines": 350
+  },
+  "env_fingerprint": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "node_version": "v24.15.0"
+  },
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const s=k.required_skill;const hex=(v,n)=>v.length===n&&[...v].every(ch=>'0123456789abcdef'.includes(ch));const pin=hex(s.commit,40)&&hex(s.sha256,64)&&s.path==='skills/'+s.name;const rel=k.skill===s.name&&k.related.every(r=>k.description.includes(String.fromCharCode(96)+r.skill+String.fromCharCode(96))&&r.gene==='gene_gdsk_'+r.skill.split('-').join('_')+'_v1');process.exit(pin&&rel&&k.sections.includes('When to use')&&k.index_gene==='gene_gdsk_index_v1'?0:1)\""
+  ],
+  "schema_version": "1.13.0",
+  "asset_id": "sha256:4e99e241b6231f5f827df40e941cf170531f88bef60fe68c1cc6653597886b21"
+}

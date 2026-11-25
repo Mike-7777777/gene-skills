@@ -1,0 +1,38 @@
+{
+  "id": "gene_gdsk_threejs_materials_lighting_v1",
+  "type": "Gene",
+  "domain": "game_dev",
+  "summary": "three.js r187 场景的材质与光照：标准、物理和无光照材质、灯光、阴影、HDR 环境光和色调映射。 Lights and shades three.js r187 scenes: standard, physical and unlit materials, lights, shadows, HDR environment lighting and tone mapping. Use when a mesh renders black or washed out, shadows are missing or full of acne, or EffectComposer darkens the image. Not for renderer setup (`threejs-scene-setup`), model loading (`threejs-gltf-loading`) or custom shaders (`shader-programming`).",
+  "category": "innovate",
+  "metadata": {
+    "tags": [
+      "game-dev",
+      "gdsk-split",
+      "threejs-materials-lighting"
+    ]
+  },
+  "strategy": [
+    "先按前置条件安装并通读 skill threejs-materials-lighting，规则、数字和检查以它为准；其他游戏开发 skill 不要预装。",
+    "Use when a mesh renders black or washed out, shadows are missing or full of acne, or EffectComposer darkens the image.",
+    "Workflow: Rule out geometry first; Default to `MeshStandardMaterial`; Light the scene; Turn on shadows in three places.",
+    "需求超出本 skill 时只换装对应的一个，命令 evolver skill fetch --asset <Gene> --out .agents --write：threejs-scene-setup 用 gene_gdsk_threejs_scene_setup_v1，threejs-gltf-loading 用 gene_gdsk_threejs_gltf_loading_v1；其余查速查卡 gene_gdsk_index_v1。"
+  ],
+  "preconditions": [
+    "skill:git+https://github.com/Mike-7777777/gene-skills@0af0deca0fd506b11496f13c0bce8d169054088e#sha256=4b4700d74ab350056677543a6e8346f124c24d501380194fa15ced7097c2a04a&path=skills/threejs-materials-lighting"
+  ],
+  "signals_match": [
+    "threejs lighting shadows materials",
+    "三维光照",
+    "模型发黑",
+    "阴影缺失",
+    "三维材质",
+    "色调映射",
+    "环境光",
+    "three.js shadows"
+  ],
+  "schema_version": "1.13.0",
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const s=k.required_skill;const hex=(v,n)=>v.length===n&&[...v].every(ch=>'0123456789abcdef'.includes(ch));const pin=hex(s.commit,40)&&hex(s.sha256,64)&&s.path==='skills/'+s.name;const rel=k.skill===s.name&&k.related.every(r=>k.description.includes(String.fromCharCode(96)+r.skill+String.fromCharCode(96))&&r.gene==='gene_gdsk_'+r.skill.split('-').join('_')+'_v1');process.exit(pin&&rel&&k.sections.includes('When to use')&&k.index_gene==='gene_gdsk_index_v1'?0:1)\""
+  ],
+  "asset_id": "sha256:def783b6facf10f2446258bc5905c6831ccb9c11327308d42e353dd7d810b35e"
+}

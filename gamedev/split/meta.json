@@ -1,0 +1,444 @@
+{
+  "ai-behavior-trees-utility-ai": [
+    "NPC 行为树与效用 AI 的引擎无关实现：黑板、响应式组合节点、装饰器和响应曲线打分，解决敌人丢失视野后仍追、每帧重启动作、在选项间来回摇摆。",
+    [
+      "behavior tree utility ai code",
+      "行为树",
+      "效用AI",
+      "敌人AI决策",
+      "黑板数据",
+      "NPC行为树实现",
+      "敌人来回摇摆",
+      "behavior tree runtime"
+    ]
+  ],
+  "audio-design": [
+    "游戏音频的引擎无关做法：总线布局、分贝音量滑条、响度、对话时压低音乐、自适应音乐和音效变化，附 Godot、Unity、FMOD/Wwise 对照。",
+    [
+      "game audio mixing design",
+      "游戏音效",
+      "游戏混音",
+      "自适应音乐",
+      "战斗音乐切换",
+      "脚步声重复",
+      "音量滑条",
+      "game audio ducking"
+    ]
+  ],
+  "camera-systems": [
+    "游戏镜头搭建与调参：2D 跟随的死区和前瞻、第三人称环绕、第一人称视角和分屏，解决镜头滞后、跟随抖动、露出关卡边界、穿墙。",
+    [
+      "game camera follow tuning",
+      "游戏镜头",
+      "镜头跟随",
+      "镜头抖动",
+      "第三人称镜头",
+      "镜头穿墙",
+      "分屏游戏",
+      "camera deadzone look-ahead"
+    ]
+  ],
+  "card-game": [
+    "卡牌游戏与牌组构筑设计：卡牌数据化配一个效果解释器、牌区、触发栈和带种子的洗牌，适合杀戮尖塔、小丑牌类或集换式卡牌。",
+    [
+      "card game deckbuilder design",
+      "卡牌游戏",
+      "牌组构筑",
+      "卡牌效果系统",
+      "杀戮尖塔类",
+      "小丑牌类",
+      "洗牌随机",
+      "deckbuilder"
+    ]
+  ],
+  "create-game-assets": [
+    "游戏美术素材的规划、生成或采购与验收：风格指南、精灵图、像素画、瓦片集、图标和贴图，带质检与授权记录。",
+    [
+      "game art asset pipeline",
+      "游戏美术素材",
+      "像素画",
+      "精灵图",
+      "瓦片集",
+      "AI生成游戏素材",
+      "游戏图标",
+      "sprite sheet"
+    ]
+  ],
+  "dialogue-systems": [
+    "引擎无关的分支对话：用 Ink、Yarn Spinner 或小型 JSON 图运行器实现台词、选项、条件、变量和本地化编号。",
+    [
+      "branching dialogue system",
+      "对话系统",
+      "分支对话",
+      "NPC对话",
+      "对话树",
+      "对话走进死胡同",
+      "Ink脚本",
+      "Yarn Spinner"
+    ]
+  ],
+  "game-ai": [
+    "敌人与 NPC AI 的引擎无关设计：在状态机、行为树、效用 AI、GOAP 间选型，并实现感知、转向和 A* 寻路。",
+    [
+      "enemy ai pathfinding design",
+      "敌人AI",
+      "巡逻追击",
+      "敌人寻路",
+      "状态机AI",
+      "AI卡在墙角",
+      "AI透视",
+      "A* pathfinding"
+    ]
+  ],
+  "game-docs": [
+    "编写和维护游戏设计文档：一页式 GDD、功能索引和简短功能说明，用链接与状态检查让文档和代码保持一致。",
+    [
+      "game design document writing",
+      "游戏设计文档",
+      "写策划案",
+      "功能说明文档",
+      "试玩后更新文档",
+      "玩法规格",
+      "GDD",
+      "game design doc"
+    ]
+  ],
+  "game-feel": [
+    "给已能玩的机制加手感：基于创伤值的屏幕震动、命中停顿、缓动、挤压拉伸和击退。",
+    [
+      "game feel juice",
+      "游戏手感",
+      "打击感",
+      "屏幕震动",
+      "命中停顿",
+      "挤压拉伸",
+      "操作没有分量",
+      "hit stop screen shake"
+    ]
+  ],
+  "game-jam": [
+    "按截止时间完成 Game Jam 作品：读规则、按时钟定范围、维护砍需求清单、提交前检查构建。",
+    [
+      "game jam entry planning",
+      "游戏开发马拉松",
+      "四十八小时做游戏",
+      "砍需求",
+      "限时做游戏",
+      "Ludum Dare",
+      "GMTK jam",
+      "game jam"
+    ]
+  ],
+  "game-ui-ux": [
+    "游戏 HUD 与菜单的引擎无关规则：锚点和容器、缩放、安全区、手柄焦点、事件驱动的 HUD 和无障碍下限。",
+    [
+      "game hud menu layout",
+      "游戏界面",
+      "游戏菜单",
+      "角色血条",
+      "背包界面",
+      "超宽屏适配",
+      "手机界面适配",
+      "game UI HUD"
+    ]
+  ],
+  "input-systems": [
+    "引擎无关的输入架构：命名动作、摇杆死区、按键缓冲和带冲突检查的改键，附 Godot InputMap 代码。",
+    [
+      "game input action mapping",
+      "输入系统",
+      "手柄支持",
+      "改键菜单",
+      "摇杆漂移",
+      "按键丢失",
+      "键位冲突",
+      "input rebinding"
+    ]
+  ],
+  "itch-publish": [
+    "用 butler 命令行在 itch.io 发布和更新游戏：推送渠道、平台标签、HTML5 构建、版本号和 CI 上传。",
+    [
+      "itch io butler upload",
+      "发布到itch",
+      "网页游戏发布",
+      "HTML5游戏上传",
+      "网页版打不开",
+      "itch渠道",
+      "butler push",
+      "upload to itch"
+    ]
+  ],
+  "level-design": [
+    "引擎无关的关卡设计：按真实角色控制器量出玩家尺度、钥匙与能力门控和防卡死检查、节奏把控。",
+    [
+      "level layout gating design",
+      "关卡设计",
+      "关卡布局",
+      "银河恶魔城门控",
+      "玩家迷路",
+      "钥匙锁在门后",
+      "关卡节奏",
+      "metroidvania gates"
+    ]
+  ],
+  "performance-optimization": [
+    "靠测量解决游戏帧率问题：先分清 CPU 还是 GPU 瓶颈，再做收益最大的修复（绘制调用、对象池、GC 尖峰）。",
+    [
+      "game frame rate profiling",
+      "游戏性能优化",
+      "帧率低",
+      "游戏卡顿",
+      "首次使用卡一下",
+      "性能分析",
+      "游戏掉帧",
+      "low FPS stutter"
+    ]
+  ],
+  "phaser-arcade-physics": [
+    "Phaser 4 Arcade 物理的移动与碰撞：刚体、速度、重力、碰撞与重叠、分组和子弹池。",
+    [
+      "phaser arcade physics collision",
+      "物理碰撞",
+      "平台跳跃控制器",
+      "俯视角移动",
+      "角色穿墙",
+      "子弹池",
+      "onFloor",
+      "Phaser collider"
+    ]
+  ],
+  "phaser-core": [
+    "搭建和调试 Phaser 4（及 Phaser 3.90）游戏：游戏配置、场景生命周期、加载器、场景切换和 3 到 4 的迁移。",
+    [
+      "phaser game setup scenes",
+      "二维网页游戏",
+      "Phaser黑屏",
+      "场景切换",
+      "素材加载失败",
+      "Phaser游戏",
+      "Phaser 4",
+      "Phaser scene"
+    ]
+  ],
+  "physics-tuning": [
+    "引擎无关的物理调参：固定时间步与插值、防穿透的连续碰撞检测、阻尼、求解器迭代和碰撞层矩阵。",
+    [
+      "game physics timestep tuning",
+      "物理调参",
+      "物体抖动",
+      "高速穿墙",
+      "物理发飘",
+      "碰撞层",
+      "固定时间步",
+      "tunnelling CCD"
+    ]
+  ],
+  "pixijs-rendering": [
+    "用 PixiJS v8 搭建和调试 2D 网页游戏渲染：异步初始化、资源加载、容器与精灵场景树、指针拖拽和 v7 到 v8 迁移。",
+    [
+      "pixijs 2d rendering",
+      "二维渲染",
+      "画布空白",
+      "点击没反应",
+      "拖拽精灵",
+      "试玩广告",
+      "PixiJS",
+      "pixi.js v8"
+    ]
+  ],
+  "platformer": [
+    "2D 平台跳跃设计：跳跃手感（土狼时间、跳跃缓冲、可变高度、下落重力、角落修正）、蹬墙跳、陷阱、存档点和单向平台。",
+    [
+      "2d platformer jump feel",
+      "平台跳跃",
+      "跳跃手感",
+      "土狼时间",
+      "蹬墙跳",
+      "跳跃发飘",
+      "马里奥类",
+      "Celeste-like"
+    ]
+  ],
+  "procedural-gen": [
+    "引擎无关的程序化生成：带种子的随机数、地牢布局、波函数坍缩、噪声地形和掉落表，附 Godot、Unity 对照。",
+    [
+      "procedural generation dungeon",
+      "程序化生成",
+      "随机地牢",
+      "波函数坍缩",
+      "噪声地形",
+      "掉落表",
+      "随机种子",
+      "procedural dungeon WFC"
+    ]
+  ],
+  "prototype-fast": [
+    "一小时左右做一个一次性可玩原型回答一个问题（通常是这个机制好不好玩）：一问简报、白盒、调试面板、试玩和留、砍、调的判断。",
+    [
+      "throwaway playable prototype",
+      "快速原型",
+      "做个能玩的原型",
+      "玩法验证",
+      "白盒原型",
+      "好不好玩",
+      "prototype this",
+      "greybox"
+    ]
+  ],
+  "puzzle": [
+    "网格与逻辑解谜游戏设计：三消连锁、推箱子、唯一解谜题（数织、数独）、精确撤销和求解器验证的关卡。",
+    [
+      "grid logic puzzle design",
+      "解谜游戏",
+      "三消游戏",
+      "推箱子",
+      "数织谜题",
+      "撤销一步",
+      "关卡无解",
+      "match-3 Sokoban"
+    ]
+  ],
+  "roguelike": [
+    "以单局为单位的肉鸽设计：单局结构、永久死亡、局外成长、种子与每日挑战、回合顺序和对称视野。",
+    [
+      "roguelike run structure",
+      "肉鸽游戏",
+      "永久死亡",
+      "局外成长",
+      "每日挑战",
+      "回合制地牢",
+      "类哈迪斯",
+      "roguelite"
+    ]
+  ],
+  "rpg": [
+    "RPG 成长与战斗数值设计：带修正栈的属性、经验曲线、伤害公式、物品装备（槽位、稀有度、词缀）和任务。",
+    [
+      "rpg stats progression",
+      "角色扮演",
+      "数值成长",
+      "伤害公式",
+      "装备词缀",
+      "经验曲线",
+      "暗黑类刷宝",
+      "JRPG"
+    ]
+  ],
+  "save-systems": [
+    "引擎无关的存读档：序列化什么、存档位与自动存档、原子写入和带版本的迁移，附 Godot 与 Python 代码。",
+    [
+      "save load system",
+      "游戏存档",
+      "游戏读档",
+      "自动存档",
+      "继续游戏",
+      "存档损坏",
+      "更新后存档失效",
+      "save slots"
+    ]
+  ],
+  "shader-programming": [
+    "引擎无关的着色器技术（GLSL 与 HLSL 对照）：溶解、描边、菲涅尔边缘光和后处理的原理，以及 GLSL 移植到 HLSL。",
+    [
+      "shader effect math",
+      "着色器",
+      "溶解效果",
+      "描边效果",
+      "边缘光",
+      "后处理",
+      "手机画面闪烁",
+      "GLSL HLSL"
+    ]
+  ],
+  "steam-publish": [
+    "用 Steamworks 与 SteamPipe 发布或更新 Steam 游戏：仓库、构建脚本、steamcmd 上传、测试分支、上线、商店审核和即将推出页面。",
+    [
+      "steam steampipe release",
+      "发布到Steam",
+      "上架Steam",
+      "测试分支",
+      "商店审核",
+      "即将推出",
+      "steamcmd",
+      "Steam Deck Verified"
+    ]
+  ],
+  "survival-crafting": [
+    "生存建造循环设计：采集、配方与科技树、负重、腐坏、饥饿与体温和基地建造。",
+    [
+      "survival crafting loop",
+      "生存建造",
+      "合成配方",
+      "科技树",
+      "饥饿体温",
+      "负重系统",
+      "我的世界类",
+      "Valheim-like"
+    ]
+  ],
+  "threejs-gltf-loading": [
+    "在 three.js r187 中加载 glTF/GLB 模型并播放动画：GLTFLoader、DRACO、Meshopt、KTX2 解码器、动画混合器切换和骨骼克隆。",
+    [
+      "threejs gltf model loading",
+      "三维模型加载",
+      "模型看不见",
+      "动画不播放",
+      "解码器",
+      "骨骼克隆",
+      "GLB",
+      "three.js GLTFLoader"
+    ]
+  ],
+  "threejs-materials-lighting": [
+    "three.js r187 场景的材质与光照：标准、物理和无光照材质、灯光、阴影、HDR 环境光和色调映射。",
+    [
+      "threejs lighting shadows materials",
+      "三维光照",
+      "模型发黑",
+      "阴影缺失",
+      "三维材质",
+      "色调映射",
+      "环境光",
+      "three.js shadows"
+    ]
+  ],
+  "threejs-scene-setup": [
+    "搭建和调试纯 three.js r187 游戏或三维场景：导入映射、场景、透视相机与渲染器、动画循环、窗口缩放、轨道控制和 WebGPU 渲染器。",
+    [
+      "threejs renderer scene setup",
+      "三维网页游戏",
+      "三维黑屏",
+      "动画不动",
+      "导入映射",
+      "网页三维场景",
+      "three.js game",
+      "WebGLRenderer"
+    ]
+  ],
+  "tower-defense": [
+    "塔防设计：路线与迷宫寻路、波次节奏、索敌优先级、装甲与飞行克制和金币经济，带波次曲线检查。",
+    [
+      "tower defense waves economy",
+      "塔防游戏",
+      "波次设计",
+      "防御塔",
+      "金币经济",
+      "后期波次太难",
+      "王国保卫战类",
+      "Bloons-like"
+    ]
+  ],
+  "visual-novel": [
+    "视觉小说与选择驱动剧情：路线与结局、随处存档、回看记录、只跳已读和打字机文字，用 Ren'Py 或任意引擎。",
+    [
+      "visual novel routes endings",
+      "视觉小说",
+      "恋爱模拟",
+      "多结局",
+      "回看记录",
+      "跳过已读",
+      "打字机效果",
+      "Ren'Py"
+    ]
+  ]
+}

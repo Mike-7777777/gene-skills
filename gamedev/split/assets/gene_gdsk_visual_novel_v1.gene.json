@@ -1,0 +1,38 @@
+{
+  "id": "gene_gdsk_visual_novel_v1",
+  "type": "Gene",
+  "domain": "game_dev",
+  "summary": "视觉小说与选择驱动剧情：路线与结局、随处存档、回看记录、只跳已读和打字机文字，用 Ren'Py 或任意引擎。 Builds visual novels and choice-driven stories in Ren'Py or any engine: routes and endings, save-anywhere, backlog, skip-read-only and typewriter text. Use for a VN or dating sim, or loads at the wrong line, skip running through unread text or an unreachable ending. Not for dialogue in a larger game or Ink and Yarn (`dialogue-systems`) or text box widgets (`godot-ui-control`).",
+  "category": "innovate",
+  "metadata": {
+    "tags": [
+      "game-dev",
+      "gdsk-split",
+      "visual-novel"
+    ]
+  },
+  "strategy": [
+    "先按前置条件安装并通读 skill visual-novel，规则、数字和检查以它为准；其他游戏开发 skill 不要预装。",
+    "Use for a VN or dating sim, or loads at the wrong line, skip running through unread text or an unreachable ending.",
+    "Workflow: Find the engine; Draw the route map; Size the script; Track state.",
+    "需求超出本 skill 时只换装对应的一个，命令 evolver skill fetch --asset <Gene> --out .agents --write：dialogue-systems 用 gene_gdsk_dialogue_systems_v1；其余查速查卡 gene_gdsk_index_v1。"
+  ],
+  "preconditions": [
+    "skill:git+https://github.com/Mike-7777777/gene-skills@558fc2ee8aa5a0b72643003c068e49f3c0c90e91#sha256=d61d16cd25e45c9d57e028092acc3cd1cbeba4c2b2822bf0e0eb5efe1ae24b16&path=skills/visual-novel"
+  ],
+  "signals_match": [
+    "visual novel routes endings",
+    "视觉小说",
+    "恋爱模拟",
+    "多结局",
+    "回看记录",
+    "跳过已读",
+    "打字机效果",
+    "Ren'Py"
+  ],
+  "schema_version": "1.13.0",
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const s=k.required_skill;const hex=(v,n)=>v.length===n&&[...v].every(ch=>'0123456789abcdef'.includes(ch));const pin=hex(s.commit,40)&&hex(s.sha256,64)&&s.path==='skills/'+s.name;const rel=k.skill===s.name&&k.related.every(r=>k.description.includes(String.fromCharCode(96)+r.skill+String.fromCharCode(96))&&r.gene==='gene_gdsk_'+r.skill.split('-').join('_')+'_v1');process.exit(pin&&rel&&k.sections.includes('When to use')&&k.index_gene==='gene_gdsk_index_v1'?0:1)\""
+  ],
+  "asset_id": "sha256:1274099d8480734ff4ee033f9065fec705208af182e38001ea38f0d81d773c79"
+}

@@ -1,0 +1,41 @@
+{
+  "gene": "sha256:c1caa4cbc1d485cff6f9b84a289a3ac8da0883b054d34bf8680a2dae3043ebd9",
+  "type": "Capsule",
+  "content": "{\"skill\":\"pixijs-rendering\",\"description\":\"Builds and debugs 2D browser game rendering with PixiJS v8: async init, Assets loading, the Container and Sprite scene graph, pointer dragging and v7-to-v8 migration. Use when a game or playable ad uses pixi.js, or on a blank canvas, clicks not firing, or drag stopping at the sprite edge. Not for dashboards or charts, Phaser (`phaser-core`) or 3D (`threejs-scene-setup`).\",\"sections\":[\"When to use\",\"Workflow\",\"Patterns\",\"Verify\",\"Gotchas\",\"References\",\"Related skills\",\"Version notes\"],\"related\":[{\"skill\":\"phaser-core\",\"gene\":\"gene_gdsk_phaser_core_v1\"},{\"skill\":\"threejs-scene-setup\",\"gene\":\"gene_gdsk_threejs_scene_setup_v1\"}],\"index_gene\":\"gene_gdsk_index_v1\",\"required_skill\":{\"name\":\"pixijs-rendering\",\"repo\":\"github.com/Mike-7777777/gene-skills\",\"commit\":\"2bdd1d47c5ee728165f0f64cdb5358821006afd2\",\"path\":\"skills/pixijs-rendering\",\"sha256\":\"25f0f53a81052ed83ee1671e16288ba0141d3b4cc2b585a637ad7f61a97e3664\"},\"upstream\":{\"repo\":\"github.com/gamedev-skills/awesome-gamedev-agent-skills\",\"commit\":\"c6ca6c41c839b68319ffc08430b99ab768debc32\",\"license\":\"Apache-2.0\"},\"gene_asset_id\":\"sha256:c1caa4cbc1d485cff6f9b84a289a3ac8da0883b054d34bf8680a2dae3043ebd9\"}",
+  "strategy": [
+    "先按前置条件安装并通读 skill pixijs-rendering，规则、数字和检查以它为准；其他游戏开发 skill 不要预装。",
+    "Use when a game or playable ad uses pixi.",
+    "Workflow: Read the installed version; Create, then `await app.init({...})`; Load before you build; Build the display list from `Container`s.",
+    "需求超出本 skill 时只换装对应的一个，命令 evolver skill fetch --asset <Gene> --out .agents --write：phaser-core 用 gene_gdsk_phaser_core_v1，threejs-scene-setup 用 gene_gdsk_threejs_scene_setup_v1；其余查速查卡 gene_gdsk_index_v1。"
+  ],
+  "outcome": {
+    "score": 0.7,
+    "status": "success"
+  },
+  "summary": "收录 awesome-gamedev-agent-skills 的 pixijs-rendering（正文未改）；正文记下钉住的版本与内容摘要、skill 的描述和章节目录、策略里指向的相邻 skill 及其 Gene 编号；skill 正文由 evolver 按引用从 GitHub 安装。（此 Gene 在前置条件中钉住 skill pixijs-rendering，使用前先安装并阅读它。）",
+  "trigger": [
+    "pixijs 2d rendering",
+    "二维渲染",
+    "画布空白",
+    "点击没反应",
+    "拖拽精灵",
+    "试玩广告",
+    "PixiJS",
+    "pixi.js v8"
+  ],
+  "confidence": 0.7,
+  "blast_radius": {
+    "files": 2,
+    "lines": 408
+  },
+  "env_fingerprint": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "node_version": "v24.15.0"
+  },
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const s=k.required_skill;const hex=(v,n)=>v.length===n&&[...v].every(ch=>'0123456789abcdef'.includes(ch));const pin=hex(s.commit,40)&&hex(s.sha256,64)&&s.path==='skills/'+s.name;const rel=k.skill===s.name&&k.related.every(r=>k.description.includes(String.fromCharCode(96)+r.skill+String.fromCharCode(96))&&r.gene==='gene_gdsk_'+r.skill.split('-').join('_')+'_v1');process.exit(pin&&rel&&k.sections.includes('When to use')&&k.index_gene==='gene_gdsk_index_v1'?0:1)\""
+  ],
+  "schema_version": "1.13.0",
+  "asset_id": "sha256:44923b79db5013d4229f13356b815040571e90b865cadace200133e49e861952"
+}

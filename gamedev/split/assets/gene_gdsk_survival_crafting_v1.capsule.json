@@ -1,0 +1,41 @@
+{
+  "gene": "sha256:27fd65b19a6c2b8991b043363f3dfaa21d943865be308a478940d96bbcada5cf",
+  "type": "Capsule",
+  "content": "{\"skill\":\"survival-crafting\",\"description\":\"Designs survival-crafting loops in any engine: gathering, recipes and tech trees, carry weight, spoilage, hunger and temperature, and base building. Use for a Minecraft-, Valheim- or Don't Starve-like, or crafting that eats materials or needs that feel like chores. Not for RPG equipment stats (`rpg`), terrain generation (`procedural-gen`) or save files (`save-systems`).\",\"sections\":[\"When to use\",\"Workflow\",\"Spoilage\",\"Pattern 1: atomic crafting\",\"Gotchas\",\"References\",\"Version notes\"],\"related\":[{\"skill\":\"rpg\",\"gene\":\"gene_gdsk_rpg_v1\"},{\"skill\":\"procedural-gen\",\"gene\":\"gene_gdsk_procedural_gen_v1\"}],\"index_gene\":\"gene_gdsk_index_v1\",\"required_skill\":{\"name\":\"survival-crafting\",\"repo\":\"github.com/Mike-7777777/gene-skills\",\"commit\":\"fc05b77e311c1b1f3629430c25593950581cf33f\",\"path\":\"skills/survival-crafting\",\"sha256\":\"1af5254dec5e2a9e8cafaed95a4a8123875dbd5d21f871dd7a2f96f5c807d770\"},\"upstream\":{\"repo\":\"github.com/gamedev-skills/awesome-gamedev-agent-skills\",\"commit\":\"c6ca6c41c839b68319ffc08430b99ab768debc32\",\"license\":\"Apache-2.0\"},\"gene_asset_id\":\"sha256:27fd65b19a6c2b8991b043363f3dfaa21d943865be308a478940d96bbcada5cf\"}",
+  "strategy": [
+    "先按前置条件安装并通读 skill survival-crafting，规则、数字和检查以它为准；其他游戏开发 skill 不要预装。",
+    "Use for a Minecraft-, Valheim- or Don't Starve-like, or crafting that eats materials or needs that feel like chores.",
+    "Workflow: Choose the needs model with the user; Set the clock; Draw the progression ladder; Define recipes as data.",
+    "需求超出本 skill 时只换装对应的一个，命令 evolver skill fetch --asset <Gene> --out .agents --write：rpg 用 gene_gdsk_rpg_v1，procedural-gen 用 gene_gdsk_procedural_gen_v1；其余查速查卡 gene_gdsk_index_v1。"
+  ],
+  "outcome": {
+    "score": 0.7,
+    "status": "success"
+  },
+  "summary": "收录 awesome-gamedev-agent-skills 的 survival-crafting（正文未改）；正文记下钉住的版本与内容摘要、skill 的描述和章节目录、策略里指向的相邻 skill 及其 Gene 编号；skill 正文由 evolver 按引用从 GitHub 安装。（此 Gene 在前置条件中钉住 skill survival-crafting，使用前先安装并阅读它。）",
+  "trigger": [
+    "survival crafting loop",
+    "生存建造",
+    "合成配方",
+    "科技树",
+    "饥饿体温",
+    "负重系统",
+    "我的世界类",
+    "Valheim-like"
+  ],
+  "confidence": 0.7,
+  "blast_radius": {
+    "files": 2,
+    "lines": 236
+  },
+  "env_fingerprint": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "node_version": "v24.15.0"
+  },
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const s=k.required_skill;const hex=(v,n)=>v.length===n&&[...v].every(ch=>'0123456789abcdef'.includes(ch));const pin=hex(s.commit,40)&&hex(s.sha256,64)&&s.path==='skills/'+s.name;const rel=k.skill===s.name&&k.related.every(r=>k.description.includes(String.fromCharCode(96)+r.skill+String.fromCharCode(96))&&r.gene==='gene_gdsk_'+r.skill.split('-').join('_')+'_v1');process.exit(pin&&rel&&k.sections.includes('When to use')&&k.index_gene==='gene_gdsk_index_v1'?0:1)\""
+  ],
+  "schema_version": "1.13.0",
+  "asset_id": "sha256:52b6ae2f4953a07a69a4dd34ebda9a68f49c189cdd691f35424325bd8f7eaa98"
+}

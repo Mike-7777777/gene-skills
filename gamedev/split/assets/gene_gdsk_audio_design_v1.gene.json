@@ -1,0 +1,38 @@
+{
+  "id": "gene_gdsk_audio_design_v1",
+  "type": "Gene",
+  "domain": "game_dev",
+  "summary": "游戏音频的引擎无关做法：总线布局、分贝音量滑条、响度、对话时压低音乐、自适应音乐和音效变化，附 Godot、Unity、FMOD/Wwise 对照。 Engine-neutral game audio technique: bus layout, volume sliders in decibels, loudness, ducking music under dialogue, adaptive music and SFX variation, with Godot, Unity and FMOD/Wwise mappings. Use when mixing a game, making music react to combat, fixing repetitive footsteps or beat sync, or a mix that clips or pumps. Not for the Godot audio API (`godot-audio`).",
+  "category": "innovate",
+  "metadata": {
+    "tags": [
+      "game-dev",
+      "gdsk-split",
+      "audio-design"
+    ]
+  },
+  "strategy": [
+    "先按前置条件安装并通读 skill audio-design，规则、数字和检查以它为准；其他游戏开发 skill 不要预装。",
+    "Use when mixing a game, making music react to combat, fixing repetitive footsteps or beat sync, or a mix that clips or pumps.",
+    "Workflow: Inventory first; Lay out buses; Map sliders to decibels; Set headroom and a loudness target.",
+    "需求超出本 skill 时只换装对应的一个，命令 evolver skill fetch --asset <Gene> --out .agents --write：其余查速查卡 gene_gdsk_index_v1。"
+  ],
+  "preconditions": [
+    "skill:git+https://github.com/Mike-7777777/gene-skills@81fccda7a437c40320d803603ceb29cd3d6f0b9b#sha256=72a971ab73d4bad313d5d15d3e5e51054578e7094fe97da9912d5aaa6b14aa8e&path=skills/audio-design"
+  ],
+  "signals_match": [
+    "game audio mixing design",
+    "游戏音效",
+    "游戏混音",
+    "自适应音乐",
+    "战斗音乐切换",
+    "脚步声重复",
+    "音量滑条",
+    "game audio ducking"
+  ],
+  "schema_version": "1.13.0",
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const s=k.required_skill;const hex=(v,n)=>v.length===n&&[...v].every(ch=>'0123456789abcdef'.includes(ch));const pin=hex(s.commit,40)&&hex(s.sha256,64)&&s.path==='skills/'+s.name;const rel=k.skill===s.name&&k.related.every(r=>k.description.includes(String.fromCharCode(96)+r.skill+String.fromCharCode(96))&&r.gene==='gene_gdsk_'+r.skill.split('-').join('_')+'_v1');process.exit(pin&&rel&&k.sections.includes('When to use')&&k.index_gene==='gene_gdsk_index_v1'?0:1)\""
+  ],
+  "asset_id": "sha256:ef2d493e292b80afe0e7a5c380017e001ab5d38741771d42475d41e540c5a98a"
+}

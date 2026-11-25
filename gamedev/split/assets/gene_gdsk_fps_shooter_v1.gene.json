@@ -1,0 +1,38 @@
+{
+  "id": "gene_gdsk_fps_shooter_v1",
+  "type": "Gene",
+  "domain": "game_dev",
+  "summary": "第一人称射击战斗设计：射线与弹道、击杀时间、伤害衰减、后坐力模式、开镜灵敏度和延迟补偿命中。 Designs first-person shooter combat in any engine: hitscan vs projectiles, time-to-kill, damage falloff, recoil patterns, ADS sensitivity and lag-compensated hits. Use for a Doom- or Counter-Strike-like, or guns that feel weak or shots that do not register. Not for the camera rig (`camera-systems`), shake and hit-stop (`game-feel`) or raycast APIs (`godot-physics`, `unity-physics`).",
+  "category": "innovate",
+  "metadata": {
+    "tags": [
+      "game-dev",
+      "gdsk-split",
+      "fps-shooter"
+    ]
+  },
+  "strategy": [
+    "先按前置条件安装并通读 skill fps-shooter，规则、数字和检查以它为准；其他游戏开发 skill 不要预装。",
+    "Use for a Doom- or Counter-Strike-like, or guns that feel weak or shots that do not register.",
+    "Workflow: Name the reference shooter; Write every weapon as data; Shot model; Fire timing on a scheduled clock.",
+    "需求超出本 skill 时只换装对应的一个，命令 evolver skill fetch --asset <Gene> --out .agents --write：camera-systems 用 gene_gdsk_camera_systems_v1，game-feel 用 gene_gdsk_game_feel_v1；其余查速查卡 gene_gdsk_index_v1。"
+  ],
+  "preconditions": [
+    "skill:git+https://github.com/Mike-7777777/gene-skills@65dea057388d6b91c9c038a3adabd7edff4cd92d#sha256=b9431bee8082cc9ae263a9abcb4aec2c73636605a29018d19862b7838c35ce1c&path=skills/fps-shooter"
+  ],
+  "signals_match": [
+    "first person shooter combat",
+    "第一人称射击",
+    "射击手感",
+    "枪械后坐力",
+    "击杀时间",
+    "子弹不命中",
+    "开镜灵敏度",
+    "FPS gunplay"
+  ],
+  "schema_version": "1.13.0",
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const s=k.required_skill;const hex=(v,n)=>v.length===n&&[...v].every(ch=>'0123456789abcdef'.includes(ch));const pin=hex(s.commit,40)&&hex(s.sha256,64)&&s.path==='skills/'+s.name;const rel=k.skill===s.name&&k.related.every(r=>k.description.includes(String.fromCharCode(96)+r.skill+String.fromCharCode(96))&&r.gene==='gene_gdsk_'+r.skill.split('-').join('_')+'_v1');process.exit(pin&&rel&&k.sections.includes('When to use')&&k.index_gene==='gene_gdsk_index_v1'?0:1)\""
+  ],
+  "asset_id": "sha256:308bd19b2701f096f2520e7d7d66f62dbbe066fe4f60bb495e05cb5dec1d18d5"
+}

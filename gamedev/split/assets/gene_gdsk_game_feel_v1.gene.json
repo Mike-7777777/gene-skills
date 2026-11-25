@@ -1,0 +1,38 @@
+{
+  "id": "gene_gdsk_game_feel_v1",
+  "type": "Gene",
+  "domain": "game_dev",
+  "summary": "给已能玩的机制加手感：基于创伤值的屏幕震动、命中停顿、缓动、挤压拉伸和击退。 Adds engine-neutral juice to a working mechanic: trauma-based screen shake, hit-stop, eased tweens, squash and stretch, and knockback. Use when the game feels flat, weightless or not punchy, or hits and jumps should feel satisfying. Not for coyote time (`platformer`), input buffering (`input-systems`), camera follow (`camera-systems`) or HUD layout (`game-ui-ux`).",
+  "category": "innovate",
+  "metadata": {
+    "tags": [
+      "game-dev",
+      "gdsk-split",
+      "game-feel"
+    ]
+  },
+  "strategy": [
+    "先按前置条件安装并通读 skill game-feel，规则、数字和检查以它为准；其他游戏开发 skill 不要预装。",
+    "Use when the game feels flat, weightless or not punchy, or hits and jumps should feel satisfying.",
+    "Workflow: Find the event hooks; Assign each event a tier; Start with 2-3 channels per event; Ease everything that moves.",
+    "需求超出本 skill 时只换装对应的一个，命令 evolver skill fetch --asset <Gene> --out .agents --write：platformer 用 gene_gdsk_platformer_v1，input-systems 用 gene_gdsk_input_systems_v1；其余查速查卡 gene_gdsk_index_v1。"
+  ],
+  "preconditions": [
+    "skill:git+https://github.com/Mike-7777777/gene-skills@90a8cf6a876281d8d52d24dc005ed875d7b03f8d#sha256=db9f7f16ba71dff7b13959a2c2a77753f1a02cfecadb078debb4a30aba90f6d5&path=skills/game-feel"
+  ],
+  "signals_match": [
+    "game feel juice",
+    "游戏手感",
+    "打击感",
+    "屏幕震动",
+    "命中停顿",
+    "挤压拉伸",
+    "操作没有分量",
+    "hit stop screen shake"
+  ],
+  "schema_version": "1.13.0",
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const s=k.required_skill;const hex=(v,n)=>v.length===n&&[...v].every(ch=>'0123456789abcdef'.includes(ch));const pin=hex(s.commit,40)&&hex(s.sha256,64)&&s.path==='skills/'+s.name;const rel=k.skill===s.name&&k.related.every(r=>k.description.includes(String.fromCharCode(96)+r.skill+String.fromCharCode(96))&&r.gene==='gene_gdsk_'+r.skill.split('-').join('_')+'_v1');process.exit(pin&&rel&&k.sections.includes('When to use')&&k.index_gene==='gene_gdsk_index_v1'?0:1)\""
+  ],
+  "asset_id": "sha256:f9f51c6a0a5069197f2abb28ed180227d7a1f65e2e69ce1adb4063f68ec9712a"
+}

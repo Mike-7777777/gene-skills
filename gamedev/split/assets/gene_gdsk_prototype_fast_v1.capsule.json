@@ -1,0 +1,41 @@
+{
+  "gene": "sha256:bf85edb9b3d55bc48018dc84b10761c5d58f6e17ed5a5bd20951ec46060b0313",
+  "type": "Capsule",
+  "content": "{\"skill\":\"prototype-fast\",\"description\":\"Builds a throwaway playable prototype in about an hour to answer one question, usually \\\"is this mechanic fun?\\\": a one-question brief, a greybox, a debug HUD, a playtest and a keep, kill or retune call. Use for \\\"prototype this\\\", \\\"just get something playable\\\" or whether to keep prototype code. Not for a timed jam (`game-jam`) or level blockouts (`level-design`).\",\"sections\":[\"When to use\",\"Workflow\",\"Patterns\",\"Verify\",\"Gotchas\",\"Related skills\"],\"related\":[{\"skill\":\"game-jam\",\"gene\":\"gene_gdsk_game_jam_v1\"},{\"skill\":\"level-design\",\"gene\":\"gene_gdsk_level_design_v1\"}],\"index_gene\":\"gene_gdsk_index_v1\",\"required_skill\":{\"name\":\"prototype-fast\",\"repo\":\"github.com/Mike-7777777/gene-skills\",\"commit\":\"d6d8e5d9f1ae3960c80e1768ed56ddcaa7354a27\",\"path\":\"skills/prototype-fast\",\"sha256\":\"5a1198a5247764f127ff3fe0ef258dd26ca98000b24305fb9f76a47b919bdc27\"},\"upstream\":{\"repo\":\"github.com/gamedev-skills/awesome-gamedev-agent-skills\",\"commit\":\"c6ca6c41c839b68319ffc08430b99ab768debc32\",\"license\":\"Apache-2.0\"},\"gene_asset_id\":\"sha256:bf85edb9b3d55bc48018dc84b10761c5d58f6e17ed5a5bd20951ec46060b0313\"}",
+  "strategy": [
+    "先按前置条件安装并通读 skill prototype-fast，规则、数字和检查以它为准；其他游戏开发 skill 不要预装。",
+    "Use for \"prototype this\", \"just get something playable\" or whether to keep prototype code.",
+    "Workflow: Write the brief first; Default to throwaway; Contain it; Greybox everything but the verb.",
+    "需求超出本 skill 时只换装对应的一个，命令 evolver skill fetch --asset <Gene> --out .agents --write：game-jam 用 gene_gdsk_game_jam_v1，level-design 用 gene_gdsk_level_design_v1；其余查速查卡 gene_gdsk_index_v1。"
+  ],
+  "outcome": {
+    "score": 0.7,
+    "status": "success"
+  },
+  "summary": "收录 awesome-gamedev-agent-skills 的 prototype-fast（正文未改）；正文记下钉住的版本与内容摘要、skill 的描述和章节目录、策略里指向的相邻 skill 及其 Gene 编号；skill 正文由 evolver 按引用从 GitHub 安装。（此 Gene 在前置条件中钉住 skill prototype-fast，使用前先安装并阅读它。）",
+  "trigger": [
+    "throwaway playable prototype",
+    "快速原型",
+    "做个能玩的原型",
+    "玩法验证",
+    "白盒原型",
+    "好不好玩",
+    "prototype this",
+    "greybox"
+  ],
+  "confidence": 0.7,
+  "blast_radius": {
+    "files": 1,
+    "lines": 123
+  },
+  "env_fingerprint": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "node_version": "v24.15.0"
+  },
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const s=k.required_skill;const hex=(v,n)=>v.length===n&&[...v].every(ch=>'0123456789abcdef'.includes(ch));const pin=hex(s.commit,40)&&hex(s.sha256,64)&&s.path==='skills/'+s.name;const rel=k.skill===s.name&&k.related.every(r=>k.description.includes(String.fromCharCode(96)+r.skill+String.fromCharCode(96))&&r.gene==='gene_gdsk_'+r.skill.split('-').join('_')+'_v1');process.exit(pin&&rel&&k.sections.includes('When to use')&&k.index_gene==='gene_gdsk_index_v1'?0:1)\""
+  ],
+  "schema_version": "1.13.0",
+  "asset_id": "sha256:0c55c62f880019d1bf04287815e88093cdf2613a820ef95f8aa090a69d58f5e0"
+}

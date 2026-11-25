@@ -22,4 +22,6 @@ evolver 拿到 Gene 后按这条引用取出该目录，核对内容摘要，一
 
 前 6 个 skill 正文按原文收录。2026-11-21 起，每份 skill 在「严禁事项」之前（特效那份在附带的 2D 特效 skill 之前）加了一节「交付前真实试玩验收」，要求模型交付前在真实浏览器里把最终页面完整玩一遍；同时补回了 `threejs-deterministic-vfx-composer` 在最初收录时丢失的部分（三段包络函数、刀光镜像规范、界面分层规则和验收标准）。
 
+`gamedev/` 发布钉住 `gamedev-agent-skills` 的 Gene，说明见 [gamedev/README.md](gamedev/README.md)。
+
 `republish/` 用来把 hub 上已有的案例 Gene 加上 skill 引用重新发布，说明见 [republish/README.md](republish/README.md)。

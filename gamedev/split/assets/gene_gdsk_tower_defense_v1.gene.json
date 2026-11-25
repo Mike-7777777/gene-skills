@@ -1,0 +1,38 @@
+{
+  "id": "gene_gdsk_tower_defense_v1",
+  "type": "Gene",
+  "domain": "game_dev",
+  "summary": "塔防设计：路线与迷宫寻路、波次节奏、索敌优先级、装甲与飞行克制和金币经济，带波次曲线检查。 Designs tower defense games in any engine: lane and maze pathing, wave pacing, targeting priorities, armoured and flying counters, and the gold economy, with a wave-curve checker. Use for a Bloons- or Kingdom Rush-like, or late waves that are impossible or trivial or a dominant tower. Not for pathfinding (`game-ai`) or survival base building (`survival-crafting`).",
+  "category": "innovate",
+  "metadata": {
+    "tags": [
+      "game-dev",
+      "gdsk-split",
+      "tower-defense"
+    ]
+  },
+  "strategy": [
+    "先按前置条件安装并通读 skill tower-defense，规则、数字和检查以它为准；其他游戏开发 skill 不要预装。",
+    "Use for a Bloons- or Kingdom Rush-like, or late waves that are impossible or trivial or a dominant tower.",
+    "Workflow: Pick the map model; Write towers, enemies and waves as data; Set the curves; Run the curve check.",
+    "需求超出本 skill 时只换装对应的一个，命令 evolver skill fetch --asset <Gene> --out .agents --write：game-ai 用 gene_gdsk_game_ai_v1，survival-crafting 用 gene_gdsk_survival_crafting_v1；其余查速查卡 gene_gdsk_index_v1。"
+  ],
+  "preconditions": [
+    "skill:git+https://github.com/Mike-7777777/gene-skills@e56d79a0568f795c1be0a672ab20e3a5a08ba0e2#sha256=d4694c93e9959fb08de67b07c88f643cb0003276a763636024a302d966aef68e&path=skills/tower-defense"
+  ],
+  "signals_match": [
+    "tower defense waves economy",
+    "塔防游戏",
+    "波次设计",
+    "防御塔",
+    "金币经济",
+    "后期波次太难",
+    "王国保卫战类",
+    "Bloons-like"
+  ],
+  "schema_version": "1.13.0",
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const s=k.required_skill;const hex=(v,n)=>v.length===n&&[...v].every(ch=>'0123456789abcdef'.includes(ch));const pin=hex(s.commit,40)&&hex(s.sha256,64)&&s.path==='skills/'+s.name;const rel=k.skill===s.name&&k.related.every(r=>k.description.includes(String.fromCharCode(96)+r.skill+String.fromCharCode(96))&&r.gene==='gene_gdsk_'+r.skill.split('-').join('_')+'_v1');process.exit(pin&&rel&&k.sections.includes('When to use')&&k.index_gene==='gene_gdsk_index_v1'?0:1)\""
+  ],
+  "asset_id": "sha256:5ffb6d7f3d5c27554f9fadc8bd5d20c50f276558987dde64790fa913c6161ae8"
+}

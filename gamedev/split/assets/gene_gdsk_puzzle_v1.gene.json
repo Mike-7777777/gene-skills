@@ -1,0 +1,38 @@
+{
+  "id": "gene_gdsk_puzzle_v1",
+  "type": "Gene",
+  "domain": "game_dev",
+  "summary": "网格与逻辑解谜游戏设计：三消连锁、推箱子、唯一解谜题（数织、数独）、精确撤销和求解器验证的关卡。 Designs grid and logic puzzle games in any engine: match-3 cascades, Sokoban pushing, unique-solution grids (nonogram, Sudoku), exact undo and solver-checked levels. Use for a Candy Crush-like, Sokoban or Picross, or broken cascades, drifting undo or unsolvable levels. Not for physics puzzlers (`platformer`, `physics-tuning`) or card games (`card-game`).",
+  "category": "innovate",
+  "metadata": {
+    "tags": [
+      "game-dev",
+      "gdsk-split",
+      "puzzle"
+    ]
+  },
+  "strategy": [
+    "先按前置条件安装并通读 skill puzzle，规则、数字和检查以它为准；其他游戏开发 skill 不要预装。",
+    "Use for a Candy Crush-like, Sokoban or Picross, or broken cascades, drifting undo or unsolvable levels.",
+    "Workflow: Model the board as plain data; Write the rule resolver; Undo from day one; Write a solver early.",
+    "需求超出本 skill 时只换装对应的一个，命令 evolver skill fetch --asset <Gene> --out .agents --write：platformer 用 gene_gdsk_platformer_v1，physics-tuning 用 gene_gdsk_physics_tuning_v1；其余查速查卡 gene_gdsk_index_v1。"
+  ],
+  "preconditions": [
+    "skill:git+https://github.com/Mike-7777777/gene-skills@f0d7201524c6dd78a9cc682d95b03886cccfe107#sha256=65bedbe374322b214d9d1c663a4119fe0e39592498080804032c07fb5a916b18&path=skills/puzzle"
+  ],
+  "signals_match": [
+    "grid logic puzzle design",
+    "解谜游戏",
+    "三消游戏",
+    "推箱子",
+    "数织谜题",
+    "撤销一步",
+    "关卡无解",
+    "match-3 Sokoban"
+  ],
+  "schema_version": "1.13.0",
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const s=k.required_skill;const hex=(v,n)=>v.length===n&&[...v].every(ch=>'0123456789abcdef'.includes(ch));const pin=hex(s.commit,40)&&hex(s.sha256,64)&&s.path==='skills/'+s.name;const rel=k.skill===s.name&&k.related.every(r=>k.description.includes(String.fromCharCode(96)+r.skill+String.fromCharCode(96))&&r.gene==='gene_gdsk_'+r.skill.split('-').join('_')+'_v1');process.exit(pin&&rel&&k.sections.includes('When to use')&&k.index_gene==='gene_gdsk_index_v1'?0:1)\""
+  ],
+  "asset_id": "sha256:ffdc86614d60775629e3df3163be45422afe7ba04577ed2f9da4584bc04a7875"
+}

@@ -1,0 +1,38 @@
+{
+  "id": "gene_gdsk_platformer_v1",
+  "type": "Gene",
+  "domain": "game_dev",
+  "summary": "2D 平台跳跃设计：跳跃手感（土狼时间、跳跃缓冲、可变高度、下落重力、角落修正）、蹬墙跳、陷阱、存档点和单向平台。 Designs 2D platformers in any engine: jump feel (coyote time, jump buffering, variable height, fall gravity, corner correction), wall jumps, hazards, checkpoints and one-way platforms. Use for a Mario- or Celeste-like, or a jump that feels floaty or laggy. Pair with the engine skill (`godot-2d-movement`, `phaser-arcade-physics`). Not for generic input buffering (`input-systems`) or juice (`game-feel`).",
+  "category": "innovate",
+  "metadata": {
+    "tags": [
+      "game-dev",
+      "gdsk-split",
+      "platformer"
+    ]
+  },
+  "strategy": [
+    "先按前置条件安装并通读 skill platformer，规则、数字和检查以它为准；其他游戏开发 skill 不要预装。",
+    "Use for a Mario- or Celeste-like, or a jump that feels floaty or laggy.",
+    "Workflow: Read the controller first; Pick targets; Derive the constants; Implement the feel core.",
+    "需求超出本 skill 时只换装对应的一个，命令 evolver skill fetch --asset <Gene> --out .agents --write：phaser-arcade-physics 用 gene_gdsk_phaser_arcade_physics_v1，input-systems 用 gene_gdsk_input_systems_v1；其余查速查卡 gene_gdsk_index_v1。"
+  ],
+  "preconditions": [
+    "skill:git+https://github.com/Mike-7777777/gene-skills@674fcfe77f45ac7a80b003156f7e8710abb060af#sha256=7383d3b56412b5b0051978183cdf96d855937f7ce57a86418b48d6f3b5fb0b55&path=skills/platformer"
+  ],
+  "signals_match": [
+    "2d platformer jump feel",
+    "平台跳跃",
+    "跳跃手感",
+    "土狼时间",
+    "蹬墙跳",
+    "跳跃发飘",
+    "马里奥类",
+    "Celeste-like"
+  ],
+  "schema_version": "1.13.0",
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const s=k.required_skill;const hex=(v,n)=>v.length===n&&[...v].every(ch=>'0123456789abcdef'.includes(ch));const pin=hex(s.commit,40)&&hex(s.sha256,64)&&s.path==='skills/'+s.name;const rel=k.skill===s.name&&k.related.every(r=>k.description.includes(String.fromCharCode(96)+r.skill+String.fromCharCode(96))&&r.gene==='gene_gdsk_'+r.skill.split('-').join('_')+'_v1');process.exit(pin&&rel&&k.sections.includes('When to use')&&k.index_gene==='gene_gdsk_index_v1'?0:1)\""
+  ],
+  "asset_id": "sha256:8f93f5411b1aecf6776dba4b932ef1876403815b9a40532789aa5a62dabe2595"
+}

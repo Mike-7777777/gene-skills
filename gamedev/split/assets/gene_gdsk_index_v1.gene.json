@@ -1,0 +1,40 @@
+{
+  "id": "gene_gdsk_index_v1",
+  "type": "Gene",
+  "domain": "game_dev",
+  "category": "innovate",
+  "summary": "游戏开发 skill 速查卡：34 个 skill（Phaser、PixiJS、three.js 三个网页引擎，AI、手感、镜头、存档等 15 个方向，平台跳跃、肉鸽、RPG 等 8 种类型，原型、Game Jam、itch/Steam 发布、设计文档 5 个流程）各是一个 Gene，按需求查表、最多装 3 个，不用预装整套。Index of 34 game-dev skills, each its own Gene; install only what the task needs.",
+  "metadata": {
+    "tags": [
+      "game-dev",
+      "skill-index"
+    ]
+  },
+  "strategy": [
+    "先按前置条件安装 skill gamedev-skill-index（一张表，约 4 KB），只读这一份。",
+    "召回已经装好对口的游戏开发 skill 时直接用它，不再查表；否则按需求从表里挑最多 3 行：一个引擎、一个方向、一个类型或流程。",
+    "默认不再斟酌：二维网页游戏用 phaser-core，三维网页游戏用 threejs-scene-setup，已有项目按 package.json 里的引擎；Godot、Unity、Unreal、Roblox 不在本套里，按项目代码做。",
+    "每行用 evolver skill fetch --asset <Gene> --out .agents --write 安装，装完只读那一份 SKILL.md 再动手；任务换方向时再查一次表。"
+  ],
+  "preconditions": [
+    "skill:git+https://github.com/Mike-7777777/gene-skills@a650ed3ba4eac080c4a793ca4462585e574dac1b#sha256=7122a8ef5530f5283a1d26392e24129bcf068701f6adda0fa847f42546af6cb7&path=skills/gamedev-skill-index"
+  ],
+  "signals_match": [
+    "gamedev skill index card",
+    "做游戏",
+    "用人工智能做游戏",
+    "游戏开发",
+    "网页游戏",
+    "小游戏",
+    "选哪个游戏开发技能",
+    "浏览器游戏",
+    "make a game",
+    "which gamedev skill",
+    "web game"
+  ],
+  "schema_version": "1.13.0",
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const s=k.required_skill;const hex=(v,n)=>v.length===n&&[...v].every(ch=>'0123456789abcdef'.includes(ch));const pin=hex(s.commit,40)&&hex(s.sha256,64)&&s.path==='skills/'+s.name;const e=k.entries;const ok=e.length===34&&new Set(e.map(x=>x.skill)).size===34&&e.every(x=>x.gene==='gene_gdsk_'+x.skill.split('-').join('_')+'_v1'&&s.skill_md.includes(String.fromCharCode(96)+x.gene+String.fromCharCode(96)));process.exit(pin&&ok&&s.skill_md.startsWith('---'+String.fromCharCode(10)+'name: '+s.name+String.fromCharCode(10))?0:1)\""
+  ],
+  "asset_id": "sha256:d9e4ce2a0f7d249ccdeff0796ea841eec31c459bd7fb8893da1be77267c6e3ea"
+}

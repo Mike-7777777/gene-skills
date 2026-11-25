@@ -1,0 +1,39 @@
+{
+  "id": "gene_gdsk_threejs_scene_setup_v1",
+  "type": "Gene",
+  "domain": "game_dev",
+  "summary": "搭建和调试纯 three.js r187 游戏或三维场景：导入映射、场景、透视相机与渲染器、动画循环、窗口缩放、轨道控制和 WebGPU 渲染器。 Sets up and debugs a plain three.js r187 game or 3D scene: import maps, Scene, PerspectiveCamera and WebGLRenderer, setAnimationLoop with Timer, resize, OrbitControls and WebGPURenderer. Use on \"Failed to resolve module specifier three\", a black canvas or nothing animating. Not for GLB loading (`threejs-gltf-loading`), materials (`threejs-materials-lighting`) or React Three Fiber.",
+  "category": "innovate",
+  "metadata": {
+    "tags": [
+      "game-dev",
+      "gdsk-split",
+      "threejs-scene-setup",
+      "reissued"
+    ]
+  },
+  "strategy": [
+    "先按前置条件安装并通读 skill threejs-scene-setup，规则、数字和检查以它为准；其他游戏开发 skill 不要预装。",
+    "Use on \"Failed to resolve module specifier three\", a black canvas or nothing animating.",
+    "Workflow: Read `three` from `package.json` or the import map; Resolve `three` and `three/addons/`; Create the scene, camera and renderer; Prove the pipeline with an unlit mesh first.",
+    "需求超出本 skill 时只换装对应的一个，命令 evolver skill fetch --asset <Gene> --out .agents --write：threejs-gltf-loading 用 gene_gdsk_threejs_gltf_loading_v1，threejs-materials-lighting 用 gene_gdsk_threejs_materials_lighting_v1；其余查速查卡 gene_gdsk_index_v1。"
+  ],
+  "preconditions": [
+    "skill:git+https://github.com/Mike-7777777/gene-skills@646914a77474c1a4f6a7d3d9e439720ccfbdfacf#sha256=44bd0825f9361901719f1e40b6251d5689757f3b6bec86d4de55155017eec731&path=skills/threejs-scene-setup"
+  ],
+  "signals_match": [
+    "threejs renderer scene setup",
+    "三维网页游戏",
+    "三维黑屏",
+    "动画不动",
+    "导入映射",
+    "网页三维场景",
+    "three.js game",
+    "WebGLRenderer"
+  ],
+  "schema_version": "1.13.0",
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const s=k.required_skill;const hex=(v,n)=>v.length===n&&[...v].every(ch=>'0123456789abcdef'.includes(ch));const pin=hex(s.commit,40)&&hex(s.sha256,64)&&s.path==='skills/'+s.name;const rel=k.skill===s.name&&k.related.every(r=>k.description.includes(String.fromCharCode(96)+r.skill+String.fromCharCode(96))&&r.gene==='gene_gdsk_'+r.skill.split('-').join('_')+'_v1');process.exit(pin&&rel&&k.sections.includes('When to use')&&k.index_gene==='gene_gdsk_index_v1'?0:1)\""
+  ],
+  "asset_id": "sha256:3e642fe42e75d69b119ae5dab0ebda59c988ae6067dc8466c659ba33d45274a3"
+}

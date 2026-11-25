@@ -1,0 +1,38 @@
+{
+  "id": "gene_gdsk_dialogue_systems_v1",
+  "type": "Gene",
+  "domain": "game_dev",
+  "summary": "引擎无关的分支对话：用 Ink、Yarn Spinner 或小型 JSON 图运行器实现台词、选项、条件、变量和本地化编号。 Builds engine-neutral branching dialogue with Ink, Yarn Spinner or a small JSON graph runner: lines, choices, conditions, variables and localization IDs. Use for NPC conversations, dialogue trees, barks, .ink or .yarn files, or dialogue that dead-ends. Not for visual-novel backlog and skip (`visual-novel`), quests (`rpg`) or text box widgets (`godot-ui-control`, `game-ui-ux`).",
+  "category": "innovate",
+  "metadata": {
+    "tags": [
+      "game-dev",
+      "gdsk-split",
+      "dialogue-systems"
+    ]
+  },
+  "strategy": [
+    "先按前置条件安装并通读 skill dialogue-systems，规则、数字和检查以它为准；其他游戏开发 skill 不要预装。",
+    "Use for NPC conversations, dialogue trees, barks, .",
+    "Follow its sections: Core workflow; Patterns; Gotchas; Related skills.",
+    "需求超出本 skill 时只换装对应的一个，命令 evolver skill fetch --asset <Gene> --out .agents --write：visual-novel 用 gene_gdsk_visual_novel_v1，rpg 用 gene_gdsk_rpg_v1；其余查速查卡 gene_gdsk_index_v1。"
+  ],
+  "preconditions": [
+    "skill:git+https://github.com/Mike-7777777/gene-skills@f6f020c370bab0b3037fb8032abf0e228ee4c038#sha256=ef4521cf882dbdc964a4f1c19cd0196e4d7ab1f90877df88777c6b618971dc4c&path=skills/dialogue-systems"
+  ],
+  "signals_match": [
+    "branching dialogue system",
+    "对话系统",
+    "分支对话",
+    "NPC对话",
+    "对话树",
+    "对话走进死胡同",
+    "Ink脚本",
+    "Yarn Spinner"
+  ],
+  "schema_version": "1.13.0",
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const s=k.required_skill;const hex=(v,n)=>v.length===n&&[...v].every(ch=>'0123456789abcdef'.includes(ch));const pin=hex(s.commit,40)&&hex(s.sha256,64)&&s.path==='skills/'+s.name;const rel=k.skill===s.name&&k.related.every(r=>k.description.includes(String.fromCharCode(96)+r.skill+String.fromCharCode(96))&&r.gene==='gene_gdsk_'+r.skill.split('-').join('_')+'_v1');process.exit(pin&&rel&&k.sections.includes('When to use')&&k.index_gene==='gene_gdsk_index_v1'?0:1)\""
+  ],
+  "asset_id": "sha256:5a79094c30a9d5ad24fa582b18080b7265a1ee70e188f8bb559fd50707e9d692"
+}

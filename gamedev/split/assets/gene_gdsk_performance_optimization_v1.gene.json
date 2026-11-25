@@ -1,0 +1,38 @@
+{
+  "id": "gene_gdsk_performance_optimization_v1",
+  "type": "Gene",
+  "domain": "game_dev",
+  "summary": "靠测量解决游戏帧率问题：先分清 CPU 还是 GPU 瓶颈，再做收益最大的修复（绘制调用、对象池、GC 尖峰）。 Finds and fixes game frame-rate problems by measurement in Godot, Unity, Unreal or Roblox: CPU- vs GPU-bound, then the biggest fix (draw calls, pooling, GC spikes). Use for low FPS, stutter, a first-use hitch, or requests to optimize or profile. Not for build size (`unity-build-size`), physics jitter (`physics-tuning`) or network lag (`roblox-networking`, `godot-multiplayer`).",
+  "category": "innovate",
+  "metadata": {
+    "tags": [
+      "game-dev",
+      "gdsk-split",
+      "performance-optimization"
+    ]
+  },
+  "strategy": [
+    "先按前置条件安装并通读 skill performance-optimization，规则、数字和检查以它为准；其他游戏开发 skill 不要预装。",
+    "Use for low FPS, stutter, a first-use hitch, or requests to optimize or profile.",
+    "Follow its sections: Core workflow; Patterns; Gotchas; Related skills.",
+    "需求超出本 skill 时只换装对应的一个，命令 evolver skill fetch --asset <Gene> --out .agents --write：physics-tuning 用 gene_gdsk_physics_tuning_v1；其余查速查卡 gene_gdsk_index_v1。"
+  ],
+  "preconditions": [
+    "skill:git+https://github.com/Mike-7777777/gene-skills@3a3c7659722f7f3ff8a2eb9b0190df33a377574c#sha256=06c9c44992bc06288269f5e9a6d3cae7d969180795250c162d15c454c0a8e08e&path=skills/performance-optimization"
+  ],
+  "signals_match": [
+    "game frame rate profiling",
+    "游戏性能优化",
+    "帧率低",
+    "游戏卡顿",
+    "首次使用卡一下",
+    "性能分析",
+    "游戏掉帧",
+    "low FPS stutter"
+  ],
+  "schema_version": "1.13.0",
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const s=k.required_skill;const hex=(v,n)=>v.length===n&&[...v].every(ch=>'0123456789abcdef'.includes(ch));const pin=hex(s.commit,40)&&hex(s.sha256,64)&&s.path==='skills/'+s.name;const rel=k.skill===s.name&&k.related.every(r=>k.description.includes(String.fromCharCode(96)+r.skill+String.fromCharCode(96))&&r.gene==='gene_gdsk_'+r.skill.split('-').join('_')+'_v1');process.exit(pin&&rel&&k.sections.includes('When to use')&&k.index_gene==='gene_gdsk_index_v1'?0:1)\""
+  ],
+  "asset_id": "sha256:e52baaafea88c7bd48f5ee9bf5ef30a4a922ca3903d5817203b51da9358e6a13"
+}

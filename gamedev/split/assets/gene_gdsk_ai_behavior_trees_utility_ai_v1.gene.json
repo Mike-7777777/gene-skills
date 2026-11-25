@@ -1,0 +1,38 @@
+{
+  "id": "gene_gdsk_ai_behavior_trees_utility_ai_v1",
+  "type": "Gene",
+  "domain": "game_dev",
+  "summary": "NPC 行为树与效用 AI 的引擎无关实现：黑板、响应式组合节点、装饰器和响应曲线打分，解决敌人丢失视野后仍追、每帧重启动作、在选项间来回摇摆。 Engine-neutral behavior tree and utility AI code for NPCs in any language: Blackboard, reactive composites, decorators and response-curve scoring. Use when an enemy keeps chasing after losing sight, restarts its action every frame or flip-flops between choices. Not for FSMs, steering or pathfinding (`game-ai`) or Unreal BT, EQS and StateTree (`unreal-behavior-trees`).",
+  "category": "innovate",
+  "metadata": {
+    "tags": [
+      "game-dev",
+      "gdsk-split",
+      "ai-behavior-trees-utility-ai"
+    ]
+  },
+  "strategy": [
+    "先按前置条件安装并通读 skill ai-behavior-trees-utility-ai，规则、数字和检查以它为准；其他游戏开发 skill 不要预装。",
+    "Use when an enemy keeps chasing after losing sight, restarts its action every frame or flip-flops between choices.",
+    "Workflow: Read what exists; Pick the default shape: BT outside, utility inside; Design the Blackboard first; Choose memory or reactive per composite.",
+    "需求超出本 skill 时只换装对应的一个，命令 evolver skill fetch --asset <Gene> --out .agents --write：game-ai 用 gene_gdsk_game_ai_v1；其余查速查卡 gene_gdsk_index_v1。"
+  ],
+  "preconditions": [
+    "skill:git+https://github.com/Mike-7777777/gene-skills@afa0fe2de07c98ffab3d0089524ffeec0e0c29f6#sha256=ac6f1ca1a7bd73490e16aee312c99ce13ca65026ed327e1a6a8aae0d3046a48a&path=skills/ai-behavior-trees-utility-ai"
+  ],
+  "signals_match": [
+    "behavior tree utility ai code",
+    "行为树",
+    "效用AI",
+    "敌人AI决策",
+    "黑板数据",
+    "NPC行为树实现",
+    "敌人来回摇摆",
+    "behavior tree runtime"
+  ],
+  "schema_version": "1.13.0",
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const s=k.required_skill;const hex=(v,n)=>v.length===n&&[...v].every(ch=>'0123456789abcdef'.includes(ch));const pin=hex(s.commit,40)&&hex(s.sha256,64)&&s.path==='skills/'+s.name;const rel=k.skill===s.name&&k.related.every(r=>k.description.includes(String.fromCharCode(96)+r.skill+String.fromCharCode(96))&&r.gene==='gene_gdsk_'+r.skill.split('-').join('_')+'_v1');process.exit(pin&&rel&&k.sections.includes('When to use')&&k.index_gene==='gene_gdsk_index_v1'?0:1)\""
+  ],
+  "asset_id": "sha256:95b1110cdb883ffd2d61a6c435f1063338b645255f615260e070d42dc3393373"
+}

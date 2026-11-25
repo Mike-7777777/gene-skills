@@ -1,0 +1,41 @@
+{
+  "gene": "sha256:9e0a6c4c5b7c4c874eb22f2e0bf8142c98406106de7c1cdb543f38c43e88bad2",
+  "type": "Capsule",
+  "content": "{\"skill\":\"create-game-assets\",\"description\":\"Plans, generates or sources, and validates consistent game art: style guides, sprites, pixel art, tilesets, icons and textures, with QA and licence records. Use when making or AI-generating game art, fixing fake transparency, or checking Steam AI disclosure. Not for engine import (`godot-tilemap`, `godot-animation`, `unity-tilemap-2d`), UI layout (`game-ui-ux`) or sound (`audio-design`).\",\"sections\":[\"When to use\",\"Core workflow\",\"Choose the production path\",\"Image-generation handoff\",\"Raster QA recipes\",\"Quality gates\",\"Gotchas\",\"References\",\"Related skills\",\"Version notes\"],\"related\":[{\"skill\":\"game-ui-ux\",\"gene\":\"gene_gdsk_game_ui_ux_v1\"},{\"skill\":\"audio-design\",\"gene\":\"gene_gdsk_audio_design_v1\"}],\"index_gene\":\"gene_gdsk_index_v1\",\"required_skill\":{\"name\":\"create-game-assets\",\"repo\":\"github.com/Mike-7777777/gene-skills\",\"commit\":\"251d160b02805a3a1630c2f33cee9dc22b481ca0\",\"path\":\"skills/create-game-assets\",\"sha256\":\"e58aed36d338a5a620e712c0f4e9f4ce702420e4b003bde780c5bcceeb37ff28\"},\"upstream\":{\"repo\":\"github.com/gamedev-skills/awesome-gamedev-agent-skills\",\"commit\":\"c6ca6c41c839b68319ffc08430b99ab768debc32\",\"license\":\"Apache-2.0\"},\"gene_asset_id\":\"sha256:9e0a6c4c5b7c4c874eb22f2e0bf8142c98406106de7c1cdb543f38c43e88bad2\"}",
+  "strategy": [
+    "先按前置条件安装并通读 skill create-game-assets，规则、数字和检查以它为准；其他游戏开发 skill 不要预装。",
+    "Use when making or AI-generating game art, fixing fake transparency, or checking Steam AI disclosure.",
+    "Follow its sections: Core workflow; Choose the production path; Image-generation handoff; Raster QA recipes; Quality gates.",
+    "需求超出本 skill 时只换装对应的一个，命令 evolver skill fetch --asset <Gene> --out .agents --write：game-ui-ux 用 gene_gdsk_game_ui_ux_v1，audio-design 用 gene_gdsk_audio_design_v1；其余查速查卡 gene_gdsk_index_v1。"
+  ],
+  "outcome": {
+    "score": 0.7,
+    "status": "success"
+  },
+  "summary": "收录 awesome-gamedev-agent-skills 的 create-game-assets（正文未改）；正文记下钉住的版本与内容摘要、skill 的描述和章节目录、策略里指向的相邻 skill 及其 Gene 编号；skill 正文由 evolver 按引用从 GitHub 安装。（此 Gene 在前置条件中钉住 skill create-game-assets，使用前先安装并阅读它。）",
+  "trigger": [
+    "game art asset pipeline",
+    "游戏美术素材",
+    "像素画",
+    "精灵图",
+    "瓦片集",
+    "AI生成游戏素材",
+    "游戏图标",
+    "sprite sheet"
+  ],
+  "confidence": 0.7,
+  "blast_radius": {
+    "files": 11,
+    "lines": 758
+  },
+  "env_fingerprint": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "node_version": "v24.15.0"
+  },
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const s=k.required_skill;const hex=(v,n)=>v.length===n&&[...v].every(ch=>'0123456789abcdef'.includes(ch));const pin=hex(s.commit,40)&&hex(s.sha256,64)&&s.path==='skills/'+s.name;const rel=k.skill===s.name&&k.related.every(r=>k.description.includes(String.fromCharCode(96)+r.skill+String.fromCharCode(96))&&r.gene==='gene_gdsk_'+r.skill.split('-').join('_')+'_v1');process.exit(pin&&rel&&k.sections.includes('When to use')&&k.index_gene==='gene_gdsk_index_v1'?0:1)\""
+  ],
+  "schema_version": "1.13.0",
+  "asset_id": "sha256:ba97b564cff8de5c12266b4515441dfd8bce6230e38ba4a642030627586634a7"
+}

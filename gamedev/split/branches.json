@@ -1,0 +1,177 @@
+{
+  "ai-behavior-trees-utility-ai": {
+    "commit": "afa0fe2de07c98ffab3d0089524ffeec0e0c29f6",
+    "sha256": "ac6f1ca1a7bd73490e16aee312c99ce13ca65026ed327e1a6a8aae0d3046a48a",
+    "files": 7
+  },
+  "audio-design": {
+    "commit": "81fccda7a437c40320d803603ceb29cd3d6f0b9b",
+    "sha256": "72a971ab73d4bad313d5d15d3e5e51054578e7094fe97da9912d5aaa6b14aa8e",
+    "files": 4
+  },
+  "camera-systems": {
+    "commit": "f420c07c32d6bded21ec76e141ad5aafa038fe5b",
+    "sha256": "3253fc577ec2d3c7b0db0786ceb628f4b46cca221e980284020508dec4c4b1b0",
+    "files": 4
+  },
+  "card-game": {
+    "commit": "9a10d9b69974d150391d2852ebd723890796bcfa",
+    "sha256": "c920ea70bd3a5e4faa55b471306a1a87fe7f0154095d53b4ab4c46d59ee0ad6a",
+    "files": 4
+  },
+  "create-game-assets": {
+    "commit": "251d160b02805a3a1630c2f33cee9dc22b481ca0",
+    "sha256": "e58aed36d338a5a620e712c0f4e9f4ce702420e4b003bde780c5bcceeb37ff28",
+    "files": 13
+  },
+  "dialogue-systems": {
+    "commit": "f6f020c370bab0b3037fb8032abf0e228ee4c038",
+    "sha256": "ef4521cf882dbdc964a4f1c19cd0196e4d7ab1f90877df88777c6b618971dc4c",
+    "files": 5
+  },
+  "game-ai": {
+    "commit": "3371fb4a9298c82d80ee050370970cc8a5a6af31",
+    "sha256": "0801f950356489dcdf287248bc3ba6ca3caafdf1d3eec35ae724ddcc47817b43",
+    "files": 5
+  },
+  "game-docs": {
+    "commit": "035ea6e27506c30a7b18415e0754e7de51147643",
+    "sha256": "08b6ef9c79bc3b3baf36148e670968d0ca26cfb909bf950b28d5e0561956a7ca",
+    "files": 10
+  },
+  "game-feel": {
+    "commit": "90a8cf6a876281d8d52d24dc005ed875d7b03f8d",
+    "sha256": "db9f7f16ba71dff7b13959a2c2a77753f1a02cfecadb078debb4a30aba90f6d5",
+    "files": 4
+  },
+  "game-jam": {
+    "commit": "79adfd4131d44f8454db870bd9d0b5a0dfd62ce7",
+    "sha256": "214fd73720f4a67957b72bacd29ab2bb8bd437f58695b29ea25f4bbee0d609d3",
+    "files": 3
+  },
+  "game-ui-ux": {
+    "commit": "e0e7cbe73ce6a6553f263ec04836103bb415c706",
+    "sha256": "d7194ae212f3aaa5f5de0d6b5da055d5e5b8de227d1538879012890f9b2cd672",
+    "files": 4
+  },
+  "input-systems": {
+    "commit": "5bdeb1c57fd374eb8cbb5b0d027a602fe942692c",
+    "sha256": "742355541a0efb7dca34cc7b7ab777c855e83b76761b9c32d65dd93380d8c42f",
+    "files": 4
+  },
+  "itch-publish": {
+    "commit": "53b1de84e092d531554a161f667050fc3a716122",
+    "sha256": "18132eb7a8c1ee24a423815ec373835664d9866f73e5d4519e313ed571abe61e",
+    "files": 4
+  },
+  "level-design": {
+    "commit": "acb01295507491de6d7d6f49d0fb633c7b9fff96",
+    "sha256": "1d27e95f97a40f6e54e3301b58b16cabcde70fb4db5f25eafb586162ab1145f5",
+    "files": 4
+  },
+  "performance-optimization": {
+    "commit": "3a3c7659722f7f3ff8a2eb9b0190df33a377574c",
+    "sha256": "06c9c44992bc06288269f5e9a6d3cae7d969180795250c162d15c454c0a8e08e",
+    "files": 4
+  },
+  "phaser-arcade-physics": {
+    "commit": "7c150885f47b6da80992f52cfb51f378f35daa3f",
+    "sha256": "34a3ea7b02f87447f59457b391b268559ca4f4cdc8d216f59a2fd9aa65f4a226",
+    "files": 4
+  },
+  "phaser-core": {
+    "commit": "6431f6a57edf4fd1f8bb76ba118fcbd9ba499032",
+    "sha256": "5e9052643b1f50e342c15e43a762a68b661fa858a26d781e437d02c5dd30521d",
+    "files": 4
+  },
+  "physics-tuning": {
+    "commit": "37b0184bdcec0fe1eeb2c2d98e7c0b1ea85b3c3c",
+    "sha256": "752c726f886db352d1de5c115338c339e6967a4316f41e2ff7ecb527417653e2",
+    "files": 4
+  },
+  "pixijs-rendering": {
+    "commit": "2bdd1d47c5ee728165f0f64cdb5358821006afd2",
+    "sha256": "25f0f53a81052ed83ee1671e16288ba0141d3b4cc2b585a637ad7f61a97e3664",
+    "files": 4
+  },
+  "platformer": {
+    "commit": "674fcfe77f45ac7a80b003156f7e8710abb060af",
+    "sha256": "7383d3b56412b5b0051978183cdf96d855937f7ce57a86418b48d6f3b5fb0b55",
+    "files": 5
+  },
+  "procedural-gen": {
+    "commit": "83ae1699445dbde83afa0eec9ffb1be256b74aa1",
+    "sha256": "d872132a8a16c21e8714e14987578494d876d5b0252907aad0a8607641a7b592",
+    "files": 5
+  },
+  "prototype-fast": {
+    "commit": "d6d8e5d9f1ae3960c80e1768ed56ddcaa7354a27",
+    "sha256": "5a1198a5247764f127ff3fe0ef258dd26ca98000b24305fb9f76a47b919bdc27",
+    "files": 3
+  },
+  "puzzle": {
+    "commit": "f0d7201524c6dd78a9cc682d95b03886cccfe107",
+    "sha256": "65bedbe374322b214d9d1c663a4119fe0e39592498080804032c07fb5a916b18",
+    "files": 4
+  },
+  "roguelike": {
+    "commit": "7b3d5ff8dacd025e10b54337a79ae8aded476fe3",
+    "sha256": "97ef73f234691d46967ddc0185556cb6077bbe0d4296eddea13c11c7d91cc2be",
+    "files": 4
+  },
+  "rpg": {
+    "commit": "b89af6a2303b0bc91b072bfb35a93335e4fbff6d",
+    "sha256": "e0379461cba9a213a39690a2b78125d327ddccf4dfb1310224ce85cba068ee20",
+    "files": 4
+  },
+  "save-systems": {
+    "commit": "ee594d9c47da7df6477a8095b92b7a1c1a6c9ec8",
+    "sha256": "806d287922a892f90c1880e25aae1a6f46889214503bcbf122956af9a8415b5a",
+    "files": 4
+  },
+  "shader-programming": {
+    "commit": "ca717472d38b6c2500a88cbadcb201aced5beb08",
+    "sha256": "1e49b95de3f4aff7e7827c233e012f37d635195534cb1d1bd9cbcbdbaae2fe74",
+    "files": 4
+  },
+  "steam-publish": {
+    "commit": "47ab07161096336ad5147aba3a3b93457efb41ab",
+    "sha256": "6e584327501b597e7a49d8669d4237fc1db7e634c7e8cea6f0dffef14c6d75d8",
+    "files": 5
+  },
+  "survival-crafting": {
+    "commit": "fc05b77e311c1b1f3629430c25593950581cf33f",
+    "sha256": "1af5254dec5e2a9e8cafaed95a4a8123875dbd5d21f871dd7a2f96f5c807d770",
+    "files": 4
+  },
+  "threejs-gltf-loading": {
+    "commit": "d9cf6fb5d14856a8a668d0aa20b63d8adaa98535",
+    "sha256": "3714c32119fd625d55caf036644fd19ff25a4c1763bd3acf9187145831f643aa",
+    "files": 4
+  },
+  "threejs-materials-lighting": {
+    "commit": "0af0deca0fd506b11496f13c0bce8d169054088e",
+    "sha256": "4b4700d74ab350056677543a6e8346f124c24d501380194fa15ced7097c2a04a",
+    "files": 4
+  },
+  "threejs-scene-setup": {
+    "commit": "646914a77474c1a4f6a7d3d9e439720ccfbdfacf",
+    "sha256": "44bd0825f9361901719f1e40b6251d5689757f3b6bec86d4de55155017eec731",
+    "files": 4
+  },
+  "tower-defense": {
+    "commit": "e56d79a0568f795c1be0a672ab20e3a5a08ba0e2",
+    "sha256": "d4694c93e9959fb08de67b07c88f643cb0003276a763636024a302d966aef68e",
+    "files": 5
+  },
+  "visual-novel": {
+    "commit": "558fc2ee8aa5a0b72643003c068e49f3c0c90e91",
+    "sha256": "d61d16cd25e45c9d57e028092acc3cd1cbeba4c2b2822bf0e0eb5efe1ae24b16",
+    "files": 4
+  },
+  "gamedev-skill-index": {
+    "commit": "a650ed3ba4eac080c4a793ca4462585e574dac1b",
+    "sha256": "7122a8ef5530f5283a1d26392e24129bcf068701f6adda0fa847f42546af6cb7",
+    "files": 3
+  }
+}

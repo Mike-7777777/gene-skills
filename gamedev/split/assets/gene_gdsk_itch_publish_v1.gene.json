@@ -1,0 +1,38 @@
+{
+  "id": "gene_gdsk_itch_publish_v1",
+  "type": "Gene",
+  "domain": "game_dev",
+  "summary": "用 butler 命令行在 itch.io 发布和更新游戏：推送渠道、平台标签、HTML5 构建、版本号和 CI 上传。 Publishes and updates games on itch.io with the butler CLI: butler push to user/game:channel, channel platform tags, HTML5 builds, --userversion and CI uploads. Use for \"upload to itch\", an HTML5 game that downloads instead of playing, a blank or 403 web build, or \"invalid target\". Not for Steam (`steam-publish`) or jam scope (`game-jam`).",
+  "category": "innovate",
+  "metadata": {
+    "tags": [
+      "game-dev",
+      "gdsk-split",
+      "itch-publish"
+    ]
+  },
+  "strategy": [
+    "先按前置条件安装并通读 skill itch-publish，规则、数字和检查以它为准；其他游戏开发 skill 不要预装。",
+    "Use for \"upload to itch\", an HTML5 game that downloads instead of playing, a blank or 403 web build, or \"invalid target\".",
+    "Workflow: The page must exist first; Work out the target; Install butler; Prepare a portable build folder.",
+    "需求超出本 skill 时只换装对应的一个，命令 evolver skill fetch --asset <Gene> --out .agents --write：steam-publish 用 gene_gdsk_steam_publish_v1，game-jam 用 gene_gdsk_game_jam_v1；其余查速查卡 gene_gdsk_index_v1。"
+  ],
+  "preconditions": [
+    "skill:git+https://github.com/Mike-7777777/gene-skills@53b1de84e092d531554a161f667050fc3a716122#sha256=18132eb7a8c1ee24a423815ec373835664d9866f73e5d4519e313ed571abe61e&path=skills/itch-publish"
+  ],
+  "signals_match": [
+    "itch io butler upload",
+    "发布到itch",
+    "网页游戏发布",
+    "HTML5游戏上传",
+    "网页版打不开",
+    "itch渠道",
+    "butler push",
+    "upload to itch"
+  ],
+  "schema_version": "1.13.0",
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const s=k.required_skill;const hex=(v,n)=>v.length===n&&[...v].every(ch=>'0123456789abcdef'.includes(ch));const pin=hex(s.commit,40)&&hex(s.sha256,64)&&s.path==='skills/'+s.name;const rel=k.skill===s.name&&k.related.every(r=>k.description.includes(String.fromCharCode(96)+r.skill+String.fromCharCode(96))&&r.gene==='gene_gdsk_'+r.skill.split('-').join('_')+'_v1');process.exit(pin&&rel&&k.sections.includes('When to use')&&k.index_gene==='gene_gdsk_index_v1'?0:1)\""
+  ],
+  "asset_id": "sha256:c46c4d4b715843a2070e0d5e4b2612278f49a76611f368bf024a0057fadf4bb7"
+}

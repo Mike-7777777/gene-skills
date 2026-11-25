@@ -1,0 +1,41 @@
+{
+  "gene": "sha256:ea67cd7253b0697ce1c5e22c127529d5fad3833e336577d48f7df8d32fd91b2a",
+  "type": "Capsule",
+  "content": "{\"skill\":\"rpg\",\"description\":\"Designs RPG progression and combat numbers in any engine: stats with a modifier stack, XP curves, damage formulas, items and equipment (slots, rarity, affixes) and quests. Use for a JRPG or Diablo-style looter, or stats wrong after unequipping. Pair with `save-systems` to save characters and inventory. Not for crafting and carry weight (`survival-crafting`) or dialogue (`dialogue-systems`).\",\"sections\":[\"When to use\",\"Workflow\",\"Formulas that hold up\",\"Pattern 1: base stats plus a modifier stack\",\"Gotchas\",\"References\",\"Version notes\"],\"related\":[{\"skill\":\"save-systems\",\"gene\":\"gene_gdsk_save_systems_v1\"},{\"skill\":\"survival-crafting\",\"gene\":\"gene_gdsk_survival_crafting_v1\"}],\"index_gene\":\"gene_gdsk_index_v1\",\"required_skill\":{\"name\":\"rpg\",\"repo\":\"github.com/Mike-7777777/gene-skills\",\"commit\":\"b89af6a2303b0bc91b072bfb35a93335e4fbff6d\",\"path\":\"skills/rpg\",\"sha256\":\"e0379461cba9a213a39690a2b78125d327ddccf4dfb1310224ce85cba068ee20\"},\"upstream\":{\"repo\":\"github.com/gamedev-skills/awesome-gamedev-agent-skills\",\"commit\":\"c6ca6c41c839b68319ffc08430b99ab768debc32\",\"license\":\"Apache-2.0\"},\"gene_asset_id\":\"sha256:ea67cd7253b0697ce1c5e22c127529d5fad3833e336577d48f7df8d32fd91b2a\"}",
+  "strategy": [
+    "先按前置条件安装并通读 skill rpg，规则、数字和检查以它为准；其他游戏开发 skill 不要预装。",
+    "Use for a JRPG or Diablo-style looter, or stats wrong after unequipping.",
+    "Workflow: Read what exists; Set pacing targets; Derive the XP table; Pick one damage family.",
+    "需求超出本 skill 时只换装对应的一个，命令 evolver skill fetch --asset <Gene> --out .agents --write：save-systems 用 gene_gdsk_save_systems_v1，survival-crafting 用 gene_gdsk_survival_crafting_v1；其余查速查卡 gene_gdsk_index_v1。"
+  ],
+  "outcome": {
+    "score": 0.7,
+    "status": "success"
+  },
+  "summary": "收录 awesome-gamedev-agent-skills 的 rpg（正文未改）；正文记下钉住的版本与内容摘要、skill 的描述和章节目录、策略里指向的相邻 skill 及其 Gene 编号；skill 正文由 evolver 按引用从 GitHub 安装。（此 Gene 在前置条件中钉住 skill rpg，使用前先安装并阅读它。）",
+  "trigger": [
+    "rpg stats progression",
+    "角色扮演",
+    "数值成长",
+    "伤害公式",
+    "装备词缀",
+    "经验曲线",
+    "暗黑类刷宝",
+    "JRPG"
+  ],
+  "confidence": 0.7,
+  "blast_radius": {
+    "files": 2,
+    "lines": 254
+  },
+  "env_fingerprint": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "node_version": "v24.15.0"
+  },
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const s=k.required_skill;const hex=(v,n)=>v.length===n&&[...v].every(ch=>'0123456789abcdef'.includes(ch));const pin=hex(s.commit,40)&&hex(s.sha256,64)&&s.path==='skills/'+s.name;const rel=k.skill===s.name&&k.related.every(r=>k.description.includes(String.fromCharCode(96)+r.skill+String.fromCharCode(96))&&r.gene==='gene_gdsk_'+r.skill.split('-').join('_')+'_v1');process.exit(pin&&rel&&k.sections.includes('When to use')&&k.index_gene==='gene_gdsk_index_v1'?0:1)\""
+  ],
+  "schema_version": "1.13.0",
+  "asset_id": "sha256:39760a8276f0724bb835a30586f4415fdaa528d1d9b243a2040383b6addfca3a"
+}

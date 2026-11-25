@@ -1,0 +1,41 @@
+{
+  "gene": "sha256:56ba7864b49679d08a32094ca1dff445366f3407ca4753870fc689cfcd2f069d",
+  "type": "Capsule",
+  "content": "{\"skill\":\"game-docs\",\"description\":\"Writes and maintains a game's design docs: a one-page GDD with a feature index and short feature notes, kept true to the code by a link and status checker. Use for \\\"draft a GDD\\\", \\\"spec out this mechanic\\\", or updating docs after a playtest or code change. Not for building a game when no docs were asked for (`prototype-fast`, `game-jam`), READMEs or level layouts (`level-design`).\",\"sections\":[\"When to use\",\"Workflow\",\"What to write, and when\",\"Gotchas\",\"Resources\",\"Related skills\"],\"related\":[{\"skill\":\"prototype-fast\",\"gene\":\"gene_gdsk_prototype_fast_v1\"},{\"skill\":\"game-jam\",\"gene\":\"gene_gdsk_game_jam_v1\"}],\"index_gene\":\"gene_gdsk_index_v1\",\"required_skill\":{\"name\":\"game-docs\",\"repo\":\"github.com/Mike-7777777/gene-skills\",\"commit\":\"035ea6e27506c30a7b18415e0754e7de51147643\",\"path\":\"skills/game-docs\",\"sha256\":\"08b6ef9c79bc3b3baf36148e670968d0ca26cfb909bf950b28d5e0561956a7ca\"},\"upstream\":{\"repo\":\"github.com/gamedev-skills/awesome-gamedev-agent-skills\",\"commit\":\"c6ca6c41c839b68319ffc08430b99ab768debc32\",\"license\":\"Apache-2.0\"},\"gene_asset_id\":\"sha256:56ba7864b49679d08a32094ca1dff445366f3407ca4753870fc689cfcd2f069d\"}",
+  "strategy": [
+    "先按前置条件安装并通读 skill game-docs，规则、数字和检查以它为准；其他游戏开发 skill 不要预装。",
+    "Use for \"draft a GDD\", \"spec out this mechanic\", or updating docs after a playtest or code change.",
+    "Workflow: Look before writing; Pick the mode; Write; Verify.",
+    "需求超出本 skill 时只换装对应的一个，命令 evolver skill fetch --asset <Gene> --out .agents --write：prototype-fast 用 gene_gdsk_prototype_fast_v1，game-jam 用 gene_gdsk_game_jam_v1；其余查速查卡 gene_gdsk_index_v1。"
+  ],
+  "outcome": {
+    "score": 0.7,
+    "status": "success"
+  },
+  "summary": "收录 awesome-gamedev-agent-skills 的 game-docs（正文未改）；正文记下钉住的版本与内容摘要、skill 的描述和章节目录、策略里指向的相邻 skill 及其 Gene 编号；skill 正文由 evolver 按引用从 GitHub 安装。（此 Gene 在前置条件中钉住 skill game-docs，使用前先安装并阅读它。）",
+  "trigger": [
+    "game design document writing",
+    "游戏设计文档",
+    "写策划案",
+    "功能说明文档",
+    "试玩后更新文档",
+    "玩法规格",
+    "GDD",
+    "game design doc"
+  ],
+  "confidence": 0.7,
+  "blast_radius": {
+    "files": 8,
+    "lines": 1093
+  },
+  "env_fingerprint": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "node_version": "v24.15.0"
+  },
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const s=k.required_skill;const hex=(v,n)=>v.length===n&&[...v].every(ch=>'0123456789abcdef'.includes(ch));const pin=hex(s.commit,40)&&hex(s.sha256,64)&&s.path==='skills/'+s.name;const rel=k.skill===s.name&&k.related.every(r=>k.description.includes(String.fromCharCode(96)+r.skill+String.fromCharCode(96))&&r.gene==='gene_gdsk_'+r.skill.split('-').join('_')+'_v1');process.exit(pin&&rel&&k.sections.includes('When to use')&&k.index_gene==='gene_gdsk_index_v1'?0:1)\""
+  ],
+  "schema_version": "1.13.0",
+  "asset_id": "sha256:f310bd873be62b012c504c4e7a218b0212195ea44a20fbd024225e18fde2740e"
+}

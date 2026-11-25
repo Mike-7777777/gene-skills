@@ -1,0 +1,303 @@
+{
+  "node_id": "node_90f156586d65269d",
+  "checked_at": "2026-11-25T13:09:58.758Z",
+  "genes": [
+    {
+      "skill": "ai-behavior-trees-utility-ai",
+      "id": "gene_gdsk_ai_behavior_trees_utility_ai_v1",
+      "asset_id": "sha256:95b1110cdb883ffd2d61a6c435f1063338b645255f615260e070d42dc3393373",
+      "capsule_asset_id": "sha256:38ee01e9b03388ebd6bf524e6db712a282ad659a55e180e593064f3586857056",
+      "status": "promoted"
+    },
+    {
+      "skill": "audio-design",
+      "id": "gene_gdsk_audio_design_v1",
+      "asset_id": "sha256:ef2d493e292b80afe0e7a5c380017e001ab5d38741771d42475d41e540c5a98a",
+      "capsule_asset_id": "sha256:6e35e2efbdd6e164066b8583a429f09ed027f1555374211baf3702a138edae78",
+      "status": "promoted"
+    },
+    {
+      "skill": "camera-systems",
+      "id": "gene_gdsk_camera_systems_v1",
+      "asset_id": "sha256:b06b13a70d96ec9bc628dfd3dc3b3cb3a7bd281270253581595bc95c6d9f03b2",
+      "capsule_asset_id": "sha256:d9d9b0aecf3340c39c3a85ff6f853573091402d1f6b59d2303b6d98d44491c8d",
+      "status": "promoted"
+    },
+    {
+      "skill": "card-game",
+      "id": "gene_gdsk_card_game_v1",
+      "asset_id": "sha256:9cc7354ad2b6c8301abc7563383aabfd9701b29669bdf8e6301ec9f83921529d",
+      "capsule_asset_id": "sha256:11c869f0fc8e86b6db7a60681447800dd364afb9dddf7568312d6b030149425e",
+      "status": "promoted"
+    },
+    {
+      "skill": "create-game-assets",
+      "id": "gene_gdsk_create_game_assets_v1",
+      "asset_id": "sha256:9e0a6c4c5b7c4c874eb22f2e0bf8142c98406106de7c1cdb543f38c43e88bad2",
+      "capsule_asset_id": "sha256:5490164e7d1459b6ed072b3b00aabdec56b480f11c1b33f07590f5b716a9386d",
+      "status": "promoted"
+    },
+    {
+      "skill": "dialogue-systems",
+      "id": "gene_gdsk_dialogue_systems_v1",
+      "asset_id": "sha256:5a79094c30a9d5ad24fa582b18080b7265a1ee70e188f8bb559fd50707e9d692",
+      "capsule_asset_id": "sha256:0e49b8347870a2dcd69345e2e5bf4c7057f5eb5377e92b91bf34891f3e3ab688",
+      "status": "promoted"
+    },
+    {
+      "skill": "game-ai",
+      "id": "gene_gdsk_game_ai_v1",
+      "asset_id": "sha256:5fcc378f251158464d235f591e65a8f713f778ca43c05d8f4500d267247f4322",
+      "capsule_asset_id": "sha256:2f3e43f39c31d9592c1bf0938ac304a147fef4b146999d7f554ddec802de9184",
+      "status": "promoted"
+    },
+    {
+      "skill": "game-docs",
+      "id": "gene_gdsk_game_docs_v1",
+      "asset_id": "sha256:56ba7864b49679d08a32094ca1dff445366f3407ca4753870fc689cfcd2f069d",
+      "capsule_asset_id": "sha256:37c9415599d62075509c28b8e6d20ade4c51cab5cd0ece8d98f7ad63bd73c50a",
+      "status": "promoted"
+    },
+    {
+      "skill": "game-feel",
+      "id": "gene_gdsk_game_feel_v1",
+      "asset_id": "sha256:f9f51c6a0a5069197f2abb28ed180227d7a1f65e2e69ce1adb4063f68ec9712a",
+      "capsule_asset_id": "sha256:0dc16c301eacb60b146ba76459f5fb9942c0c685f02df14772414814e3d8ee8b",
+      "status": "promoted"
+    },
+    {
+      "skill": "game-jam",
+      "id": "gene_gdsk_game_jam_v1",
+      "asset_id": "sha256:112f2ad13cc361e1137f83ae7eaa25b1fbf3058895ea2a4599699565e07485aa",
+      "capsule_asset_id": "sha256:1f7f8e0327ae8964886d9abf30517f295d99ac5b0045a490933365d27b42fc98",
+      "status": "promoted"
+    },
+    {
+      "skill": "game-ui-ux",
+      "id": "gene_gdsk_game_ui_ux_v1",
+      "asset_id": "sha256:29a000135ce449f89c80882136f4dcda43b32576a3007e24e722b1c57a46b5af",
+      "capsule_asset_id": "sha256:22085ecc41c3810ca6166df15614d060bfb77f8590cac19532ec6bd933b7de87",
+      "status": "promoted"
+    },
+    {
+      "skill": "input-systems",
+      "id": "gene_gdsk_input_systems_v1",
+      "asset_id": "sha256:d1f8b00c918cebf1d1239cbef7cd77de4d8d17a18021afca3eb75fbac4fb25b7",
+      "capsule_asset_id": "sha256:3ea7f9a3ce38671e7f9a8916fd74984af18fea76cc101b7ccc733c2c408b87b5",
+      "status": "promoted"
+    },
+    {
+      "skill": "itch-publish",
+      "id": "gene_gdsk_itch_publish_v1",
+      "asset_id": "sha256:c46c4d4b715843a2070e0d5e4b2612278f49a76611f368bf024a0057fadf4bb7",
+      "capsule_asset_id": "sha256:9fd39ca1f760d493a3320820da2b3946b31b0b9ef285e11a5b48c33e2b350386",
+      "status": "promoted"
+    },
+    {
+      "skill": "level-design",
+      "id": "gene_gdsk_level_design_v1",
+      "asset_id": "sha256:adfedb857daa5778ecf7b6c2261fd9e2d09f039ea0c93f8e955fb09f6026e27c",
+      "capsule_asset_id": "sha256:88d25ac41744611a241e51bc94c09c24ca8d90f7561c090f3c3eec0a36d17d67",
+      "status": "promoted"
+    },
+    {
+      "skill": "performance-optimization",
+      "id": "gene_gdsk_performance_optimization_v1",
+      "asset_id": "sha256:e52baaafea88c7bd48f5ee9bf5ef30a4a922ca3903d5817203b51da9358e6a13",
+      "capsule_asset_id": "sha256:26503199e92dfaa529ecbb567fef5741b896f02dce46cfb0b1e9ecff40cc5dd0",
+      "status": "promoted"
+    },
+    {
+      "skill": "phaser-arcade-physics",
+      "id": "gene_gdsk_phaser_arcade_physics_v1",
+      "asset_id": "sha256:45d00b0db22d6c0cb0b1dd2ed09b0e76fe8ae50e0918dbc22e883e9d735c5f7d",
+      "capsule_asset_id": "sha256:e5e4d4c4e673c523de3d1dc7c8f112de1c5b6d5b1bd681098807fbc54b2b8ec6",
+      "status": "promoted"
+    },
+    {
+      "skill": "phaser-core",
+      "id": "gene_gdsk_phaser_core_v1",
+      "asset_id": "sha256:7fde425795bc0e8628b73645efb60cac20d6b61c465069a6e7cfda754539a68f",
+      "capsule_asset_id": "sha256:04dc8ae67f1430aab6075694ae95231bedbe638072ab7fb9a1fadec90de83acd",
+      "status": "promoted"
+    },
+    {
+      "skill": "physics-tuning",
+      "id": "gene_gdsk_physics_tuning_v1",
+      "asset_id": "sha256:9f3e1b3ca6a48510a59d9355d1c369d42b606f9bcb439920d0607a31137af507",
+      "capsule_asset_id": "sha256:5f331fda77f7495053a360f11153cf4f373f83131dac515158e88307082db1e5",
+      "status": "promoted"
+    },
+    {
+      "skill": "pixijs-rendering",
+      "id": "gene_gdsk_pixijs_rendering_v1",
+      "asset_id": "sha256:c1caa4cbc1d485cff6f9b84a289a3ac8da0883b054d34bf8680a2dae3043ebd9",
+      "capsule_asset_id": "sha256:8795f37303a26b22837ead5ae033bacae9c8c1e21eb33de4a6b7acaa5fc08b8e",
+      "status": "promoted"
+    },
+    {
+      "skill": "platformer",
+      "id": "gene_gdsk_platformer_v1",
+      "asset_id": "sha256:8f93f5411b1aecf6776dba4b932ef1876403815b9a40532789aa5a62dabe2595",
+      "capsule_asset_id": "sha256:897ecd7e3750494f217d67a392953c815a578cdc490eee200d70094db14f640b",
+      "status": "promoted"
+    },
+    {
+      "skill": "procedural-gen",
+      "id": "gene_gdsk_procedural_gen_v1",
+      "asset_id": "sha256:3374eaf321cfd994f48d427b856d6d0f975631e6672140384483c387c2593524",
+      "capsule_asset_id": "sha256:2daf74e9e0f1a1c50d6d9d18340badfd8b84862db67decc7485978a9317ab4dd",
+      "status": "promoted"
+    },
+    {
+      "skill": "prototype-fast",
+      "id": "gene_gdsk_prototype_fast_v1",
+      "asset_id": "sha256:bf85edb9b3d55bc48018dc84b10761c5d58f6e17ed5a5bd20951ec46060b0313",
+      "capsule_asset_id": "sha256:356bca3bf6d505b4adc71f1771ad78a423e30df95357d327d6e9496225042fe0",
+      "status": "promoted"
+    },
+    {
+      "skill": "puzzle",
+      "id": "gene_gdsk_puzzle_v1",
+      "asset_id": "sha256:ffdc86614d60775629e3df3163be45422afe7ba04577ed2f9da4584bc04a7875",
+      "capsule_asset_id": "sha256:e2400e5544b975cf62c7c1bb939c66b278ee5388154f7bd4a88fb719d2f0311f",
+      "status": "promoted"
+    },
+    {
+      "skill": "roguelike",
+      "id": "gene_gdsk_roguelike_v1",
+      "asset_id": "sha256:9b21295de9e7eeaddd79d90b0eacac5cca6d5ca8563eb22662046051f9641583",
+      "capsule_asset_id": "sha256:ab0342179f5461647e6a157f946344ae406366f2a01d1ee97d91cd6731606cbd",
+      "status": "promoted"
+    },
+    {
+      "skill": "rpg",
+      "id": "gene_gdsk_rpg_v1",
+      "asset_id": "sha256:ea67cd7253b0697ce1c5e22c127529d5fad3833e336577d48f7df8d32fd91b2a",
+      "capsule_asset_id": "sha256:de581e399950988d7b3d8e0feb56566a776da1811c95647bade8617f7860a78f",
+      "status": "promoted"
+    },
+    {
+      "skill": "save-systems",
+      "id": "gene_gdsk_save_systems_v1",
+      "asset_id": "sha256:9c92d9c234de77ea88efe3f1dde9767a0d6945518e7ee50a34904b0017ba8f1c",
+      "capsule_asset_id": "sha256:2aa8d3515dabad4dc6b66fef2859f2d475c294bfb5d6e6ae3f56291e23a47eeb",
+      "status": "promoted"
+    },
+    {
+      "skill": "shader-programming",
+      "id": "gene_gdsk_shader_programming_v1",
+      "asset_id": "sha256:e4ab4cdc1a36b7c3b6cc47b7759cb965ab804744cc69d9968881e01cdacfd751",
+      "capsule_asset_id": "sha256:39bcf17938888d268fa95d5410ca6847c1efdf305a417092e78401dac2eb30a9",
+      "status": "promoted"
+    },
+    {
+      "skill": "steam-publish",
+      "id": "gene_gdsk_steam_publish_v1",
+      "asset_id": "sha256:835e7b21dcb48ed0cffe27b4b91d97a618e91cc46a79317eccf467742571862e",
+      "capsule_asset_id": "sha256:6b5d4ac7a788494006ab1ffe268a022ab52779d380c3ad5a45181b2ecbe6da8d",
+      "status": "promoted"
+    },
+    {
+      "skill": "survival-crafting",
+      "id": "gene_gdsk_survival_crafting_v1",
+      "asset_id": "sha256:27fd65b19a6c2b8991b043363f3dfaa21d943865be308a478940d96bbcada5cf",
+      "capsule_asset_id": "sha256:77a17b029a83e66002af50811b3b4230ce1eba53d03c600a0a7e21491d8a879d",
+      "status": "promoted"
+    },
+    {
+      "skill": "threejs-gltf-loading",
+      "id": "gene_gdsk_threejs_gltf_loading_v1",
+      "asset_id": "sha256:ef6be75daba191a299db0123648908add15fa9df4f0f1a9e6623095d4849da9f",
+      "capsule_asset_id": "sha256:8a77bb6599569b00602e57e7b573a25a284b678d947c156bbe8b64c4a1a13cfb",
+      "status": "promoted"
+    },
+    {
+      "skill": "threejs-materials-lighting",
+      "id": "gene_gdsk_threejs_materials_lighting_v1",
+      "asset_id": "sha256:def783b6facf10f2446258bc5905c6831ccb9c11327308d42e353dd7d810b35e",
+      "capsule_asset_id": "sha256:59eb1a545422a686dce6dea4f59c5358ff90b4578dc2c14756a81f9aa6fafb85",
+      "status": "promoted"
+    },
+    {
+      "skill": "threejs-scene-setup",
+      "id": "gene_gdsk_threejs_scene_setup_v1",
+      "asset_id": "sha256:3e642fe42e75d69b119ae5dab0ebda59c988ae6067dc8466c659ba33d45274a3",
+      "capsule_asset_id": "sha256:a871d88f4abce45d087507866f08de6e0a9e90419291e3a78a8732cb943e0bcd",
+      "status": "promoted"
+    },
+    {
+      "skill": "tower-defense",
+      "id": "gene_gdsk_tower_defense_v1",
+      "asset_id": "sha256:5ffb6d7f3d5c27554f9fadc8bd5d20c50f276558987dde64790fa913c6161ae8",
+      "capsule_asset_id": "sha256:9383f7415f37f44d78512a955ff2f864fe41d98d61dd924edf4d5d4b2c719019",
+      "status": "promoted"
+    },
+    {
+      "skill": "visual-novel",
+      "id": "gene_gdsk_visual_novel_v1",
+      "asset_id": "sha256:1274099d8480734ff4ee033f9065fec705208af182e38001ea38f0d81d773c79",
+      "capsule_asset_id": "sha256:c3b98f0661360015527451138b56b8f7b37f63f53640f33a0291ad7c8ce4c816",
+      "status": "promoted"
+    },
+    {
+      "skill": "gamedev-skill-index",
+      "id": "gene_gdsk_index_v1",
+      "asset_id": "sha256:d9e4ce2a0f7d249ccdeff0796ea841eec31c459bd7fb8893da1be77267c6e3ea",
+      "capsule_asset_id": "sha256:face70808d8d1fed4d23c87fec086fd6d80dce575723fc38ce3539ee5c981136",
+      "status": "promoted"
+    }
+  ],
+  "recipes": [
+    {
+      "id": "cmww4w0f22az2923e46ayl5d0",
+      "title": "three.js 三维网页游戏原型：搭场景、打光、加手感",
+      "status": "published",
+      "steps": [
+        "threejs-scene-setup",
+        "threejs-materials-lighting",
+        "game-feel"
+      ]
+    },
+    {
+      "id": "cmww4w1h229zy8s3frz5tizuf",
+      "title": "Phaser 二维平台跳跃游戏：场景、物理、跳跃手感",
+      "status": "published",
+      "steps": [
+        "phaser-core",
+        "phaser-arcade-physics",
+        "platformer",
+        "game-feel"
+      ]
+    },
+    {
+      "id": "cmww4w2nm22uebj3g48e7rs9q",
+      "title": "网页肉鸽游戏：随机地牢、单局结构与存档",
+      "status": "published",
+      "steps": [
+        "phaser-core",
+        "procedural-gen",
+        "roguelike",
+        "save-systems"
+      ]
+    },
+    {
+      "id": "cmww4w3p022unbj3giq0m0338",
+      "title": "Game Jam 网页游戏：定范围、做原型、发到 itch.io",
+      "status": "published",
+      "steps": [
+        "game-jam",
+        "prototype-fast",
+        "itch-publish"
+      ]
+    }
+  ],
+  "revoked": [
+    "sha256:b0a69260c1ff54ea0df8a93cc691b6430df59d74db7d1cebeb2db4f8f9d84ce1",
+    "sha256:f8f840d502c7f281fd91f84d60422702676a8fafb97cec4819d3dcbb94e2bb76",
+    "sha256:85aff62ab47347cfea7ebc9e280c6ac0dc6783390033030c4e072d0e7417ce32",
+    "sha256:90a885018faedfe1b8e8809310de6bc88faf5f7ac9703a66b188e712c283b378",
+    "sha256:43aca38fdd69aaee68ec0db2546d3caea2b1a806276e4577827bd7c34fcaa883",
+    "sha256:b9d9c0263e363d66a5bac41a0f9af111fdaba5fb358f2aa8b8e6651e60ff63ea"
+  ]
+}

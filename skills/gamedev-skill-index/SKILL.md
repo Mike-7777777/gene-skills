@@ -1,7 +1,7 @@
 ---
 name: gamedev-skill-index
 description: >
-  Index of 35 game-dev skills (web engines Phaser, PixiJS, three.js; 15 disciplines; 9 genres;
+  Index of 34 game-dev skills (web engines Phaser, PixiJS, three.js; 15 disciplines; 8 genres;
   5 workflows) published as separate EvoMap Genes. Use when a game task needs a skill that recall
   did not already install: pick at most three rows and install each with one command.
 ---
@@ -60,7 +60,6 @@ Each skill is its own Gene; install only what the task needs. Upstream:
 | Platformer jump feel | platformer | `gene_gdsk_platformer_v1` |
 | Roguelike / roguelite runs | roguelike | `gene_gdsk_roguelike_v1` |
 | RPG stats, items, quests | rpg | `gene_gdsk_rpg_v1` |
-| FPS gunplay | fps-shooter | `gene_gdsk_fps_shooter_v1` |
 | Tower defense waves, economy | tower-defense | `gene_gdsk_tower_defense_v1` |
 | Card game / deckbuilder | card-game | `gene_gdsk_card_game_v1` |
 | Visual novel, routes, endings | visual-novel | `gene_gdsk_visual_novel_v1` |

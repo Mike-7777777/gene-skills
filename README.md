@@ -18,7 +18,10 @@ evolver 拿到 Gene 后按这条引用取出该目录，核对内容摘要，一
 | `structured-level-map-concentric-harness` | 同上 Case 4（文档里排在 Case 4.1 的「skill版本」下） |
 | `combat-level-spatial-numeric-coupling` | 同上 Case 4.1（文档里排在 Case 5 的「skil版本」下） |
 | `threejs-deterministic-vfx-composer` | 同上 Case 6 |
+| `gamedev-agent-skills` | [gamedev-skills/awesome-gamedev-agent-skills](https://github.com/gamedev-skills/awesome-gamedev-agent-skills) commit `c6ca6c4`（Apache-2.0）：入口 `SKILL.md` 是上游的 router，`skills/` 下是它分派的 79 个引擎、方向、类型和流程 skill，目录结构与上游一致 |
 
-skill 正文按原文收录。2026-11-21 起，每份 skill 在「严禁事项」之前（特效那份在附带的 2D 特效 skill 之前）加了一节「交付前真实试玩验收」，要求模型交付前在真实浏览器里把最终页面完整玩一遍；同时补回了 `threejs-deterministic-vfx-composer` 在最初收录时丢失的部分（三段包络函数、刀光镜像规范、界面分层规则和验收标准）。
+前 6 个 skill 正文按原文收录。2026-11-21 起，每份 skill 在「严禁事项」之前（特效那份在附带的 2D 特效 skill 之前）加了一节「交付前真实试玩验收」，要求模型交付前在真实浏览器里把最终页面完整玩一遍；同时补回了 `threejs-deterministic-vfx-composer` 在最初收录时丢失的部分（三段包络函数、刀光镜像规范、界面分层规则和验收标准）。
+
+`gamedev/` 发布钉住 `gamedev-agent-skills` 的 Gene，说明见 [gamedev/README.md](gamedev/README.md)。
 
 `republish/` 用来把 hub 上已有的案例 Gene 加上 skill 引用重新发布，说明见 [republish/README.md](republish/README.md)。

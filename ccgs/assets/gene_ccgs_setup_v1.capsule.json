@@ -1,0 +1,41 @@
+{
+  "gene": "sha256:796e40c1fd2c8e2df5a971a83ddd9a6af6f417295a0bff5b479361190b12e848",
+  "type": "Capsule",
+  "content": "{\"commands\":[\"/prototype\",\"/start\",\"/brainstorm\",\"/adopt\",\"/launch-checklist\"],\"agents\":49,\"skills\":78,\"install\":\"sh .agents/skills/ccgs-studio-setup/install.sh <folder>\",\"fetch\":\"evolver skill fetch --asset <Gene> --out .agents --write\",\"problem\":\"Claude Code Game Studios is one project template (867 files: 78 skills that call its own scripts, docs and hooks), so a per-skill Gene would break 75 of them and the whole template exceeds the 256-file skill limit. Every Gene here pins one 2-file installer skill that fetches the template at a pinned commit, checks its git tree id and only adds missing files; entry Genes differ in what they are recalled for and which studio command they hand over to.\",\"handover\":\"5. Hand over the command that matches the request, to run in the new session:\\n   - make or change a game: `/prototype <idea>`\\n   - new user, no idea or engine yet: `/start`\\n   - wants game ideas: `/brainstorm <genre or open>`\\n   - existing project to bring in: `/prototype --from <path>` for a browser game, `/adopt` for\\n     design docs and stories\\n   - launch readiness: `/launch-checklist` (it starts only when the user types it)\\n\\n\",\"required_skill\":{\"name\":\"ccgs-studio-setup\",\"repo\":\"github.com/Mike-7777777/gene-skills\",\"commit\":\"8b2a40bd35f17201f91691bba1665bf94bea13ab\",\"path\":\"skills/ccgs-studio-setup\",\"sha256\":\"f3225324cd2e682028fd5c00f4bdc941f5b6baec927fec2c137a54fbd79388d4\"},\"template\":{\"branch\":\"ccgs/template\",\"commit\":\"0c27757227cce94bc686dd693f811d512d6a89b1\",\"tree\":\"d5f339830f019dc1bf1238b20c838d8ef1eb69a1\",\"files\":867},\"upstream\":{\"repo\":\"github.com/Donchitos/Claude-Code-Game-Studios\",\"version\":\"1.3.0\",\"commit\":\"abc0de79d6ceb0b5d7aa693945849b3937afbe6a\",\"license\":\"MIT\"},\"gene_asset_id\":\"sha256:796e40c1fd2c8e2df5a971a83ddd9a6af6f417295a0bff5b479361190b12e848\"}",
+  "strategy": [
+    "先按前置条件安装 skill ccgs-studio-setup 并通读；项目根目录已有 project.yaml 和 .zcode/skills/prototype/ 时说明已装过，跳过安装。",
+    "运行 sh .agents/skills/ccgs-studio-setup/install.sh <folder>：新游戏用新的空目录，已有项目用它的根目录；脚本按固定 commit 取模板、核对 tree id、只补缺失文件，不覆盖任何已有文件，被保留的文件逐个告诉用户。",
+    "请用户以该目录为根重开 ZCode：工作室的 agent、skill 和 hooks 只在会话开始时加载，本会话里还不存在。",
+    "在新会话里按需求选命令：做游戏 /prototype，新手 /start，找点子 /brainstorm，已有项目 /adopt 或 /prototype --from，上线前 /launch-checklist（由用户输入）。"
+  ],
+  "outcome": {
+    "score": 0.7,
+    "status": "success"
+  },
+  "summary": "安装 Claude Code Game Studios（ZCode 版 v1.3.0，MIT）：钉住的 skill ccgs-studio-setup 按固定 commit 取 867 个模板文件、核对 tree id、只补缺失文件；正文列出装完可用的五个入口命令。（此 Gene 在前置条件中钉住 skill ccgs-studio-setup，使用前先安装并阅读它。）",
+  "trigger": [
+    "ccgs game studio setup",
+    "claude code game studios",
+    "zcode game studio",
+    "game studio framework",
+    "游戏工作室框架",
+    "安装游戏工作室",
+    "install ccgs"
+  ],
+  "confidence": 0.7,
+  "blast_radius": {
+    "files": 867,
+    "lines": 92
+  },
+  "env_fingerprint": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "node_version": "v24.15.0"
+  },
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const s=k.required_skill;const hex=(v,n)=>v.length===n&&[...v].every(ch=>'0123456789abcdef'.includes(ch));const pin=hex(s.commit,40)&&hex(s.sha256,64)&&s.path==='skills/'+s.name&&s.name==='ccgs-studio-setup'&&hex(k.template.commit,40)&&hex(k.template.tree,40);process.exit(pin&&k.commands.length===5&&k.commands.every(c=>k.handover.includes(c))?0:1)\""
+  ],
+  "schema_version": "1.13.0",
+  "diff": "--- /dev/null\n+++ b/skills/ccgs-studio-setup/install.sh\n@@ -0,0 +1,46 @@\n+#!/bin/sh\n+# Install the Claude Code Game Studios ZCode template into a project folder, pinned to one commit.\n+# Usage: sh install.sh <project-folder>\n+# Never overwrites a file: an existing file that differs keeps its content, and the template's version\n+# is written next to it as <file>.ccgs-new and listed at the end.\n+set -eu\n+REPO=https://github.com/Mike-7777777/gene-skills\n+COMMIT=0c27757227cce94bc686dd693f811d512d6a89b1\n+TREE=d5f339830f019dc1bf1238b20c838d8ef1eb69a1\n+\n+[ $# -eq 1 ] || { echo \"usage: sh install.sh <project-folder>\" >&2; exit 2; }\n+command -v git >/dev/null || { echo \"git is required: install Git, then rerun.\" >&2; exit 3; }\n+mkdir -p \"$1\"\n+TARGET=$(CDPATH= cd -- \"$1\" && pwd -P)\n+\n+TMP=$(mktemp -d \"${TMPDIR:-/tmp}/ccgs-template.XXXXXX\")\n+trap 'rm -rf \"$TMP\"' EXIT INT TERM\n+SRC=$TMP/src\n+git init -q \"$SRC\"\n+echo \"Fetching template $COMMIT ...\"\n+if ! git -C \"$SRC\" fetch -q --depth 1 \"$REPO\" \"$COMMIT\"; then\n+  echo \"Could not fetch $REPO at $COMMIT: check the network or a proxy, then rerun.\" >&2; exit 4\n+fi\n+GOT=$(git -C \"$SRC\" rev-parse 'FETCH_HEAD^{tree}')\n+[ \"$GOT\" = \"$TREE\" ] || { echo \"Template tree is $GOT, expected $TREE: refusing to install.\" >&2; exit 5; }\n+git -C \"$SRC\" checkout -q FETCH_HEAD\n+\n+added=0 same=0 kept=0\n+: > \"$TMP/kept\"\n+git -C \"$SRC\" ls-files > \"$TMP/files\"\n+while IFS= read -r f; do\n+  if [ -e \"$TARGET/$f\" ]; then\n+    if cmp -s \"$SRC/$f\" \"$TARGET/$f\"; then same=$((same + 1)); else\n+      cp -p \"$SRC/$f\" \"$TARGET/$f.ccgs-new\"; echo \"$f\" >> \"$TMP/kept\"; kept=$((kept + 1)); fi\n+  else\n+    mkdir -p \"$(dirname \"$TARGET/$f\")\"; cp -p \"$SRC/$f\" \"$TARGET/$f\"; added=$((added + 1))\n+  fi\n+done < \"$TMP/files\"\n+mkdir -p \"$TARGET/production/session-state\"\n+\n+[ -f \"$TARGET/.zcode/hooks/yaml-helper.sh\" ] && [ -f \"$TARGET/project.yaml\" ] || { echo \"Install incomplete: .zcode/hooks/yaml-helper.sh or project.yaml missing in $TARGET.\" >&2; exit 6; }\n+echo \"CCGS template $COMMIT installed in $TARGET: $added added, $same already identical, $kept kept as they were.\"\n+if [ \"$kept\" -gt 0 ]; then\n+  echo \"Kept your version (template copy saved as <file>.ccgs-new):\"; sed 's/^/  /' \"$TMP/kept\"\n+fi\n+echo \"Next: restart ZCode with $TARGET as the opened folder, then type /start or /prototype <your game idea>.\"\n",
+  "asset_id": "sha256:13361b79f7d422b5157e9b568da3ae9d0da05f1cd6b15fe3ce1ecc6b64eff50e"
+}

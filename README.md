@@ -23,4 +23,6 @@ evolver 拿到 Gene 后按这条引用取出该目录，核对内容摘要，一
 
 游戏开发的 34 个 skill 各放在分支 `gamedev/<skill 名>` 上，每个配一个 Gene，另有一张速查卡，说明见 [gamedev/README.md](gamedev/README.md)。
 
+Claude Code Game Studios（ZCode 版）整套模板放在分支 `ccgs/template`，一个安装 skill 加六个入口 Gene，说明见 [ccgs/README.md](ccgs/README.md)。
+
 `republish/` 用来把 hub 上已有的案例 Gene 加上 skill 引用重新发布，说明见 [republish/README.md](republish/README.md)。

@@ -1,0 +1,4 @@
+{
+  "template": { "branch": "ccgs/template", "commit": "0c27757227cce94bc686dd693f811d512d6a89b1", "tree": "d5f339830f019dc1bf1238b20c838d8ef1eb69a1", "files": 867 },
+  "setup": { "branch": "ccgs/ccgs-studio-setup", "skill": "ccgs-studio-setup", "commit": "8b2a40bd35f17201f91691bba1665bf94bea13ab", "sha256": "f3225324cd2e682028fd5c00f4bdc941f5b6baec927fec2c137a54fbd79388d4" }
+}

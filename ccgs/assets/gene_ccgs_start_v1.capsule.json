@@ -1,0 +1,39 @@
+{
+  "gene": "sha256:c93575d8fcc7ff18e37e7ebf5ec427441bcccaf0ab08eaa7d029b69a0e403e28",
+  "type": "Capsule",
+  "content": "{\"entry\":\"start\",\"command\":\"/start\",\"problem\":\"Claude Code Game Studios is one project template (867 files: 78 skills that call its own scripts, docs and hooks), so a per-skill Gene would break 75 of them and the whole template exceeds the 256-file skill limit. Every Gene here pins one 2-file installer skill that fetches the template at a pinned commit, checks its git tree id and only adds missing files; entry Genes differ in what they are recalled for and which studio command they hand over to.\",\"argument_hint\":\"[no arguments]\",\"description\":\"Guides a first-time user through onboarding and picks the right workflow. Use when the user is new, just cloned or installed the studio, has no idea or engine yet, asks where to begin, or wants to bring in an existing game. A request for a game itself ('make me a game where...') is /prototype's.\",\"user_only\":false,\"sections\":[\"Phase 1: Read the project\",\"Phase 2: Ask where the user is\",\"Phase 3: Route\",\"Phase 4: Show what you assume, then save it\",\"Phase 5: Ask how much to confirm\",\"Phase 6: Show the path\",\"Phase 7: Hand off\"],\"handover\":\"5. Hand over the command that matches the request, to run in the new session:\\n   - make or change a game: `/prototype <idea>`\\n   - new user, no idea or engine yet: `/start`\\n   - wants game ideas: `/brainstorm <genre or open>`\\n   - existing project to bring in: `/prototype --from <path>` for a browser game, `/adopt` for\\n     design docs and stories\\n   - launch readiness: `/launch-checklist` (it starts only when the user types it)\\n\\n\",\"required_skill\":{\"name\":\"ccgs-studio-setup\",\"repo\":\"github.com/Mike-7777777/gene-skills\",\"commit\":\"8b2a40bd35f17201f91691bba1665bf94bea13ab\",\"path\":\"skills/ccgs-studio-setup\",\"sha256\":\"f3225324cd2e682028fd5c00f4bdc941f5b6baec927fec2c137a54fbd79388d4\"},\"template\":{\"branch\":\"ccgs/template\",\"commit\":\"0c27757227cce94bc686dd693f811d512d6a89b1\",\"tree\":\"d5f339830f019dc1bf1238b20c838d8ef1eb69a1\",\"files\":867},\"upstream\":{\"repo\":\"github.com/Donchitos/Claude-Code-Game-Studios\",\"version\":\"1.3.0\",\"commit\":\"abc0de79d6ceb0b5d7aa693945849b3937afbe6a\",\"license\":\"MIT\"},\"gene_asset_id\":\"sha256:c93575d8fcc7ff18e37e7ebf5ec427441bcccaf0ab08eaa7d029b69a0e403e28\"}",
+  "strategy": [
+    "先按前置条件安装 skill ccgs-studio-setup 并通读；项目根目录已有 project.yaml 和 .zcode/skills/start/ 时说明已装过，跳过安装。",
+    "运行 sh .agents/skills/ccgs-studio-setup/install.sh <folder>：新游戏用新的空目录，已有项目用它的根目录；脚本按固定 commit 取模板、核对 tree id、只补缺失文件，不覆盖任何已有文件，被保留的文件逐个告诉用户。",
+    "请用户以该目录为根重开 ZCode：工作室的 agent、skill 和 hooks 只在会话开始时加载，本会话里还不存在。",
+    "在新会话里运行 /start [no arguments]。它做什么：Guides a first-time user through onboarding and picks the right workflow."
+  ],
+  "outcome": {
+    "score": 0.7,
+    "status": "success"
+  },
+  "summary": "CCGS 入口 /start：先用 ccgs-studio-setup 把 Claude Code Game Studios（ZCode 版 v1.3.0，MIT）整套装进项目，重开 ZCode 后运行 /start；正文记下该命令的说明、参数和章节目录、钉住的安装 skill 与模板 commit。（此 Gene 在前置条件中钉住 skill ccgs-studio-setup，使用前先安装并阅读它。）",
+  "trigger": [
+    "game dev where to begin",
+    "new to game development",
+    "游戏开发从哪开始",
+    "游戏开发新手入门",
+    "onboard game studio"
+  ],
+  "confidence": 0.7,
+  "blast_radius": {
+    "files": 867,
+    "lines": 92
+  },
+  "env_fingerprint": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "node_version": "v24.15.0"
+  },
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const s=k.required_skill;const hex=(v,n)=>v.length===n&&[...v].every(ch=>'0123456789abcdef'.includes(ch));const pin=hex(s.commit,40)&&hex(s.sha256,64)&&s.path==='skills/'+s.name&&s.name==='ccgs-studio-setup'&&hex(k.template.commit,40)&&hex(k.template.tree,40);process.exit(pin&&k.command.startsWith('/')&&k.handover.includes(k.command)&&k.sections.length>0?0:1)\""
+  ],
+  "schema_version": "1.13.0",
+  "code_snippet": "test -f project.yaml && test -d .zcode/skills/start || sh .agents/skills/ccgs-studio-setup/install.sh .\ntest -f .zcode/hooks/yaml-helper.sh && echo installed\n# restart ZCode with this folder as the root, then in the new session:\n/start [no arguments]",
+  "asset_id": "sha256:621d92cf5a727a47d48f5f23131167622d77520cb143940d3ace27b735b8181a"
+}

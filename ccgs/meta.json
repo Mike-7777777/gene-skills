@@ -1,0 +1,32 @@
+{
+  "setup": {
+    "id": "gene_ccgs_setup_v1",
+    "summary": "Claude Code Game Studios（CCGS）ZCode 版一键装进项目：49 个 agent、78 个 skill 和 hooks 按固定 commit 整套安装，不覆盖已有文件，装完重开 ZCode 用 /prototype 或 /start 开始。Install the CCGS game studio template into a project at a pinned commit.",
+    "signals": ["ccgs game studio setup", "claude code game studios", "zcode game studio", "game studio framework", "游戏工作室框架", "安装游戏工作室", "install ccgs"]
+  },
+  "prototype": {
+    "id": "gene_ccgs_prototype_v2",
+    "summary": "做个游戏：问几个问题、写一页设计简报、做出能双击打开的网页游戏并自己试玩截图检查（CCGS 的 /prototype）。Make me a game: a playable browser prototype from one sentence.",
+    "signals": ["make me a game", "playable browser game prototype", "做个游戏原型", "把游戏点子做成可玩原型", "try a game mechanic", "一句话做游戏"]
+  },
+  "start": {
+    "id": "gene_ccgs_start_v1",
+    "summary": "游戏开发新手入门：还没有点子或引擎时，由 CCGS 的 /start 带着走完设置并选对流程。Guided onboarding for a first game project.",
+    "signals": ["game dev where to begin", "new to game development", "游戏开发从哪开始", "游戏开发新手入门", "onboard game studio"]
+  },
+  "brainstorm": {
+    "id": "gene_ccgs_brainstorm_v1",
+    "summary": "游戏点子头脑风暴：找方向、比较几个概念并选定一个，也适合 Game Jam 选题（CCGS 的 /brainstorm）。Find and choose a game concept.",
+    "signals": ["game concept ideas", "game jam idea", "游戏点子头脑风暴", "想个游戏创意", "brainstorm game concepts"]
+  },
+  "adopt": {
+    "id": "gene_ccgs_adopt_v1",
+    "summary": "已有游戏项目接入工作室：检查现有设计文档、架构决策和故事是否真的可用，给出编号的迁移计划（CCGS 的 /adopt；网页游戏用 /prototype --from）。Bring an existing game project in.",
+    "signals": ["bring existing game into studio", "audit existing game project", "已有游戏项目接入", "旧游戏项目迁移计划", "brownfield game audit"]
+  },
+  "launch-checklist": {
+    "id": "gene_ccgs_launch_checklist_v1",
+    "summary": "游戏上线前检查：代码、内容、商店页、营销、社区、基础设施、法务逐项过一遍并给出放行结论（CCGS 的 /launch-checklist，由用户亲自输入启动）。Launch readiness for a game release.",
+    "signals": ["game launch readiness checklist", "go no-go game release", "游戏上线前检查", "游戏发布前检查清单", "launch checklist for game"]
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "node_id": "node_90f156586d65269d",
+  "checked_at": "2026-11-27T21:51:33.136Z",
+  "template": {
+    "branch": "ccgs/template",
+    "commit": "0c27757227cce94bc686dd693f811d512d6a89b1",
+    "tree": "d5f339830f019dc1bf1238b20c838d8ef1eb69a1",
+    "files": 867
+  },
+  "setup_skill": {
+    "branch": "ccgs/ccgs-studio-setup",
+    "skill": "ccgs-studio-setup",
+    "commit": "8b2a40bd35f17201f91691bba1665bf94bea13ab",
+    "sha256": "f3225324cd2e682028fd5c00f4bdc941f5b6baec927fec2c137a54fbd79388d4",
+    "ref": "skill:git+https://github.com/Mike-7777777/gene-skills@8b2a40bd35f17201f91691bba1665bf94bea13ab#sha256=f3225324cd2e682028fd5c00f4bdc941f5b6baec927fec2c137a54fbd79388d4&path=skills/ccgs-studio-setup"
+  },
+  "genes": [
+    {
+      "entry": "prototype",
+      "id": "gene_ccgs_prototype_v2",
+      "asset_id": "sha256:8994d4df50186158bc5c7ef896fa9b26415a1a2c8eb8091dccdcd5ef05691351",
+      "capsule_asset_id": "sha256:ba49b326941d7360c5e71035e7bef48dc4ef9462528bbff87b7eef225623d5d4",
+      "status": "candidate"
+    },
+    {
+      "entry": "start",
+      "id": "gene_ccgs_start_v1",
+      "asset_id": "sha256:c93575d8fcc7ff18e37e7ebf5ec427441bcccaf0ab08eaa7d029b69a0e403e28",
+      "capsule_asset_id": "sha256:621d92cf5a727a47d48f5f23131167622d77520cb143940d3ace27b735b8181a",
+      "status": "candidate"
+    },
+    {
+      "entry": "brainstorm",
+      "id": "gene_ccgs_brainstorm_v1",
+      "asset_id": "sha256:fc1ea5c5e45db17a62f566ebdedca0306ce6c0ab210f35e7f543b19ab12223aa",
+      "capsule_asset_id": "sha256:da7beef2d4a5321cf890a098ae9628d3efe531573e8797eb77f23d1e284dc676",
+      "status": "candidate"
+    },
+    {
+      "entry": "adopt",
+      "id": "gene_ccgs_adopt_v1",
+      "asset_id": "sha256:fd41b1eddc2a7ee31f6b4dc4d7a9f2bae1f86c5fab7b282fedeeeeb5a13665c5",
+      "capsule_asset_id": "sha256:b7c004b95c0456682ee1815a9021c9619287577d31e1e62dc4c39eb803c368ca",
+      "status": "candidate"
+    },
+    {
+      "entry": "launch-checklist",
+      "id": "gene_ccgs_launch_checklist_v1",
+      "asset_id": "sha256:151e81169a7646a18560c8224dcea531182f02d663264eab4a32d9febb6cd3f0",
+      "capsule_asset_id": "sha256:331ba1a6ba59f8e1ccd3c01ac71b17ce69c5c21e8847de2e6211f7105b7cbf07",
+      "status": "candidate"
+    },
+    {
+      "entry": "setup",
+      "id": "gene_ccgs_setup_v1",
+      "asset_id": "sha256:796e40c1fd2c8e2df5a971a83ddd9a6af6f417295a0bff5b479361190b12e848",
+      "capsule_asset_id": "sha256:13361b79f7d422b5157e9b568da3ae9d0da05f1cd6b15fe3ce1ecc6b64eff50e",
+      "status": "candidate"
+    }
+  ]
+}

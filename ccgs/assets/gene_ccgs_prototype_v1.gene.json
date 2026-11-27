@@ -1,0 +1,37 @@
+{
+  "id": "gene_ccgs_prototype_v1",
+  "type": "Gene",
+  "domain": "game_dev",
+  "summary": "做个游戏：问几个问题、写一页设计简报、做出能双击打开的网页游戏并自己试玩截图检查（CCGS 的 /prototype）。Make me a game: a playable browser prototype from one sentence.",
+  "category": "innovate",
+  "metadata": {
+    "tags": [
+      "game-dev",
+      "ccgs",
+      "zcode",
+      "prototype"
+    ]
+  },
+  "strategy": [
+    "先按前置条件安装 skill ccgs-studio-setup 并通读；项目根目录已有 project.yaml 和 .zcode/skills/prototype/ 时说明已装过，跳过安装。",
+    "运行 sh .agents/skills/ccgs-studio-setup/install.sh <folder>：新游戏用新的空目录，已有项目用它的根目录；脚本按固定 commit 取模板、核对 tree id、只补缺失文件，不覆盖任何已有文件，被保留的文件逐个告诉用户。",
+    "请用户以该目录为根重开 ZCode：工作室的 agent、skill 和 hooks 只在会话开始时加载，本会话里还不存在。",
+    "在新会话里运行 /prototype [what to make]。它做什么：Asks a few questions, writes a one-page brief, builds a playable browser game as one HTML folder it plays and screenshots."
+  ],
+  "preconditions": [
+    "skill:git+https://github.com/Mike-7777777/gene-skills@8b2a40bd35f17201f91691bba1665bf94bea13ab#sha256=f3225324cd2e682028fd5c00f4bdc941f5b6baec927fec2c137a54fbd79388d4&path=skills/ccgs-studio-setup"
+  ],
+  "signals_match": [
+    "make me a game",
+    "playable browser game prototype",
+    "做个游戏原型",
+    "把游戏点子做成可玩原型",
+    "try a game mechanic",
+    "一句话做游戏"
+  ],
+  "schema_version": "1.13.0",
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const s=k.required_skill;const hex=(v,n)=>v.length===n&&[...v].every(ch=>'0123456789abcdef'.includes(ch));const pin=hex(s.commit,40)&&hex(s.sha256,64)&&s.path==='skills/'+s.name&&s.name==='ccgs-studio-setup'&&hex(k.template.commit,40)&&hex(k.template.tree,40);process.exit(pin&&k.command.startsWith('/')&&k.handover.includes(k.command)&&k.sections.length>0?0:1)\""
+  ],
+  "asset_id": "sha256:1a9e5bb472717fbc2b03897006378b788ce31ffef32ba837f8f336bd2e76ab64"
+}

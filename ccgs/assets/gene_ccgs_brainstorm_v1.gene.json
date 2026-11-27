@@ -1,0 +1,36 @@
+{
+  "id": "gene_ccgs_brainstorm_v1",
+  "type": "Gene",
+  "domain": "game_dev",
+  "summary": "游戏点子头脑风暴：找方向、比较几个概念并选定一个，也适合 Game Jam 选题（CCGS 的 /brainstorm）。Find and choose a game concept.",
+  "category": "innovate",
+  "metadata": {
+    "tags": [
+      "game-dev",
+      "ccgs",
+      "zcode",
+      "brainstorm"
+    ]
+  },
+  "strategy": [
+    "先按前置条件安装 skill ccgs-studio-setup 并通读；项目根目录已有 project.yaml 和 .zcode/skills/brainstorm/ 时说明已装过，跳过安装。",
+    "运行 sh .agents/skills/ccgs-studio-setup/install.sh <folder>：新游戏用新的空目录，已有项目用它的根目录；脚本按固定 commit 取模板、核对 tree id、只补缺失文件，不覆盖任何已有文件，被保留的文件逐个告诉用户。",
+    "请用户以该目录为根重开 ZCode：工作室的 agent、skill 和 hooks 只在会话开始时加载，本会话里还不存在。",
+    "在新会话里运行 /brainstorm [genre or theme hint, or 'open']。它做什么：Guides the user through finding and choosing a game concept."
+  ],
+  "preconditions": [
+    "skill:git+https://github.com/Mike-7777777/gene-skills@8b2a40bd35f17201f91691bba1665bf94bea13ab#sha256=f3225324cd2e682028fd5c00f4bdc941f5b6baec927fec2c137a54fbd79388d4&path=skills/ccgs-studio-setup"
+  ],
+  "signals_match": [
+    "game concept ideas",
+    "game jam idea",
+    "游戏点子头脑风暴",
+    "想个游戏创意",
+    "brainstorm game concepts"
+  ],
+  "schema_version": "1.13.0",
+  "validation": [
+    "node -e \"const k=JSON.parse(JSON.parse(require('fs').readFileSync(process.argv.find(a=>String(a).endsWith('.json')),'utf8')).content);const s=k.required_skill;const hex=(v,n)=>v.length===n&&[...v].every(ch=>'0123456789abcdef'.includes(ch));const pin=hex(s.commit,40)&&hex(s.sha256,64)&&s.path==='skills/'+s.name&&s.name==='ccgs-studio-setup'&&hex(k.template.commit,40)&&hex(k.template.tree,40);process.exit(pin&&k.command.startsWith('/')&&k.handover.includes(k.command)&&k.sections.length>0?0:1)\""
+  ],
+  "asset_id": "sha256:fc1ea5c5e45db17a62f566ebdedca0306ce6c0ab210f35e7f543b19ab12223aa"
+}
